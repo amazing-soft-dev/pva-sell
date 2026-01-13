@@ -1,0 +1,5 @@
+{
+  "name": "PVAMarkets Clone",
+  "description": "A professional marketplace for Personal Verified Accounts (PVA). Features a mock full-stack architecture with a simulated database, shopping cart, and an AI-powered shopping assistant using the Gemini API.",
+  "requestFramePermissions": []
+}
