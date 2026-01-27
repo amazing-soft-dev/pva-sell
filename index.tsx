@@ -131,11 +131,13 @@ const useApp = () => {
 
 // --- Components ---
 
+type ViewState = 'home' | 'profile' | 'products' | 'whyus';
+
 interface NavbarProps {
   onOpenAuth: () => void;
   onOpenCart: () => void;
-  onNavigate: (view: 'home' | 'profile') => void;
-  currentView: 'home' | 'profile';
+  onNavigate: (view: ViewState) => void;
+  currentView: ViewState;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNavigate, currentView }) => {
@@ -162,9 +164,24 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNavigate, cur
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
-            <button onClick={() => onNavigate('home')} className={`${currentView === 'home' ? 'text-brand-600' : 'text-gray-600'} hover:text-brand-600 font-medium transition`}>Home</button>
-            <button onClick={() => onNavigate('home')} className="text-gray-600 hover:text-brand-600 font-medium transition">Products</button>
-            <button onClick={() => onNavigate('home')} className="text-gray-600 hover:text-brand-600 font-medium transition">Why Us</button>
+            <button 
+              onClick={() => onNavigate('home')} 
+              className={`${currentView === 'home' ? 'text-brand-600' : 'text-gray-600'} hover:text-brand-600 font-medium transition`}
+            >
+              Home
+            </button>
+            <button 
+              onClick={() => onNavigate('products')} 
+              className={`${currentView === 'products' ? 'text-brand-600' : 'text-gray-600'} hover:text-brand-600 font-medium transition`}
+            >
+              Products
+            </button>
+            <button 
+              onClick={() => onNavigate('whyus')} 
+              className={`${currentView === 'whyus' ? 'text-brand-600' : 'text-gray-600'} hover:text-brand-600 font-medium transition`}
+            >
+              Why Us
+            </button>
           </div>
 
           <div className="flex items-center gap-4">
@@ -200,6 +217,296 @@ const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNavigate, cur
         </div>
       </div>
     </nav>
+  );
+};
+
+const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
+  const { addToCart } = useApp();
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col overflow-hidden group">
+      <div className="p-6 flex-1">
+        <div className="flex justify-between items-start mb-4">
+          <div className="p-3 bg-brand-50 rounded-lg group-hover:bg-brand-100 transition-colors">
+            <i className={`${product.icon} text-3xl text-brand-600`}></i>
+          </div>
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+            In Stock: {product.stock}
+          </span>
+        </div>
+        <h3 className="text-lg font-bold text-gray-900 mb-1">{product.title}</h3>
+        <p className="text-sm text-gray-500 mb-4">{product.description}</p>
+        <ul className="space-y-2 mb-6">
+          {product.features.map((feature, idx) => (
+            <li key={idx} className="flex items-center text-sm text-gray-600">
+              <i className="fa-solid fa-check text-green-500 mr-2"></i>
+              {feature}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="bg-gray-50 px-6 py-4 flex items-center justify-between border-t border-gray-100">
+        <div>
+          <span className="text-2xl font-bold text-gray-900">${product.price.toFixed(2)}</span>
+          <span className="text-xs text-gray-500 ml-1">/ each</span>
+        </div>
+        <button 
+          onClick={() => addToCart(product)}
+          className="bg-brand-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-700 transition active:scale-95 shadow-lg shadow-brand-500/30"
+        >
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const FeaturesSection = () => (
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+    <div className="p-6">
+      <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i className="fa-solid fa-bolt"></i>
+      </div>
+      <h3 className="text-lg font-bold mb-2">Instant Delivery</h3>
+      <p className="text-gray-500">Get your accounts delivered to your dashboard and email immediately after payment.</p>
+    </div>
+    <div className="p-6">
+      <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i className="fa-solid fa-rotate"></i>
+      </div>
+      <h3 className="text-lg font-bold mb-2">3-Day Replacement</h3>
+      <p className="text-gray-500">If any account doesn't work, we replace it instantly within 3 days of purchase.</p>
+    </div>
+    <div className="p-6">
+      <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i className="fa-solid fa-headset"></i>
+      </div>
+      <h3 className="text-lg font-bold mb-2">24/7 Support</h3>
+      <p className="text-gray-500">Our team is available round the clock to assist you with any issues.</p>
+    </div>
+  </div>
+);
+
+const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void }) => {
+  const { products } = useApp();
+  const featuredProducts = products.slice(0, 3); // Show first 3 products as featured
+
+  return (
+    <>
+      <Hero />
+      
+      {/* Featured Products Preview */}
+      <div className="bg-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-end mb-8">
+            <div>
+              <h2 className="text-3xl font-extrabold text-gray-900">Featured Accounts</h2>
+              <p className="mt-2 text-gray-500">Our most popular verified accounts.</p>
+            </div>
+            <button 
+              onClick={() => onNavigate('products')}
+              className="text-brand-600 font-medium hover:text-brand-700 flex items-center"
+            >
+              View Marketplace <i className="fa-solid fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {featuredProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Why Us Preview */}
+      <div className="bg-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-extrabold text-gray-900">Why Choose PVA Markets?</h2>
+          </div>
+          <FeaturesSection />
+          <div className="text-center mt-10">
+            <button 
+              onClick={() => onNavigate('whyus')} 
+              className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition"
+            >
+              Learn More About Us
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+const ProductsView = () => {
+  const { products } = useApp();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const categories = ['All', 'Social Media', 'Payment', 'Freelance', 'Developer Tools', 'Verification', 'VPN & Security'];
+
+  const filteredProducts = products.filter(product => {
+    const query = searchQuery.toLowerCase();
+    const matchesSearch = product.title.toLowerCase().includes(query) ||
+                          product.description.toLowerCase().includes(query) ||
+                          product.category.toLowerCase().includes(query);
+    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl font-extrabold text-gray-900 mb-4">Marketplace</h1>
+        <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+          Browse our extensive catalog of verified accounts. Filter by category or search for specific platforms.
+        </p>
+      </div>
+
+      {/* Search Bar */}
+      <div className="max-w-xl mx-auto mb-8">
+        <div className="relative group">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <i className="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-brand-500 transition-colors"></i>
+          </div>
+          <input
+            type="text"
+            className="block w-full pl-11 pr-4 py-4 border border-gray-200 rounded-full leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent shadow-sm transition-all duration-200 ease-in-out"
+            placeholder="Search for accounts (e.g., 'Gmail', 'old', 'verified')..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button 
+              onClick={() => setSearchQuery('')}
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600"
+            >
+              <i className="fa-solid fa-xmark"></i>
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Category Filter */}
+      <div className="flex flex-wrap justify-center gap-2 mb-12">
+          {categories.map(category => (
+            <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                  selectedCategory === category
+                      ? 'bg-brand-600 text-white shadow-md shadow-brand-500/30'
+                      : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
+                }`}
+            >
+                {category}
+            </button>
+          ))}
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map(product => (
+            <ProductCard key={product.id} product={product} />
+          ))
+        ) : (
+          <div className="col-span-full text-center py-12">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                <i className="fa-solid fa-magnifying-glass text-gray-400 text-2xl"></i>
+              </div>
+              <h3 className="text-lg font-medium text-gray-900">No products found</h3>
+              <p className="text-gray-500 mt-2">Try adjusting your search terms or category.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const WhyUsView = () => {
+  return (
+    <div className="py-12 bg-white">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
+        <h1 className="text-4xl font-extrabold text-gray-900 mb-6">Why Trust PVA Markets?</h1>
+        <p className="text-xl text-gray-500 max-w-3xl mx-auto">
+          We are the industry leader in providing high-quality, verified accounts for marketing, development, and personal use.
+        </p>
+      </div>
+
+      {/* Features Grid */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+        <FeaturesSection />
+      </div>
+
+      {/* Detailed Sections */}
+      <div className="bg-gray-50 py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Guarantee</h2>
+              <div className="space-y-4 text-gray-600">
+                <p>
+                  At PVA Markets, we understand that quality is paramount. That's why every single account we sell goes through a rigorous verification process before being listed.
+                </p>
+                <p>
+                  We offer a <strong>unique 3-day replacement policy</strong>. If you experience any issues with logging in or verification status within 72 hours of purchase, our system will automatically issue a replacement.
+                </p>
+                <ul className="list-disc pl-5 space-y-2 mt-4">
+                  <li>100% Unique IP Addresses during creation</li>
+                  <li>Real SIM cards used for verification (No VoIP)</li>
+                  <li>Aged accounts are kept active to ensure validity</li>
+                </ul>
+              </div>
+            </div>
+            <div className="relative">
+               <div className="absolute inset-0 bg-brand-200 transform rotate-3 rounded-2xl"></div>
+               <div className="relative bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                  <div className="flex items-center mb-4">
+                    <div className="text-yellow-400 text-xl mr-2">
+                      <i className="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
+                      <i className="fa-solid fa-star"></i>
+                    </div>
+                  </div>
+                  <p className="text-gray-600 italic mb-6">
+                    "I've bought hundreds of Gmail accounts for my marketing agency from various vendors, but PVA Markets is the only one that delivers consistent quality. The accounts actually last!"
+                  </p>
+                  <div className="flex items-center">
+                    <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-500 mr-3">JD</div>
+                    <div>
+                      <div className="font-bold text-gray-900">John Doe</div>
+                      <div className="text-sm text-gray-500">Marketing Director, AdScale</div>
+                    </div>
+                  </div>
+               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* FAQ Teaser */}
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+         <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Frequently Asked Questions</h2>
+         <div className="space-y-6">
+            <div className="border-b border-gray-200 pb-4">
+               <h3 className="font-medium text-gray-900 mb-2">Are these accounts hacked?</h3>
+               <p className="text-gray-500">Absolutely not. All accounts are created by our team or our partners using legitimate methods. We do not sell stolen or compromised credentials.</p>
+            </div>
+            <div className="border-b border-gray-200 pb-4">
+               <h3 className="font-medium text-gray-900 mb-2">How fast is delivery?</h3>
+               <p className="text-gray-500">Delivery is instant. As soon as your payment is confirmed by our processor, you will receive an email with your account details and they will appear in your dashboard.</p>
+            </div>
+            <div className="border-b border-gray-200 pb-4">
+               <h3 className="font-medium text-gray-900 mb-2">Do you offer bulk discounts?</h3>
+               <p className="text-gray-500">Yes! Contact our support team for orders exceeding $500 for a custom rate.</p>
+            </div>
+         </div>
+      </div>
+    </div>
   );
 };
 
@@ -485,47 +792,6 @@ const Hero = () => {
               </div>
            </div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
-  const { addToCart } = useApp();
-
-  return (
-    <div className="bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 flex flex-col overflow-hidden group">
-      <div className="p-6 flex-1">
-        <div className="flex justify-between items-start mb-4">
-          <div className="p-3 bg-brand-50 rounded-lg group-hover:bg-brand-100 transition-colors">
-            <i className={`${product.icon} text-3xl text-brand-600`}></i>
-          </div>
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-            In Stock: {product.stock}
-          </span>
-        </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-1">{product.title}</h3>
-        <p className="text-sm text-gray-500 mb-4">{product.description}</p>
-        <ul className="space-y-2 mb-6">
-          {product.features.map((feature, idx) => (
-            <li key={idx} className="flex items-center text-sm text-gray-600">
-              <i className="fa-solid fa-check text-green-500 mr-2"></i>
-              {feature}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="bg-gray-50 px-6 py-4 flex items-center justify-between border-t border-gray-100">
-        <div>
-          <span className="text-2xl font-bold text-gray-900">${product.price.toFixed(2)}</span>
-          <span className="text-xs text-gray-500 ml-1">/ each</span>
-        </div>
-        <button 
-          onClick={() => addToCart(product)}
-          className="bg-brand-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-brand-700 transition active:scale-95 shadow-lg shadow-brand-500/30"
-        >
-          Add to Cart
-        </button>
       </div>
     </div>
   );
@@ -976,7 +1242,7 @@ const ChatWidget = ({ onOpenCart }: { onOpenCart: () => void }) => {
             });
         }
         // Send the function execution results back to the model
-        response = await chat.sendMessage(functionResponseParts);
+        response = await chat.sendMessage({ message: functionResponseParts });
       }
 
       setMessages(prev => [...prev, { role: 'model', text: response.text || "I processed your request." }]);
@@ -1105,23 +1371,8 @@ const Footer = () => (
 const App = () => {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<'home' | 'profile'>('home');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [currentView, setCurrentView] = useState<ViewState>('home');
   const { products } = useApp();
-
-  const categories = ['All', 'Social Media', 'Payment', 'Email', 'Games & Streaming'];
-
-  // Filter products based on search query and category
-  const filteredProducts = products.filter(product => {
-    const query = searchQuery.toLowerCase();
-    const matchesSearch = product.title.toLowerCase().includes(query) ||
-                          product.description.toLowerCase().includes(query) ||
-                          product.category.toLowerCase().includes(query);
-    const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-
-    return matchesSearch && matchesCategory;
-  });
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -1133,107 +1384,10 @@ const App = () => {
       />
       
       <main className="flex-grow">
-        {currentView === 'home' ? (
-          <>
-            <Hero />
-            
-            <div id="products" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">Available Accounts</h2>
-                <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
-                  Select from our wide range of phone verified accounts.
-                </p>
-              </div>
-
-              {/* Search Bar */}
-              <div className="max-w-xl mx-auto mb-8">
-                <div className="relative group">
-                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <i className="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-brand-500 transition-colors"></i>
-                  </div>
-                  <input
-                    type="text"
-                    className="block w-full pl-11 pr-4 py-4 border border-gray-200 rounded-full leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent shadow-sm transition-all duration-200 ease-in-out"
-                    placeholder="Search for accounts (e.g., 'Gmail', 'old', 'verified')..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                  {searchQuery && (
-                    <button 
-                      onClick={() => setSearchQuery('')}
-                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600"
-                    >
-                      <i className="fa-solid fa-xmark"></i>
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Category Filter */}
-              <div className="flex flex-wrap justify-center gap-2 mb-12">
-                 {categories.map(category => (
-                    <button
-                       key={category}
-                       onClick={() => setSelectedCategory(category)}
-                       className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                          selectedCategory === category
-                             ? 'bg-brand-600 text-white shadow-md shadow-brand-500/30'
-                             : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
-                       }`}
-                    >
-                       {category}
-                    </button>
-                 ))}
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredProducts.length > 0 ? (
-                  filteredProducts.map(product => (
-                    <ProductCard key={product.id} product={product} />
-                  ))
-                ) : (
-                  <div className="col-span-full text-center py-12">
-                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                        <i className="fa-solid fa-magnifying-glass text-gray-400 text-2xl"></i>
-                     </div>
-                     <h3 className="text-lg font-medium text-gray-900">No products found</h3>
-                     <p className="text-gray-500 mt-2">Try adjusting your search terms or category.</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div id="features" className="bg-white py-16">
-               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                     <div className="p-6">
-                        <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                           <i className="fa-solid fa-bolt"></i>
-                        </div>
-                        <h3 className="text-lg font-bold mb-2">Instant Delivery</h3>
-                        <p className="text-gray-500">Get your accounts delivered to your dashboard and email immediately after payment.</p>
-                     </div>
-                     <div className="p-6">
-                        <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                           <i className="fa-solid fa-rotate"></i>
-                        </div>
-                        <h3 className="text-lg font-bold mb-2">3-Day Replacement</h3>
-                        <p className="text-gray-500">If any account doesn't work, we replace it instantly within 3 days of purchase.</p>
-                     </div>
-                     <div className="p-6">
-                        <div className="w-16 h-16 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-                           <i className="fa-solid fa-headset"></i>
-                        </div>
-                        <h3 className="text-lg font-bold mb-2">24/7 Support</h3>
-                        <p className="text-gray-500">Our team is available round the clock to assist you with any issues.</p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-          </>
-        ) : (
-          <ProfileView />
-        )}
+        {currentView === 'home' && <HomeView onNavigate={setCurrentView} />}
+        {currentView === 'products' && <ProductsView />}
+        {currentView === 'whyus' && <WhyUsView />}
+        {currentView === 'profile' && <ProfileView />}
       </main>
 
       <Footer />
