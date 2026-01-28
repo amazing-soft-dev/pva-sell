@@ -287,13 +287,89 @@ const FeaturesSection = () => (
   </div>
 );
 
+const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNavigate }) => {
+  return (
+    <div className="relative bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <div className="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+          <svg
+            className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2"
+            fill="currentColor"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <polygon points="50,0 100,0 50,100 0,100" />
+          </svg>
+
+          <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+            <div className="sm:text-center lg:text-left">
+              <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                <span className="block xl:inline">Premium Verified</span>{' '}
+                <span className="block text-brand-600 xl:inline">Accounts Market</span>
+              </h1>
+              <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                Instant access to high-quality, phone-verified accounts for social media, freelancing, and payment gateways. Secure, anonymous, and guaranteed.
+              </p>
+              <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+                <div className="rounded-md shadow">
+                  <button
+                    onClick={() => onNavigate('products')}
+                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-brand-600 hover:bg-brand-700 md:py-4 md:text-lg md:px-10 transition-colors"
+                  >
+                    Browse Accounts
+                  </button>
+                </div>
+                <div className="mt-3 sm:mt-0 sm:ml-3">
+                  <button
+                    onClick={() => onNavigate('whyus')}
+                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-brand-700 bg-brand-100 hover:bg-brand-200 md:py-4 md:text-lg md:px-10 transition-colors"
+                  >
+                    Why Choose Us
+                  </button>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+      <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-gray-50">
+        <div className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full flex items-center justify-center p-10">
+             <div className="grid grid-cols-2 gap-6 w-full max-w-lg">
+                 <div className="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:scale-105 transition duration-300">
+                    <i className="fa-brands fa-linkedin text-5xl text-[#0077b5] mb-4"></i>
+                    <span className="font-bold text-gray-800">LinkedIn</span>
+                    <span className="text-xs text-green-500 font-medium">ID Verified</span>
+                 </div>
+                 <div className="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:scale-105 transition duration-300 translate-y-8">
+                    <i className="fa-brands fa-upwork text-5xl text-[#14a800] mb-4"></i>
+                    <span className="font-bold text-gray-800">Upwork</span>
+                    <span className="text-xs text-green-500 font-medium">Ready to work</span>
+                 </div>
+                 <div className="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:scale-105 transition duration-300">
+                    <i className="fa-brands fa-discord text-5xl text-[#5865F2] mb-4"></i>
+                    <span className="font-bold text-gray-800">Discord</span>
+                    <span className="text-xs text-gray-500 font-medium">2015 - 2020</span>
+                 </div>
+                 <div className="bg-white p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:scale-105 transition duration-300 translate-y-8">
+                    <i className="fa-solid fa-money-check-dollar text-5xl text-gray-700 mb-4"></i>
+                    <span className="font-bold text-gray-800">Payment</span>
+                    <span className="text-xs text-gray-500 font-medium">Verified Accounts</span>
+                 </div>
+             </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void }) => {
   const { products } = useApp();
   const featuredProducts = products.slice(0, 3); // Show first 3 products as featured
 
   return (
     <>
-      <Hero />
+      <Hero onNavigate={onNavigate} />
       
       {/* Featured Products Preview */}
       <div className="bg-white py-16">
@@ -426,83 +502,180 @@ const ProductsView = () => {
 
 const WhyUsView = () => {
   return (
-    <div className="py-12 bg-white">
-      {/* Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-6">Why Trust PVA Markets?</h1>
-        <p className="text-xl text-gray-500 max-w-3xl mx-auto">
-          We are the industry leader in providing high-quality, verified accounts for marketing, development, and personal use.
-        </p>
+    <div className="bg-white animate-fade-in">
+      {/* Hero Header - Enhanced with gradient and pattern */}
+      <div className="relative bg-brand-900 py-24 sm:py-32">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 mix-blend-overlay"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-transparent to-black/30"></div>
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+          <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl mb-6 drop-shadow-lg">
+            Why Leading Marketers<br/>Trust <span className="text-brand-400">PVA Markets</span>
+          </h1>
+          <p className="mt-6 text-xl text-brand-100 max-w-3xl mx-auto font-light leading-relaxed">
+            In an industry full of low-quality bots and scams, we stand apart. 
+            We provide legitimate, phone-verified accounts that actually last, 
+            backed by ironclad guarantees and 24/7 expert support.
+          </p>
+        </div>
       </div>
 
-      {/* Features Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
-        <FeaturesSection />
-      </div>
-
-      {/* Detailed Sections */}
-      <div className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      {/* Trust Stats Bar */}
+      <div className="bg-brand-800 border-y border-brand-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Guarantee</h2>
-              <div className="space-y-4 text-gray-600">
-                <p>
-                  At PVA Markets, we understand that quality is paramount. That's why every single account we sell goes through a rigorous verification process before being listed.
-                </p>
-                <p>
-                  We offer a <strong>unique 3-day replacement policy</strong>. If you experience any issues with logging in or verification status within 72 hours of purchase, our system will automatically issue a replacement.
-                </p>
-                <ul className="list-disc pl-5 space-y-2 mt-4">
-                  <li>100% Unique IP Addresses during creation</li>
-                  <li>Real SIM cards used for verification (No VoIP)</li>
-                  <li>Aged accounts are kept active to ensure validity</li>
-                </ul>
-              </div>
+              <div className="text-3xl font-bold text-white mb-1">50,000+</div>
+              <div className="text-brand-200 text-sm uppercase tracking-wider">Accounts Sold</div>
             </div>
-            <div className="relative">
-               <div className="absolute inset-0 bg-brand-200 transform rotate-3 rounded-2xl"></div>
-               <div className="relative bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                  <div className="flex items-center mb-4">
-                    <div className="text-yellow-400 text-xl mr-2">
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                      <i className="fa-solid fa-star"></i>
-                    </div>
-                  </div>
-                  <p className="text-gray-600 italic mb-6">
-                    "I've bought hundreds of Gmail accounts for my marketing agency from various vendors, but PVA Markets is the only one that delivers consistent quality. The accounts actually last!"
-                  </p>
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center font-bold text-gray-500 mr-3">JD</div>
-                    <div>
-                      <div className="font-bold text-gray-900">John Doe</div>
-                      <div className="text-sm text-gray-500">Marketing Director, AdScale</div>
-                    </div>
-                  </div>
-               </div>
+            <div>
+              <div className="text-3xl font-bold text-white mb-1">99.8%</div>
+              <div className="text-brand-200 text-sm uppercase tracking-wider">Success Rate</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-white mb-1">15 min</div>
+              <div className="text-brand-200 text-sm uppercase tracking-wider">Avg. Support Response</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-white mb-1">3 Days</div>
+              <div className="text-brand-200 text-sm uppercase tracking-wider">Replacement Warranty</div>
             </div>
           </div>
         </div>
       </div>
-      
-      {/* FAQ Teaser */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-         <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Frequently Asked Questions</h2>
-         <div className="space-y-6">
-            <div className="border-b border-gray-200 pb-4">
-               <h3 className="font-medium text-gray-900 mb-2">Are these accounts hacked?</h3>
-               <p className="text-gray-500">Absolutely not. All accounts are created by our team or our partners using legitimate methods. We do not sell stolen or compromised credentials.</p>
+
+      {/* Security Section */}
+      <div className="py-24 bg-white overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+            <div className="mb-12 lg:mb-0">
+              <div className="inline-flex items-center justify-center p-3 bg-brand-100 rounded-xl mb-6">
+                <i className="fa-solid fa-shield-halved text-2xl text-brand-600"></i>
+              </div>
+              <h2 className="text-3xl font-bold text-gray-900 mb-6">Bank-Grade Security & Privacy</h2>
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+                We understand that privacy is paramount in this business. Our infrastructure is built to protect your identity and data at every step.
+              </p>
+              <ul className="space-y-6">
+                <li className="flex">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-green-100 text-green-600">
+                      <i className="fa-solid fa-lock"></i>
+                    </div>
+                  </div>
+                  <div className="ml-4">
+                    <h4 className="text-lg font-bold text-gray-900">Encrypted Transactions</h4>
+                    <p className="mt-1 text-gray-500">We utilize 256-bit SSL encryption. We never store your credit card details; payments are handled by secure processors like Stripe and Coinbase Commerce.</p>
+                  </div>
+                </li>
+                <li className="flex">
+                  <div className="flex-shrink-0">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-green-100 text-green-600">
+                      <i className="fa-solid fa-user-secret"></i>
+                    </div>
+                  </div>
+                  <div className="ml-4">
+                    <h4 className="text-lg font-bold text-gray-900">Anonymous Delivery</h4>
+                    <p className="mt-1 text-gray-500">Accounts are delivered directly to your private dashboard. No email logs, no public ledgers.</p>
+                  </div>
+                </li>
+              </ul>
             </div>
-            <div className="border-b border-gray-200 pb-4">
-               <h3 className="font-medium text-gray-900 mb-2">How fast is delivery?</h3>
-               <p className="text-gray-500">Delivery is instant. As soon as your payment is confirmed by our processor, you will receive an email with your account details and they will appear in your dashboard.</p>
+            <div className="relative">
+              <div className="absolute inset-0 bg-brand-50 rounded-3xl transform rotate-3"></div>
+              <div className="relative bg-white border border-gray-100 shadow-2xl rounded-3xl p-8">
+                 <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <i className="fa-solid fa-fingerprint text-8xl text-brand-100 mb-6"></i>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Zero-Trace Policy</h3>
+                    <p className="text-gray-500 max-w-xs">We minimize data retention. Once your order is completed and warranty expires, unnecessary data is purged.</p>
+                 </div>
+              </div>
             </div>
-            <div className="border-b border-gray-200 pb-4">
-               <h3 className="font-medium text-gray-900 mb-2">Do you offer bulk discounts?</h3>
-               <p className="text-gray-500">Yes! Contact our support team for orders exceeding $500 for a custom rate.</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Reliability Section */}
+      <div className="py-24 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Our Accounts Last Longer</h2>
+            <p className="text-lg text-gray-600">
+              Most vendors sell bot-created accounts that get banned in 24 hours. We do things differently.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition duration-300 border border-gray-100">
+               <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-2xl mb-6">
+                 <i className="fa-solid fa-sim-card"></i>
+               </div>
+               <h3 className="text-xl font-bold text-gray-900 mb-3">Real SIM Verification</h3>
+               <p className="text-gray-500 leading-relaxed">
+                 We use physical SIM cards for verification, not cheap VoIP numbers that are flagged by major platforms.
+               </p>
+            </div>
+            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition duration-300 border border-gray-100">
+               <div className="w-14 h-14 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 text-2xl mb-6">
+                 <i className="fa-solid fa-network-wired"></i>
+               </div>
+               <h3 className="text-xl font-bold text-gray-900 mb-3">Residential IPs</h3>
+               <p className="text-gray-500 leading-relaxed">
+                 Every account is created and managed using high-quality residential proxies, mimicking real user behavior to avoid detection.
+               </p>
+            </div>
+            <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition duration-300 border border-gray-100">
+               <div className="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 text-2xl mb-6">
+                 <i className="fa-solid fa-hourglass-half"></i>
+               </div>
+               <h3 className="text-xl font-bold text-gray-900 mb-3">Proper Aging</h3>
+               <p className="text-gray-500 leading-relaxed">
+                 We let accounts "season" (age) before listing them. Aged accounts have significantly higher trust scores and lower ban rates.
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Customer Support Section */}
+      <div className="py-24 bg-white">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="lg:grid lg:grid-cols-12 lg:gap-8 items-center bg-brand-600 rounded-3xl overflow-hidden shadow-2xl">
+               <div className="lg:col-span-7 p-10 sm:p-16">
+                  <h2 className="text-3xl font-bold text-white mb-6">We're Here When You Need Us</h2>
+                  <p className="text-brand-100 text-lg mb-8 leading-relaxed">
+                    Have a specific requirement? Need help with a bulk order? Or facing an issue with a purchase? Our dedicated support team is available 24/7.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                     <div className="flex items-center text-white">
+                        <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
+                        <span>Live Chat Support</span>
+                     </div>
+                     <div className="flex items-center text-white">
+                        <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
+                        <span>Email Ticket System</span>
+                     </div>
+                     <div className="flex items-center text-white">
+                        <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
+                        <span>Active Telegram Channel</span>
+                     </div>
+                     <div className="flex items-center text-white">
+                        <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
+                        <span>Detailed FAQ & Guides</span>
+                     </div>
+                  </div>
+               </div>
+               <div className="lg:col-span-5 bg-brand-700 p-10 sm:p-16 h-full flex flex-col justify-center items-center text-center">
+                   <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center text-brand-600 text-4xl mb-6 shadow-lg">
+                      <i className="fa-solid fa-headset"></i>
+                   </div>
+                   <h3 className="text-2xl font-bold text-white mb-2">Need Help?</h3>
+                   <p className="text-brand-200 mb-6">Contact us anytime.</p>
+                   <button className="bg-white text-brand-700 px-8 py-3 rounded-full font-bold hover:bg-brand-50 transition shadow-lg">
+                     Open Support Ticket
+                   </button>
+               </div>
             </div>
          </div>
       </div>
@@ -751,659 +924,3 @@ const ProfileView = () => {
     </div>
   );
 };
-
-const Hero = () => {
-  return (
-    <div className="relative bg-brand-900 overflow-hidden">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-brand-900 via-brand-800 to-brand-900 opacity-90"></div>
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10"></div>
-      </div>
-      <div className="relative max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 text-center sm:text-left flex flex-col sm:flex-row items-center">
-        <div className="sm:w-1/2">
-          <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
-            <span className="block">Premium Verified</span>
-            <span className="block text-brand-300">Social Accounts</span>
-          </h1>
-          <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
-            Boost your marketing campaigns with our high-quality, phone-verified accounts (PVA). Instant delivery, 24/7 support, and replacement guarantee.
-          </p>
-          <div className="mt-5 sm:mt-8 sm:flex sm:justify-start">
-            <div className="rounded-md shadow">
-              <a href="#products" className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-brand-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10 transition transform hover:-translate-y-1">
-                View Marketplace
-              </a>
-            </div>
-          </div>
-        </div>
-        <div className="sm:w-1/2 mt-10 sm:mt-0 flex justify-center">
-           <div className="grid grid-cols-2 gap-4 opacity-80">
-              <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm animate-pulse">
-                 <i className="fa-brands fa-google text-6xl text-white"></i>
-              </div>
-              <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm mt-8">
-                 <i className="fa-brands fa-facebook text-6xl text-white"></i>
-              </div>
-              <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm -mt-8">
-                 <i className="fa-brands fa-instagram text-6xl text-white"></i>
-              </div>
-              <div className="bg-white/10 p-6 rounded-2xl backdrop-blur-sm">
-                 <i className="fa-brands fa-twitter text-6xl text-white"></i>
-              </div>
-           </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const AuthModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
-  const [isLogin, setIsLogin] = useState(true);
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
-  const [resetSent, setResetSent] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const { login, register, isLoading } = useApp();
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    if (isOpen) {
-        setIsForgotPassword(false);
-        setResetSent(false);
-        setError('');
-    }
-  }, [isOpen]);
-
-  if (!isOpen) return null;
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-
-    if (isForgotPassword) {
-        // Mock password reset
-        setResetSent(true);
-        return;
-    }
-
-    try {
-      if (isLogin) {
-        await login(email, password);
-      } else {
-        await register(name, email, password);
-      }
-      onClose();
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity" onClick={onClose}>
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div className="sm:flex sm:items-start">
-              <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                
-                {isForgotPassword ? (
-                   <>
-                     <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                       Reset Password
-                     </h3>
-                     {resetSent ? (
-                        <div className="text-center py-6">
-                            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
-                                <i className="fa-solid fa-check text-green-600"></i>
-                            </div>
-                            <p className="text-sm text-gray-500 mb-6">
-                                If an account exists for <strong>{email}</strong>, you will receive password reset instructions shortly.
-                            </p>
-                            <button
-                                type="button"
-                                onClick={() => { setIsForgotPassword(false); setResetSent(false); }}
-                                className="text-brand-600 hover:text-brand-500 font-medium"
-                            >
-                                Back to Sign In
-                            </button>
-                        </div>
-                     ) : (
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <p className="text-sm text-gray-500 mb-4">
-                                Enter your email address and we'll send you a link to reset your password.
-                            </p>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Email address</label>
-                                <input 
-                                  type="email" 
-                                  required 
-                                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
-                                  value={email}
-                                  onChange={e => setEmail(e.target.value)}
-                                />
-                            </div>
-                            <button 
-                                type="submit" 
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500"
-                            >
-                                Send Reset Link
-                            </button>
-                            <div className="text-center mt-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setIsForgotPassword(false)}
-                                    className="text-sm text-gray-600 hover:text-gray-900"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                     )}
-                   </>
-                ) : (
-                    <>
-                        <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                        {isLogin ? 'Login to your account' : 'Create a new account'}
-                        </h3>
-                        {error && <div className="bg-red-50 text-red-600 p-2 rounded mb-4 text-sm">{error}</div>}
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                        {!isLogin && (
-                            <div>
-                            <label className="block text-sm font-medium text-gray-700">Full Name</label>
-                            <input 
-                                type="text" 
-                                required 
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                            />
-                            </div>
-                        )}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Email address</label>
-                            <input 
-                            type="email" 
-                            required 
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <div className="flex justify-between items-center">
-                                <label className="block text-sm font-medium text-gray-700">Password</label>
-                                {isLogin && (
-                                    <button 
-                                        type="button"
-                                        onClick={() => setIsForgotPassword(true)}
-                                        className="text-xs text-brand-600 hover:text-brand-500"
-                                    >
-                                        Forgot Password?
-                                    </button>
-                                )}
-                            </div>
-                            <input 
-                            type="password" 
-                            required 
-                            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            />
-                        </div>
-                        <button 
-                            type="submit" 
-                            disabled={isLoading}
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 disabled:opacity-50"
-                        >
-                            {isLoading ? 'Processing...' : (isLogin ? 'Sign In' : 'Register')}
-                        </button>
-                        </form>
-                        <div className="mt-4 text-center">
-                        <button 
-                            type="button" 
-                            onClick={() => setIsLogin(!isLogin)}
-                            className="text-sm text-brand-600 hover:text-brand-500"
-                        >
-                            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
-                        </button>
-                        </div>
-                    </>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const CheckoutModal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
-  const { cart, removeFromCart, checkout, isLoading, user } = useApp();
-  const [step, setStep] = useState(1); // 1: Cart, 2: Payment, 3: Success
-  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-  if (!isOpen) return null;
-
-  const handlePayment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await checkout();
-      setStep(3);
-    } catch (err) {
-      alert("Payment failed. Please try again.");
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity" onClick={onClose}>
-          <div className="absolute inset-0 bg-gray-900 opacity-75"></div>
-        </div>
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full">
-          
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">
-                {step === 1 && 'Shopping Cart'}
-                {step === 2 && 'Secure Checkout'}
-                {step === 3 && 'Order Confirmed'}
-              </h2>
-              <button onClick={onClose} className="text-gray-400 hover:text-gray-500">
-                <i className="fa-solid fa-xmark text-xl"></i>
-              </button>
-            </div>
-
-            {step === 1 && (
-              <>
-                {cart.length === 0 ? (
-                  <div className="text-center py-10">
-                    <i className="fa-solid fa-cart-shopping text-4xl text-gray-300 mb-4"></i>
-                    <p className="text-gray-500">Your cart is empty.</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {cart.map(item => (
-                      <div key={item.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <div className="flex items-center">
-                          <div className="h-10 w-10 flex-shrink-0 flex items-center justify-center bg-white rounded-full border border-gray-200 text-brand-500">
-                            <i className={item.icon}></i>
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-gray-900">{item.title}</div>
-                            <div className="text-sm text-gray-500">${item.price.toFixed(2)} x {item.quantity}</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <span className="font-bold text-gray-900">${(item.price * item.quantity).toFixed(2)}</span>
-                          <button onClick={() => removeFromCart(item.id)} className="text-red-400 hover:text-red-600">
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                    <div className="flex justify-between items-center border-t border-gray-200 pt-4 mt-4">
-                      <span className="text-lg font-medium text-gray-900">Total</span>
-                      <span className="text-2xl font-bold text-brand-600">${total.toFixed(2)}</span>
-                    </div>
-                    <button 
-                      onClick={() => user ? setStep(2) : alert("Please login to checkout")}
-                      className="w-full mt-4 bg-brand-600 text-white py-3 rounded-lg font-bold hover:bg-brand-700 transition"
-                    >
-                      Proceed to Checkout
-                    </button>
-                  </div>
-                )}
-              </>
-            )}
-
-            {step === 2 && (
-              <form onSubmit={handlePayment} className="space-y-6">
-                 <div className="bg-blue-50 p-4 rounded-md mb-4 flex items-center">
-                   <i className="fa-brands fa-stripe text-4xl text-blue-600 mr-4"></i>
-                   <span className="text-sm text-blue-800">Payments are processed securely via Stripe. We do not store your card details.</span>
-                 </div>
-
-                 <div className="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                   <div className="sm:col-span-6">
-                     <label className="block text-sm font-medium text-gray-700">Card number</label>
-                     <div className="mt-1 relative rounded-md shadow-sm">
-                       <input type="text" className="focus:ring-brand-500 focus:border-brand-500 block w-full pl-3 sm:text-sm border-gray-300 rounded-md py-2 border" placeholder="4242 4242 4242 4242" required />
-                       <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                         <i className="fa-regular fa-credit-card text-gray-400"></i>
-                       </div>
-                     </div>
-                   </div>
-
-                   <div className="sm:col-span-3">
-                     <label className="block text-sm font-medium text-gray-700">Expiration date (MM/YY)</label>
-                     <input type="text" className="mt-1 focus:ring-brand-500 focus:border-brand-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 border" placeholder="12/25" required />
-                   </div>
-
-                   <div className="sm:col-span-3">
-                     <label className="block text-sm font-medium text-gray-700">CVC</label>
-                     <input type="text" className="mt-1 focus:ring-brand-500 focus:border-brand-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 border" placeholder="123" required />
-                   </div>
-                 </div>
-
-                 <div className="flex justify-between items-center pt-4">
-                   <button type="button" onClick={() => setStep(1)} className="text-gray-600 hover:text-gray-800">Back</button>
-                   <button 
-                     type="submit" 
-                     disabled={isLoading}
-                     className="bg-brand-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-brand-700 transition disabled:opacity-50 flex items-center"
-                   >
-                     {isLoading ? (
-                       <><i className="fa-solid fa-circle-notch fa-spin mr-2"></i> Processing...</>
-                     ) : (
-                       `Pay $${total.toFixed(2)}`
-                     )}
-                   </button>
-                 </div>
-              </form>
-            )}
-
-            {step === 3 && (
-              <div className="text-center py-10">
-                <div className="mx-auto flex items-center justify-center h-20 w-20 rounded-full bg-green-100 mb-6">
-                  <i className="fa-solid fa-check text-4xl text-green-600"></i>
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">Payment Successful!</h3>
-                <p className="text-gray-500 mb-8">Thank you for your purchase. Your accounts have been sent to your email.</p>
-                <button 
-                  onClick={() => { setStep(1); onClose(); }}
-                  className="bg-brand-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-brand-700 transition"
-                >
-                  Continue Shopping
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ChatWidget = ({ onOpenCart }: { onOpenCart: () => void }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{role: 'user' | 'model', text: string}[]>([]);
-  const [input, setInput] = useState('');
-  const [isTyping, setIsTyping] = useState(false);
-  const { products, addToCart } = useApp();
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
-
-  const handleSend = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-
-    const userMsg = input;
-    const newMessages = [...messages, { role: 'user' as const, text: userMsg }];
-    setMessages(newMessages);
-    setInput('');
-    setIsTyping(true);
-
-    try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const systemInstruction = `You are the AI Sales Assistant for PVAMarkets. 
-      We sell Verified Accounts (PVA) for Gmail, Facebook, Instagram, Twitter, etc.
-      
-      Current Product Inventory:
-      ${products.map(p => `- ${p.title}: $${p.price} (${p.description})`).join('\n')}
-      
-      Your goal is to help customers choose the right account type, answer questions about verification, and facilitate the purchase process.
-      - Be professional, concise, and helpful.
-      - If the user explicitly asks to add a product to the cart, use the 'addToCart' tool.
-      - If the user says they are ready to buy or checkout, use the 'openCheckout' tool.
-      - If asked about bulk discounts, say we offer 10% off for orders over $100.
-      - If asked about delivery, say it is instant via email.
-      `;
-
-      const chat = ai.chats.create({
-        model: 'gemini-3-flash-preview',
-        config: { 
-            systemInstruction,
-            tools: [{
-                functionDeclarations: [
-                    {
-                        name: 'addToCart',
-                        description: 'Add a product to the shopping cart. Finds the product by name.',
-                        parameters: {
-                            type: Type.OBJECT,
-                            properties: {
-                                productName: {
-                                    type: Type.STRING,
-                                    description: 'The name of the product to add (e.g., "Facebook", "Gmail").'
-                                },
-                                quantity: {
-                                    type: Type.NUMBER,
-                                    description: 'The number of items to add (default is 1).'
-                                }
-                            },
-                            required: ['productName']
-                        }
-                    },
-                    {
-                        name: 'openCheckout',
-                        description: 'Open the checkout modal window for the user to proceed with payment.',
-                        parameters: {
-                            type: Type.OBJECT,
-                            properties: {}
-                        }
-                    }
-                ]
-            }]
-        },
-        history: messages.map(m => ({ 
-            role: m.role, 
-            parts: [{ text: m.text }] 
-        }))
-      });
-
-      let response = await chat.sendMessage({ message: userMsg });
-
-      // Handle function calls loop
-      while (response.functionCalls && response.functionCalls.length > 0) {
-        const functionResponseParts = [];
-        for (const call of response.functionCalls) {
-            let result = "";
-            if (call.name === 'addToCart') {
-                const { productName, quantity } = call.args as any;
-                const qty = quantity || 1;
-                const product = products.find(p => p.title.toLowerCase().includes(productName.toLowerCase()));
-                
-                if (product) {
-                    addToCart(product, qty);
-                    result = `Successfully added ${qty} x ${product.title} to the cart.`;
-                } else {
-                    result = `Error: Product matching "${productName}" not found. Please ask the user to specify the exact product name from the list.`;
-                }
-            } else if (call.name === 'openCheckout') {
-                onOpenCart();
-                result = "Checkout modal opened successfully.";
-            }
-
-            functionResponseParts.push({
-                functionResponse: {
-                    name: call.name,
-                    response: { result }
-                }
-            });
-        }
-        // Send the function execution results back to the model
-        response = await chat.sendMessage({ message: functionResponseParts });
-      }
-
-      setMessages(prev => [...prev, { role: 'model', text: response.text || "I processed your request." }]);
-
-    } catch (err) {
-      console.error(err);
-      setMessages(prev => [...prev, { role: 'model', text: "I'm having trouble connecting to the server. Please try again later." }]);
-    } finally {
-      setIsTyping(false);
-    }
-  };
-
-  return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
-      {isOpen && (
-        <div className="mb-4 w-80 md:w-96 bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 flex flex-col max-h-[500px]">
-          <div className="bg-brand-600 p-4 flex justify-between items-center text-white">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-              <h3 className="font-bold">Sales Support</h3>
-            </div>
-            <button onClick={() => setIsOpen(false)} className="hover:bg-brand-700 p-1 rounded">
-              <i className="fa-solid fa-xmark"></i>
-            </button>
-          </div>
-          
-          <div className="flex-1 p-4 overflow-y-auto bg-gray-50 space-y-3 min-h-[300px]">
-            {messages.length === 0 && (
-              <div className="text-center text-gray-500 text-sm mt-10">
-                <i className="fa-solid fa-robot text-2xl mb-2 text-brand-300"></i>
-                <p>Hi! How can I help you with our accounts today?</p>
-              </div>
-            )}
-            {messages.map((m, i) => (
-              <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm ${m.role === 'user' ? 'bg-brand-600 text-white rounded-br-none' : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm'}`}>
-                  {m.text}
-                </div>
-              </div>
-            ))}
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-none px-4 py-2 shadow-sm">
-                  <div className="flex gap-1">
-                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-100"></div>
-                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce delay-200"></div>
-                  </div>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-
-          <form onSubmit={handleSend} className="p-3 bg-white border-t border-gray-100 flex gap-2">
-            <input 
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              placeholder="Type your question..." 
-              className="flex-1 bg-gray-100 border-0 rounded-full px-4 text-sm focus:ring-2 focus:ring-brand-500 outline-none"
-            />
-            <button type="submit" className="w-10 h-10 rounded-full bg-brand-600 text-white hover:bg-brand-700 flex items-center justify-center transition disabled:opacity-50" disabled={isTyping || !input.trim()}>
-              <i className="fa-solid fa-paper-plane text-sm"></i>
-            </button>
-          </form>
-        </div>
-      )}
-      
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 rounded-full bg-brand-600 hover:bg-brand-700 text-white shadow-lg hover:shadow-brand-500/50 transition-all flex items-center justify-center transform hover:scale-110"
-      >
-        {isOpen ? <i className="fa-solid fa-xmark text-2xl"></i> : <i className="fa-solid fa-comment-dots text-2xl"></i>}
-      </button>
-    </div>
-  );
-};
-
-const Footer = () => (
-  <footer className="bg-gray-900 text-gray-300 py-12">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div>
-          <h3 className="text-white text-lg font-bold mb-4">PVA Markets</h3>
-          <p className="text-sm">The #1 marketplace for verified social media accounts. Instant delivery and 100% satisfaction guaranteed.</p>
-        </div>
-        <div>
-          <h4 className="text-white font-medium mb-4">Quick Links</h4>
-          <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-brand-500">Home</a></li>
-            <li><a href="#" className="hover:text-brand-500">Products</a></li>
-            <li><a href="#" className="hover:text-brand-500">Support</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-white font-medium mb-4">Contact</h4>
-          <ul className="space-y-2 text-sm">
-            <li><i className="fa-regular fa-envelope mr-2"></i> support@pvamarkets.com</li>
-            <li><i className="fa-brands fa-telegram mr-2"></i> @pvamarkets</li>
-          </ul>
-        </div>
-        <div>
-          <h4 className="text-white font-medium mb-4">System Status</h4>
-          <div className="flex items-center space-x-2 text-sm">
-            <span className="flex h-3 w-3 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-            </span>
-            <span>All Systems Operational</span>
-          </div>
-          <p className="text-xs text-gray-500 mt-2">
-            Build: v2.4.0 (983f2a1)
-            <br/>Deployed via GitHub Actions
-          </p>
-        </div>
-      </div>
-      <div className="border-t border-gray-800 mt-8 pt-8 text-sm text-center">
-        © 2024 PVA Markets Clone. For demonstration purposes only.
-      </div>
-    </div>
-  </footer>
-);
-
-// --- Main App ---
-
-const App = () => {
-  const [isAuthOpen, setIsAuthOpen] = useState(false);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [currentView, setCurrentView] = useState<ViewState>('home');
-  const { products } = useApp();
-
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar 
-        onOpenAuth={() => setIsAuthOpen(true)} 
-        onOpenCart={() => setIsCartOpen(true)}
-        onNavigate={setCurrentView}
-        currentView={currentView}
-      />
-      
-      <main className="flex-grow">
-        {currentView === 'home' && <HomeView onNavigate={setCurrentView} />}
-        {currentView === 'products' && <ProductsView />}
-        {currentView === 'whyus' && <WhyUsView />}
-        {currentView === 'profile' && <ProfileView />}
-      </main>
-
-      <Footer />
-      <ChatWidget onOpenCart={() => setIsCartOpen(true)} />
-      
-      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
-      <CheckoutModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
-    </div>
-  );
-};
-
-const root = createRoot(document.getElementById('root')!);
-root.render(
-  <React.StrictMode>
-    <AppProvider>
-      <App />
-    </AppProvider>
-  </React.StrictMode>
-);
