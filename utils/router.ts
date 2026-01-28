@@ -4,10 +4,10 @@ export type ViewState = 'home' | 'profile' | 'products' | 'whyus';
 
 export const useRouter = () => {
   const getRoute = (): ViewState => {
-    const hash = window.location.hash.replace('#/', '');
-    // Check if the hash matches a valid view, otherwise default to home
-    if (['home', 'profile', 'products', 'whyus'].includes(hash)) {
-      return hash as ViewState;
+    const path = window.location.pathname.replace(/^\//, '');
+    // Check if the path matches a valid view, otherwise default to home
+    if (['home', 'profile', 'products', 'whyus'].includes(path)) {
+      return path as ViewState;
     }
     return 'home';
   };
@@ -15,16 +15,17 @@ export const useRouter = () => {
   const [route, setRoute] = useState<ViewState>(getRoute());
 
   useEffect(() => {
-    const handleHashChange = () => {
+    const handlePopState = () => {
       setRoute(getRoute());
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const navigate = (view: ViewState) => {
-    window.location.hash = `/${view}`;
+    window.history.pushState(null, '', `/${view}`);
+    setRoute(view);
   };
 
   return { route, navigate };

@@ -35,7 +35,7 @@ const App = () => {
           {route === 'whyus' && <WhyUsView />}
           {route === 'profile' && <ProfileView />}
         </main>
-        <Footer />
+        <Footer onNavigate={navigate} />
         <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
         <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       </div>
