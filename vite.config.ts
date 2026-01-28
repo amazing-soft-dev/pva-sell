@@ -8,6 +8,9 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     base: './', // Ensures assets are linked relatively for GitHub Pages compatibility
+    server: {
+      host: true, // Listen on all local IPs (0.0.0.0)
+    },
     define: {
       // Polyfill process.env.API_KEY so it works in the browser after build
       'process.env.API_KEY': JSON.stringify(env.API_KEY)
