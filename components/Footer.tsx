@@ -1,6 +1,16 @@
 import React from 'react';
+import { ViewState } from '../utils/router';
 
-export const Footer = () => {
+interface FooterProps {
+  onNavigate?: (view: ViewState) => void;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const handleNav = (e: React.MouseEvent, view: ViewState) => {
+    e.preventDefault();
+    if (onNavigate) onNavigate(view);
+  };
+
   return (
     <footer className="bg-gray-50 border-t border-gray-100 pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -20,17 +30,17 @@ export const Footer = () => {
           <div>
             <h4 className="font-bold text-gray-900 mb-4">Marketplace</h4>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><a href="#/products" className="hover:text-brand-600">Social Media</a></li>
-              <li><a href="#/products" className="hover:text-brand-600">Payment Accounts</a></li>
-              <li><a href="#/products" className="hover:text-brand-600">Freelance</a></li>
-              <li><a href="#/products" className="hover:text-brand-600">VPN & Security</a></li>
+              <li><a href="/products" onClick={(e) => handleNav(e, 'products')} className="hover:text-brand-600">Social Media</a></li>
+              <li><a href="/products" onClick={(e) => handleNav(e, 'products')} className="hover:text-brand-600">Payment Accounts</a></li>
+              <li><a href="/products" onClick={(e) => handleNav(e, 'products')} className="hover:text-brand-600">Freelance</a></li>
+              <li><a href="/products" onClick={(e) => handleNav(e, 'products')} className="hover:text-brand-600">VPN & Security</a></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-bold text-gray-900 mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><a href="#/whyus" className="hover:text-brand-600">Why Choose Us</a></li>
+              <li><a href="/whyus" onClick={(e) => handleNav(e, 'whyus')} className="hover:text-brand-600">Why Choose Us</a></li>
               <li><a href="#" className="hover:text-brand-600">Reviews</a></li>
               <li><a href="#" className="hover:text-brand-600">Blog</a></li>
               <li><a href="#" className="hover:text-brand-600">Terms of Service</a></li>

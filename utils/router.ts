@@ -4,10 +4,10 @@ export type ViewState = 'home' | 'profile' | 'products' | 'whyus';
 
 export const useRouter = () => {
   const getRoute = (): ViewState => {
-    const hash = window.location.hash.replace('#/', '');
-    // Check if the hash matches a valid view, otherwise default to home
-    if (['home', 'profile', 'products', 'whyus'].includes(hash)) {
-      return hash as ViewState;
+    const path = window.location.pathname.replace('/', '');
+    // Check if the path matches a valid view, otherwise default to home
+    if (['home', 'profile', 'products', 'whyus'].includes(path)) {
+      return path as ViewState;
     }
     return 'home';
   };
@@ -15,16 +15,27 @@ export const useRouter = () => {
   const [route, setRoute] = useState<ViewState>(getRoute());
 
   useEffect(() => {
-    const handleHashChange = () => {
+    const handleRouteChange = () => {
       setRoute(getRoute());
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    // Listen to browser back/forward buttons
+    window.addEventListener('popstate', handleRouteChange);
+    
+    // Listen to custom pushstate event for internal navigation
+    window.addEventListener('pushstate', handleRouteChange);
+
+    return () => {
+      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('pushstate', handleRouteChange);
+    };
   }, []);
 
   const navigate = (view: ViewState) => {
-    window.location.hash = `/${view}`;
+    window.history.pushState({}, '', `/${view}`);
+    // Dispatch a custom event so the hook detects the change
+    window.dispatchEvent(new Event('pushstate'));
+    window.scrollTo(0, 0);
   };
 
   return { route, navigate };
