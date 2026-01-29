@@ -1,5 +1,6 @@
 import React from 'react';
 import { ViewState } from '../utils/router';
+import logo from '../assets/logo.png';
 
 interface FooterProps {
   onNavigate?: (view: ViewState) => void;
@@ -16,11 +17,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="bg-brand-600 text-white p-1.5 rounded-lg">
-                <i className="fa-solid fa-shield-halved text-lg"></i>
-              </div>
-              <span className="text-xl font-bold text-gray-900">PVA<span className="text-brand-600">Markets</span></span>
+            <div 
+              className="mb-6 cursor-pointer"
+              onClick={(e) => handleNav(e, 'home')}
+            >
+              <img src={logo} alt="Credexus Market" className="h-10 w-auto object-contain" />
             </div>
             <p className="text-sm text-gray-500 mb-4">
               The #1 marketplace for verified accounts. Secure, fast, and reliable delivery for all your social and business needs.
@@ -51,7 +52,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <h4 className="font-bold text-gray-900 mb-4">Support</h4>
             <ul className="space-y-2 text-sm text-gray-600">
               <li><a href="#" className="hover:text-brand-600">Help Center</a></li>
-              <li><a href="#" className="hover:text-brand-600">Contact Us</a></li>
+              <li><a href="mailto:support@credexus.com" className="hover:text-brand-600">Contact Us</a></li>
               <li><a href="#" className="hover:text-brand-600">Telegram Channel</a></li>
             </ul>
             <div className="mt-4 flex space-x-4">
@@ -63,7 +64,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
         
         <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-xs text-gray-500">&copy; {new Date().getFullYear()} PVA Markets. All rights reserved.</p>
+          <p className="text-xs text-gray-500">&copy; {new Date().getFullYear()} Credexus Market. All rights reserved.</p>
           <div className="flex gap-4 mt-4 md:mt-0">
             <i className="fa-brands fa-cc-visa text-gray-300 text-2xl"></i>
             <i className="fa-brands fa-cc-mastercard text-gray-300 text-2xl"></i>

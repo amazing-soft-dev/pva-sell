@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { ViewState } from '../utils/router';
+import logo from '../assets/logo.png';
 
 interface NavbarProps {
   onOpenAuth: () => void;
@@ -34,12 +35,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
             className="flex items-center gap-2 cursor-pointer z-50"
             onClick={() => handleNav('home')}
           >
-            <div className="bg-brand-600 text-white p-2 rounded-lg shrink-0">
-              <i className="fa-solid fa-shield-halved text-xl"></i>
-            </div>
-            <span className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight truncate">
-              PVA<span className="text-brand-600">Markets</span>
-            </span>
+            <img 
+              src={logo} 
+              alt="Credexus Market" 
+              className="h-10 sm:h-12 w-auto object-contain" 
+            />
           </div>
           
           {/* Desktop Navigation */}

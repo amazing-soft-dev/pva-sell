@@ -12,7 +12,7 @@ export const WhyUsView = () => {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl mb-6 drop-shadow-lg">
-            Why Leading Marketers<br/>Trust <span className="text-brand-400">PVA Markets</span>
+            Why Leading Marketers<br/>Trust <span className="text-brand-400">Credexus Market</span>
           </h1>
           <p className="mt-6 text-xl text-brand-100 max-w-3xl mx-auto font-light leading-relaxed">
             In an industry full of low-quality bots and scams, we stand apart. 

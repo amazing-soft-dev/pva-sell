@@ -34,13 +34,13 @@ export const ProfileView = () => {
     doc.setTextColor(14, 165, 233); // Brand color #0ea5e9
     doc.setFontSize(22);
     doc.setFont('helvetica', 'bold');
-    doc.text('PVA Markets', 14, 20);
+    doc.text('Credexus Market', 14, 20);
     
     doc.setTextColor(100);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.text('Premium Verified Accounts', 14, 26);
-    doc.text('https://pvamarkets.com', 14, 31);
+    doc.text('https://credexus.com', 14, 31);
     
     // Invoice Info Box
     doc.setTextColor(0);
@@ -108,7 +108,7 @@ export const ProfileView = () => {
     doc.setFontSize(9);
     doc.setTextColor(128);
     doc.text('Thank you for your business!', 14, finalY + 10);
-    doc.text('If you have any questions about this invoice, please contact support@pvamarkets.com', 14, finalY + 15);
+    doc.text('If you have any questions about this invoice, please contact support@credexus.com', 14, finalY + 15);
     doc.text('This is a computer-generated document. No signature is required.', 14, finalY + 20);
 
     doc.save(`invoice-${order.id}.pdf`);
