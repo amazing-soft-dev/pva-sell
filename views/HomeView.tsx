@@ -14,16 +14,16 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
       <Hero onNavigate={onNavigate} />
       
       {/* Featured Products Preview */}
-      <div className="bg-white py-16">
+      <div className="bg-white dark:bg-slate-900 py-16 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-8">
             <div>
-              <h2 className="text-3xl font-extrabold text-gray-900">Featured Accounts</h2>
-              <p className="mt-2 text-gray-500">Our most popular verified accounts.</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Featured Accounts</h2>
+              <p className="mt-2 text-gray-500 dark:text-slate-400">Our most popular verified accounts.</p>
             </div>
             <button 
               onClick={() => onNavigate('products')}
-              className="text-brand-600 font-medium hover:text-brand-700 flex items-center"
+              className="text-brand-600 dark:text-brand-400 font-medium hover:text-brand-700 dark:hover:text-brand-300 flex items-center"
             >
               View Marketplace <i className="fa-solid fa-arrow-right ml-2"></i>
             </button>
@@ -37,16 +37,16 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
       </div>
 
       {/* Why Us Preview */}
-      <div className="bg-gray-50 py-16">
+      <div className="bg-gray-50 dark:bg-slate-950 py-16 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-gray-900">Why Choose Credexus Market?</h2>
+            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Why Choose Credexus Market?</h2>
           </div>
           <FeaturesSection />
           <div className="text-center mt-10">
             <button 
               onClick={() => onNavigate('whyus')} 
-              className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition"
+              className="bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-700 text-gray-700 dark:text-slate-300 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-slate-700 transition"
             >
               Learn More About Us
             </button>

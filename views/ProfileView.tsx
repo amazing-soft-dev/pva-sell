@@ -114,42 +114,42 @@ export const ProfileView = () => {
     doc.save(`invoice-${order.id}.pdf`);
   };
 
-  if (!user) return <div className="p-12 text-center text-gray-500">Please log in to view your dashboard.</div>;
+  if (!user) return <div className="p-12 text-center text-gray-500 dark:text-slate-400">Please log in to view your dashboard.</div>;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">My Dashboard</h2>
+      <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">My Dashboard</h2>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Card */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-24">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 p-6 sticky top-24 transition-colors duration-200">
             <div className="flex items-center space-x-4 mb-6">
-              <div className="h-20 w-20 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 text-3xl font-bold border-4 border-white shadow-sm">
+              <div className="h-20 w-20 bg-brand-100 dark:bg-brand-900 rounded-full flex items-center justify-center text-brand-600 dark:text-brand-400 text-3xl font-bold border-4 border-white dark:border-slate-700 shadow-sm">
                 {user.name.charAt(0).toUpperCase()}
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gray-900">{user.name}</h3>
-                <p className="text-gray-500 text-sm break-all">{user.email}</p>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">{user.name}</h3>
+                <p className="text-gray-500 dark:text-slate-400 text-sm break-all">{user.email}</p>
               </div>
             </div>
             
             <div className="space-y-4">
-              <div className="bg-gray-50 rounded-lg p-4">
-                <div className="text-xs text-gray-500 uppercase font-semibold mb-1">Account Status</div>
-                <div className="flex items-center text-green-600 font-medium">
+              <div className="bg-gray-50 dark:bg-slate-700 rounded-lg p-4">
+                <div className="text-xs text-gray-500 dark:text-slate-400 uppercase font-semibold mb-1">Account Status</div>
+                <div className="flex items-center text-green-600 dark:text-green-400 font-medium">
                   <i className="fa-solid fa-check-circle mr-2"></i> Verified Member
                 </div>
               </div>
               
-              <div className="border-t border-gray-100 pt-4">
+              <div className="border-t border-gray-100 dark:border-slate-700 pt-4">
                 <div className="flex justify-between py-2 text-sm">
-                  <span className="text-gray-500">Member ID</span>
-                  <span className="font-mono text-gray-900">{user.id.slice(0, 8)}...</span>
+                  <span className="text-gray-500 dark:text-slate-400">Member ID</span>
+                  <span className="font-mono text-gray-900 dark:text-white">{user.id.slice(0, 8)}...</span>
                 </div>
                 <div className="flex justify-between py-2 text-sm">
-                  <span className="text-gray-500">Total Orders</span>
-                  <span className="font-medium">{orders.length}</span>
+                  <span className="text-gray-500 dark:text-slate-400">Total Orders</span>
+                  <span className="font-medium text-gray-900 dark:text-white">{orders.length}</span>
                 </div>
               </div>
             </div>
@@ -158,70 +158,70 @@ export const ProfileView = () => {
 
         {/* Orders Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden min-h-[500px]">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-              <h3 className="font-bold text-gray-900 flex items-center">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden min-h-[500px] transition-colors duration-200">
+            <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center bg-gray-50/50 dark:bg-slate-900/50">
+              <h3 className="font-bold text-gray-900 dark:text-white flex items-center">
                 <i className="fa-solid fa-clock-rotate-left mr-2 text-brand-500"></i>
                 Order History
               </h3>
             </div>
             
             {loading ? (
-              <div className="p-12 text-center text-gray-500 flex flex-col items-center">
+              <div className="p-12 text-center text-gray-500 dark:text-slate-400 flex flex-col items-center">
                 <i className="fa-solid fa-circle-notch fa-spin text-3xl mb-4 text-brand-400"></i>
                 Loading your orders...
               </div>
             ) : orders.length === 0 ? (
               <div className="p-16 text-center">
-                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <i className="fa-solid fa-box-open text-4xl text-gray-400"></i>
+                <div className="w-20 h-20 bg-gray-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <i className="fa-solid fa-box-open text-4xl text-gray-400 dark:text-slate-500"></i>
                 </div>
-                <h4 className="text-lg font-medium text-gray-900 mb-2">No orders yet</h4>
-                <p className="text-gray-500 mb-6 max-w-sm mx-auto">When you purchase accounts, they will appear here with all details.</p>
+                <h4 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No orders yet</h4>
+                <p className="text-gray-500 dark:text-slate-400 mb-6 max-w-sm mx-auto">When you purchase accounts, they will appear here with all details.</p>
                 <button 
                   onClick={() => window.location.reload()} 
-                  className="text-brand-600 hover:text-brand-700 font-medium"
+                  className="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 font-medium"
                 >
                   Browse Marketplace
                 </button>
               </div>
             ) : (
-              <div className="divide-y divide-gray-100">
+              <div className="divide-y divide-gray-100 dark:divide-slate-700">
                 {orders.map(order => (
-                  <div key={order.id} className="p-6 hover:bg-gray-50/50 transition duration-150">
+                  <div key={order.id} className="p-6 hover:bg-gray-50/50 dark:hover:bg-slate-700/50 transition duration-150">
                     <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-4">
                       <div>
                         <div className="flex items-center gap-3 mb-1">
-                          <span className="text-sm font-bold text-gray-900">Order #{order.id}</span>
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${order.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                          <span className="text-sm font-bold text-gray-900 dark:text-white">Order #{order.id}</span>
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${order.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-800'}`}>
                             {order.status === 'completed' && <i className="fa-solid fa-check mr-1"></i>}
                             {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                           </span>
                         </div>
-                        <p className="text-xs text-gray-500">
+                        <p className="text-xs text-gray-500 dark:text-slate-400">
                           {new Date(order.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(order.date).toLocaleTimeString()}
                         </p>
                       </div>
                       <div className="text-right">
-                        <span className="text-xl font-bold text-brand-600">${order.total.toFixed(2)}</span>
+                        <span className="text-xl font-bold text-brand-600 dark:text-brand-400">${order.total.toFixed(2)}</span>
                       </div>
                     </div>
                     
-                    <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                    <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4 border border-gray-100 dark:border-slate-700">
                       <div className="space-y-3">
                         {order.items.map((item, idx) => {
                           const product = products.find(p => p.id === item.productId);
                           return (
                             <div key={idx} className="flex justify-between items-center text-sm group">
                                <div className="flex items-center">
-                                 <div className="w-8 h-8 rounded bg-white border border-gray-200 flex items-center justify-center mr-3 text-brand-500">
+                                 <div className="w-8 h-8 rounded bg-white dark:bg-slate-600 border border-gray-200 dark:border-slate-500 flex items-center justify-center mr-3 text-brand-500 dark:text-brand-400">
                                    <i className={product?.icon || 'fa-solid fa-box'}></i>
                                  </div>
-                                 <span className="text-gray-700 font-medium">{product?.title || 'Unknown Product'}</span>
+                                 <span className="text-gray-700 dark:text-slate-300 font-medium">{product?.title || 'Unknown Product'}</span>
                                  <span className="text-gray-400 mx-2">×</span>
-                                 <span className="text-gray-600">{item.quantity}</span>
+                                 <span className="text-gray-600 dark:text-slate-400">{item.quantity}</span>
                                </div>
-                               <span className="font-semibold text-gray-900">${(item.price * item.quantity).toFixed(2)}</span>
+                               <span className="font-semibold text-gray-900 dark:text-white">${(item.price * item.quantity).toFixed(2)}</span>
                             </div>
                           );
                         })}
@@ -230,7 +230,7 @@ export const ProfileView = () => {
                     <div className="mt-4 flex justify-end">
                        <button 
                          onClick={() => handleDownloadInvoice(order)}
-                         className="text-sm text-brand-600 hover:text-brand-700 font-medium flex items-center"
+                         className="text-sm text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 font-medium flex items-center"
                        >
                          <i className="fa-regular fa-file-pdf mr-2"></i> Download Invoice
                        </button>

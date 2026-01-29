@@ -21,8 +21,8 @@ export const ProductsView = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-4">Marketplace</h1>
-        <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">Marketplace</h1>
+        <p className="text-xl text-gray-500 dark:text-slate-400 max-w-2xl mx-auto">
           Browse our extensive catalog of verified accounts. Filter by category or search for specific platforms.
         </p>
       </div>
@@ -35,7 +35,7 @@ export const ProductsView = () => {
           </div>
           <input
             type="text"
-            className="block w-full pl-11 pr-4 py-4 border border-gray-200 rounded-full leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent shadow-sm transition-all duration-200 ease-in-out"
+            className="block w-full pl-11 pr-4 py-4 border border-gray-200 dark:border-slate-700 rounded-full leading-5 bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent shadow-sm transition-all duration-200 ease-in-out"
             placeholder="Search for accounts (e.g., 'Gmail', 'old', 'verified')..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -43,7 +43,7 @@ export const ProductsView = () => {
           {searchQuery && (
             <button 
               onClick={() => setSearchQuery('')}
-              className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-slate-300"
             >
               <i className="fa-solid fa-xmark"></i>
             </button>
@@ -60,7 +60,7 @@ export const ProductsView = () => {
                 className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   selectedCategory === category
                       ? 'bg-brand-600 text-white shadow-md shadow-brand-500/30'
-                      : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
+                      : 'bg-white dark:bg-slate-800 text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700'
                 }`}
             >
                 {category}
@@ -75,11 +75,11 @@ export const ProductsView = () => {
           ))
         ) : (
           <div className="col-span-full text-center py-12">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
-                <i className="fa-solid fa-magnifying-glass text-gray-400 text-2xl"></i>
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-slate-800 mb-4">
+                <i className="fa-solid fa-magnifying-glass text-gray-400 dark:text-slate-500 text-2xl"></i>
               </div>
-              <h3 className="text-lg font-medium text-gray-900">No products found</h3>
-              <p className="text-gray-500 mt-2">Try adjusting your search terms or category.</p>
+              <h3 className="text-lg font-medium text-gray-900 dark:text-white">No products found</h3>
+              <p className="text-gray-500 dark:text-slate-400 mt-2">Try adjusting your search terms or category.</p>
           </div>
         )}
       </div>

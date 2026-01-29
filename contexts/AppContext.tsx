@@ -5,11 +5,14 @@ export interface CartItem extends Product {
   quantity: number;
 }
 
+export type Theme = 'light' | 'dark';
+
 interface AppContextType {
   user: User | null;
   products: Product[];
   cart: CartItem[];
   isLoading: boolean;
+  theme: Theme;
   login: (email: string, pass: string) => Promise<void>;
   register: (name: string, email: string, pass: string) => Promise<void>;
   logout: () => void;
@@ -17,6 +20,7 @@ interface AppContextType {
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
   checkout: () => Promise<void>;
+  toggleTheme: () => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -26,6 +30,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [products, setProducts] = useState<Product[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [theme, setTheme] = useState<Theme>('light');
+
+  // Initialize theme
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as Theme;
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      setTheme('dark');
+    }
+  }, []);
+
+  // Apply theme to html element
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  };
 
   useEffect(() => {
     // Load initial data
@@ -108,9 +137,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   return (
     <AppContext.Provider value={{ 
-      user, products, cart, isLoading, 
+      user, products, cart, isLoading, theme,
       login, register, logout, 
-      addToCart, removeFromCart, clearCart, checkout 
+      addToCart, removeFromCart, clearCart, checkout, toggleTheme
     }}>
       {children}
     </AppContext.Provider>

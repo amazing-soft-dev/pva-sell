@@ -22,7 +22,7 @@ const App = () => {
 
   return (
     <AppProvider>
-      <div className="min-h-screen bg-white flex flex-col">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col transition-colors duration-200">
         <Navbar 
           currentView={route} 
           onNavigate={navigate} 
