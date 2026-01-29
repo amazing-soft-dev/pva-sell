@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, (process as any).cwd(), '');
   return {
     plugins: [react()],
-    base: './', // Ensures assets are linked relatively for GitHub Pages compatibility
+    base: '/', // Changed to absolute path to support client-side routing (History API)
     server: {
       host: true, // Listen on all local IPs (0.0.0.0)
     },
