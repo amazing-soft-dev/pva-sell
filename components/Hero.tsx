@@ -19,8 +19,8 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
           <main className="mt-8 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 xl:mt-20 xl:px-8 2xl:mt-28">
             <div className="sm:text-center xl:text-left">
               <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                <span className="block xl:inline">Credexus</span>{' '}
-                <span className="block text-brand-600 xl:inline">Premium Market</span>
+                <span className="block xl:inline">Premium Verified</span>{' '}
+                <span className="block text-brand-600 xl:inline">Accounts Market</span>
               </h1>
               <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl xl:mx-0">
                 Instant access to high-quality, phone-verified accounts for social media, freelancing, and payment gateways. Secure, anonymous, and guaranteed.
