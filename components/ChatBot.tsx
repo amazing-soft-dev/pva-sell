@@ -29,7 +29,7 @@ export const ChatBot = () => {
           const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
           
           const productContext = products.map(p => 
-            `- ${p.title} (${p.category}): $${p.price} [${p.stock > 0 ? 'In Stock' : 'Out of Stock'}]`
+            `- ${p.title} (${p.category}): $${p.price} [${p.stock > 0 ? 'In Stock' : 'Out of Stock'}] Features: ${p.features.join(', ')}`
           ).join('\n');
 
           const chat = ai.chats.create({
@@ -139,7 +139,7 @@ Keep answers concise and friendly.`,
                 <span className="ml-2 font-medium">Microsoft Teams</span>
               </a>
 
-              <a href="https://join.slack.com/t/freelance-launchpad/shared_invite/zt-3n2sw70yb-7sKp7tv6F5BK4N3xzsMQeQ" target="_blank" rel="noopener noreferrer" className="flex items-center p-2 bg-[#4A154B] text-white rounded-lg hover:opacity-90 transition">
+              <a href="https://join.slack.com/t/credexus-market/shared_invite/zt-3n2sw70yb-7sKp7tv6F5BK4N3xzsMQeQ" target="_blank" rel="noopener noreferrer" className="flex items-center p-2 bg-[#4A154B] text-white rounded-lg hover:opacity-90 transition">
                 <i className="fa-brands fa-slack w-6 text-center text-lg"></i>
                 <span className="ml-2 font-medium">Slack</span>
               </a>

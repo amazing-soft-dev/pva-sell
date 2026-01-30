@@ -26,18 +26,25 @@ export const ProfileView = () => {
     fetchOrders();
   }, [user]);
 
-  const getOrderStatus = (orderDate: string) => {
-    // Mock logic: Orders older than 5 minutes are 'Shipped', otherwise 'Processing'
-    const now = new Date();
-    const orderTime = new Date(orderDate);
-    const diffMinutes = (now.getTime() - orderTime.getTime()) / 1000 / 60;
-    
-    if (diffMinutes < 5) return 'processing';
-    return 'shipped';
+  const getOrderStatus = (orderId: string) => {
+    // Simulate random status based on order ID hash so it remains consistent for the order
+    const statuses = ['pending', 'processing', 'shipped', 'completed'];
+    let hash = 0;
+    for (let i = 0; i < orderId.length; i++) {
+      hash = ((hash << 5) - hash) + orderId.charCodeAt(i);
+      hash |= 0; // Convert to 32bit integer
+    }
+    return statuses[Math.abs(hash) % statuses.length];
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
+      case 'pending':
+        return (
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+            <i className="fa-solid fa-clock mr-1"></i> Pending
+          </span>
+        );
       case 'processing':
         return (
           <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
@@ -69,6 +76,7 @@ export const ProfileView = () => {
     if (!user) return;
     
     const doc = new jsPDF();
+    const status = getOrderStatus(order.id);
     
     // Header Branding
     doc.setTextColor(14, 165, 233); // Brand color #0ea5e9
@@ -92,7 +100,7 @@ export const ProfileView = () => {
     doc.setFont('helvetica', 'normal');
     doc.text(`Invoice #: ${order.id}`, 140, 28);
     doc.text(`Date: ${new Date(order.date).toLocaleDateString()}`, 140, 33);
-    doc.text(`Status: ${getOrderStatus(order.date).toUpperCase()}`, 140, 38);
+    doc.text(`Status: ${status.toUpperCase()}`, 140, 38);
 
     // Bill To
     doc.text('Bill To:', 14, 50);
@@ -232,7 +240,7 @@ export const ProfileView = () => {
             ) : (
               <div className="divide-y divide-gray-100 dark:divide-slate-700">
                 {orders.map(order => {
-                  const status = getOrderStatus(order.date);
+                  const status = getOrderStatus(order.id);
                   return (
                     <div key={order.id} className="p-6 hover:bg-gray-50/50 dark:hover:bg-slate-700/50 transition duration-150">
                       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-4">

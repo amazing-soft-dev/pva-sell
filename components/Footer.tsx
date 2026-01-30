@@ -69,12 +69,24 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <ul className="space-y-2 text-sm text-gray-600 dark:text-slate-400">
               <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Help Center</a></li>
               <li><a href="mailto:support@credexus.com" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
-              <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Telegram Channel</a></li>
+              <li><a href="https://t.me/credexusmarket" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 dark:hover:text-brand-400">Telegram Channel</a></li>
             </ul>
             <div className="mt-4 flex space-x-4">
-              <a href="#" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400"><i className="fa-brands fa-twitter text-xl"></i></a>
-              <a href="#" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400"><i className="fa-brands fa-telegram text-xl"></i></a>
-              <a href="#" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400"><i className="fa-brands fa-discord text-xl"></i></a>
+              <a href="https://x.com/credexus" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="X (Twitter)">
+                <i className="fa-brands fa-x-twitter text-xl"></i>
+              </a>
+              <a href="https://t.me/credexusmarket" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="Telegram">
+                <i className="fa-brands fa-telegram text-xl"></i>
+              </a>
+              <a href="https://discord.gg/46uhGrSS" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="Discord">
+                <i className="fa-brands fa-discord text-xl"></i>
+              </a>
+              <a href="https://join.slack.com/t/credexus-market/shared_invite/zt-3n2sw70yb-7sKp7tv6F5BK4N3xzsMQeQ" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="Slack">
+                <i className="fa-brands fa-slack text-xl"></i>
+              </a>
+              <a href="https://teams.live.com/l/invite/FBAHivBBV187MSG7QE?v=g1" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="Microsoft Teams">
+                <i className="fa-brands fa-microsoft text-xl"></i>
+              </a>
             </div>
           </div>
         </div>
