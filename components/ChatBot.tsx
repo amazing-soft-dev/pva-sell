@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 import { useApp } from '../contexts/AppContext';
+import { api } from '../services/api';
 
 export const ChatBot = () => {
-  const { products, isChatOpen, toggleChat } = useApp();
+  const { isChatOpen, toggleChat } = useApp();
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'model'; text: string }>>([
     { role: 'model', text: 'Hi! I\'m the Credexus AI assistant. How can I help you find verified accounts today?' }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showContact, setShowContact] = useState(false);
-  const [chatSession, setChatSession] = useState<Chat | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -21,49 +20,9 @@ export const ChatBot = () => {
     scrollToBottom();
   }, [messages, showContact]);
 
-  useEffect(() => {
-    if (isChatOpen && !chatSession) {
-      const apiKey = process.env.API_KEY;
-      if (!apiKey) {
-        setMessages(prev => [...prev, { role: 'model', text: "Chat system is currently offline (API Key missing). Please use the contact buttons above." }]);
-        return;
-      }
-
-      const initChat = async () => {
-        try {
-          const ai = new GoogleGenAI({ apiKey });
-          
-          const productContext = products.map(p => 
-            `- ${p.title} (${p.category}): $${p.price} [${p.stock > 0 ? 'In Stock' : 'Out of Stock'}] Features: ${p.features.join(', ')}`
-          ).join('\n');
-
-          const chat = ai.chats.create({
-            model: 'gemini-3-flash-preview',
-            config: {
-              systemInstruction: `You are the helpful AI support agent for Credexus Market. 
-We sell verified PVA (Personal Verified Accounts) for social media (LinkedIn, etc), payments (PayPal, etc), and freelancing (Upwork).
-              
-Current Inventory:
-${productContext}
-
-Your goal is to help users find products and answer questions about our services (Instant delivery, 3-day warranty, 24/7 support).
-If a user asks for human support, contact info, or a product we don't have, politely direct them to the Contact buttons in the chat window.
-Keep answers concise and friendly.`,
-            },
-          });
-          setChatSession(chat);
-        } catch (error) {
-          console.error("Failed to init chat", error);
-          setMessages(prev => [...prev, { role: 'model', text: "Connection error. Please try again later." }]);
-        }
-      };
-      initChat();
-    }
-  }, [isChatOpen, products]);
-
   const handleSend = async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!input.trim() || !chatSession) return;
+    if (!input.trim() || isLoading) return;
 
     const userMessage = input;
     setInput('');
@@ -71,20 +30,22 @@ Keep answers concise and friendly.`,
     setIsLoading(true);
 
     try {
-      const result: GenerateContentResponse = await chatSession.sendMessage({ message: userMessage });
-      const responseText = result.text || "I'm having trouble connecting right now. Please try again.";
-      setMessages(prev => [...prev, { role: 'model', text: responseText }]);
+      // Prepare history for API (convert 'model' to 'assistant' for standard role naming if needed, though frontend uses 'model')
+      const history = messages.map(m => ({
+          role: m.role === 'model' ? 'assistant' : 'user',
+          content: m.text
+      }));
+
+      const response = await api.sendChatMessage(userMessage, history);
+      setMessages(prev => [...prev, { role: 'model', text: response.text }]);
     } catch (error) {
       console.error("Chat error", error);
-      setMessages(prev => [...prev, { role: 'model', text: "Sorry, I encountered an error. Please try using the contact buttons for support." }]);
+      setMessages(prev => [...prev, { role: 'model', text: "Sorry, I encountered an error connecting to the server. Please try using the contact buttons for support." }]);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Safe check for rendering the component, but allow UI to show even if key is missing (handled in useEffect)
-  // This allows the "Contact Owner" buttons to still work.
-  
   return (
     <>
       {/* Floating Toggle Button */}
@@ -189,13 +150,13 @@ Keep answers concise and friendly.`,
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={process.env.API_KEY ? "Ask about accounts..." : "Chat offline (No API Key)"}
-                disabled={!process.env.API_KEY}
+                placeholder="Ask about accounts..."
+                disabled={isLoading}
                 className="w-full pl-4 pr-12 py-3 bg-gray-100 dark:bg-slate-900 border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-950 rounded-xl text-sm focus:ring-0 transition-colors text-gray-900 dark:text-white disabled:opacity-70 disabled:cursor-not-allowed"
               />
               <button 
                 type="submit" 
-                disabled={isLoading || !input.trim() || !process.env.API_KEY}
+                disabled={isLoading || !input.trim()}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-slate-800 rounded-lg transition disabled:opacity-50"
               >
                 <i className="fa-solid fa-paper-plane"></i>

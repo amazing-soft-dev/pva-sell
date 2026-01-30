@@ -2,18 +2,23 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  // Load env file based on `mode` in the current working directory.
-  // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
   const env = loadEnv(mode, (process as any).cwd(), '');
   return {
     plugins: [react()],
-    base: '/pva-sell/', // Updated to match GitHub Pages repository name
+    base: '/pva-sell/',
     server: {
-      host: true, // Listen on all local IPs (0.0.0.0)
+      host: true,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5000',
+          changeOrigin: true,
+          secure: false,
+        }
+      }
     },
     define: {
-      // Polyfill process.env.API_KEY so it works in the browser after build
-      'process.env.API_KEY': JSON.stringify(env.API_KEY)
+      // API Keys are now handled in backend, but keeping this if needed for other env vars
+      'process.env.API_KEY': JSON.stringify(env.API_KEY) 
     }
   };
 });
