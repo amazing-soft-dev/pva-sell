@@ -8,6 +8,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { AuthModal } from './components/AuthModal';
 import { CartDrawer } from './components/CartDrawer';
+import { ChatBot } from './components/ChatBot';
 
 // Views
 import { HomeView } from './views/HomeView';
@@ -36,6 +37,7 @@ const App = () => {
           {route === 'profile' && <ProfileView />}
         </main>
         <Footer onNavigate={navigate} />
+        <ChatBot />
         <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
         <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
       </div>

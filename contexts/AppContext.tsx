@@ -19,7 +19,7 @@ interface AppContextType {
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
-  checkout: () => Promise<void>;
+  checkout: (guestEmail?: string) => Promise<void>;
   toggleTheme: () => void;
 }
 
@@ -123,12 +123,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const clearCart = () => setCart([]);
 
-  const checkout = async () => {
-    if (!user) throw new Error("Must be logged in");
+  const checkout = async (guestEmail?: string) => {
+    if (!user && !guestEmail) throw new Error("Email required for checkout");
+    
     setIsLoading(true);
     try {
       const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      await api.createOrder(user.id, cart, total);
+      const userId = user ? user.id : null;
+      const email = user ? user.email : guestEmail;
+      
+      await api.createOrder(userId, cart, total, email);
       clearCart();
     } finally {
       setIsLoading(false);

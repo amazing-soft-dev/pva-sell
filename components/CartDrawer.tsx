@@ -1,11 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../contexts/AppContext';
 
 export const CartDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
-  const { cart, removeFromCart, checkout, user } = useApp();
+  const { cart, removeFromCart, checkout, user, isLoading } = useApp();
+  const [guestEmail, setGuestEmail] = useState('');
+  
   if (!isOpen) return null;
   
   const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+  const handleCheckout = async () => {
+    if (!user && !guestEmail) {
+      alert('Please enter your email for guest checkout or login.');
+      return;
+    }
+    
+    try {
+      await checkout(guestEmail);
+      alert(user 
+        ? 'Order placed successfully! Check your dashboard.' 
+        : `Order placed! Please check ${guestEmail} for your products. Create an account with this email to track order status.`
+      );
+      setGuestEmail('');
+      onClose();
+    } catch (e) {
+      alert('Checkout failed. Please try again.');
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
@@ -52,17 +73,33 @@ export const CartDrawer: React.FC<{ isOpen: boolean; onClose: () => void }> = ({
             <span className="text-gray-500 dark:text-slate-400 text-sm">Subtotal</span>
             <span className="text-2xl font-bold text-gray-900 dark:text-white">${total.toFixed(2)}</span>
           </div>
+
+          {!user && cart.length > 0 && (
+             <div className="mb-4">
+               <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
+                 Guest Checkout Email
+               </label>
+               <input 
+                 type="email" 
+                 placeholder="Enter your email to receive order"
+                 value={guestEmail}
+                 onChange={(e) => setGuestEmail(e.target.value)}
+                 className="w-full p-3 border border-gray-200 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-brand-500 focus:outline-none bg-white dark:bg-slate-700 text-gray-900 dark:text-white text-sm"
+               />
+               <p className="text-xs text-gray-500 dark:text-slate-500 mt-1">
+                 <i className="fa-solid fa-circle-info mr-1"></i>
+                 Create an account later to track status.
+               </p>
+             </div>
+          )}
+
           <button 
-            onClick={async () => {
-              if (!user) { alert('Please login first to complete your purchase.'); return; }
-              await checkout();
-              alert('Order placed successfully! Check your dashboard.');
-              onClose();
-            }}
-            disabled={cart.length === 0}
-            className="w-full bg-brand-600 text-white py-4 rounded-xl font-bold hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-lg shadow-brand-500/20"
+            onClick={handleCheckout}
+            disabled={cart.length === 0 || isLoading || (!user && !guestEmail)}
+            className="w-full bg-brand-600 text-white py-4 rounded-xl font-bold hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed transition shadow-lg shadow-brand-500/20 flex items-center justify-center"
           >
-            Checkout Securely
+            {isLoading ? <i className="fa-solid fa-circle-notch fa-spin mr-2"></i> : null}
+            {user ? 'Checkout Securely' : 'Guest Checkout'}
           </button>
         </div>
       </div>

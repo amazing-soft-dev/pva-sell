@@ -21,11 +21,12 @@ export interface Product {
 
 export interface Order {
   id: string;
-  userId: string;
+  userId: string | null; // Nullable for guest checkout
+  guestEmail?: string;   // For guest checkout tracking
   items: { productId: string; quantity: number; price: number }[];
   total: number;
   date: string;
-  status: 'pending' | 'completed';
+  status: 'pending' | 'processing' | 'shipped' | 'completed';
 }
 
 // Mock Data
@@ -213,17 +214,18 @@ export const api = {
   },
 
   // Orders
-  createOrder: async (userId: string, items: any[], total: number): Promise<Order> => {
+  createOrder: async (userId: string | null, items: any[], total: number, guestEmail?: string): Promise<Order> => {
     await delay(2000); // Simulate payment processing time
     const orders = JSON.parse(localStorage.getItem('orders') || '[]');
     
     const newOrder: Order = {
       id: 'ORD-' + Math.floor(Math.random() * 100000),
       userId,
+      guestEmail,
       items,
       total,
       date: new Date().toISOString(),
-      status: 'completed'
+      status: 'completed' // In real app, might start as pending
     };
 
     orders.push(newOrder);
@@ -231,9 +233,13 @@ export const api = {
     return newOrder;
   },
 
-  getOrders: async (userId: string): Promise<Order[]> => {
+  getOrders: async (userId: string, userEmail?: string): Promise<Order[]> => {
     await delay(600);
     const orders: Order[] = JSON.parse(localStorage.getItem('orders') || '[]');
-    return orders.filter(o => o.userId === userId).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    
+    // Return orders that match the userId OR the guestEmail (so if a user signs up later, they see previous orders)
+    return orders.filter(o => 
+      o.userId === userId || (userEmail && o.guestEmail === userEmail)
+    ).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }
 };

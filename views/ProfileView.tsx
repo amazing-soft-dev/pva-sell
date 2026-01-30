@@ -14,7 +14,7 @@ export const ProfileView = () => {
     const fetchOrders = async () => {
       if (user) {
         try {
-          const data = await api.getOrders(user.id);
+          const data = await api.getOrders(user.id, user.email);
           setOrders(data);
         } catch (e) {
           console.error("Failed to fetch orders", e);
@@ -25,6 +25,45 @@ export const ProfileView = () => {
     };
     fetchOrders();
   }, [user]);
+
+  const getOrderStatus = (orderDate: string) => {
+    // Mock logic: Orders older than 5 minutes are 'Shipped', otherwise 'Processing'
+    const now = new Date();
+    const orderTime = new Date(orderDate);
+    const diffMinutes = (now.getTime() - orderTime.getTime()) / 1000 / 60;
+    
+    if (diffMinutes < 5) return 'processing';
+    return 'shipped';
+  };
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'processing':
+        return (
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
+            <i className="fa-solid fa-spinner fa-spin mr-1"></i> Processing
+          </span>
+        );
+      case 'shipped':
+        return (
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400">
+            <i className="fa-solid fa-truck-fast mr-1"></i> Shipped
+          </span>
+        );
+      case 'completed':
+        return (
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+             <i className="fa-solid fa-check mr-1"></i> Completed
+          </span>
+        );
+      default:
+        return (
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+            {status}
+          </span>
+        );
+    }
+  };
 
   const handleDownloadInvoice = (order: Order) => {
     if (!user) return;
@@ -53,7 +92,7 @@ export const ProfileView = () => {
     doc.setFont('helvetica', 'normal');
     doc.text(`Invoice #: ${order.id}`, 140, 28);
     doc.text(`Date: ${new Date(order.date).toLocaleDateString()}`, 140, 33);
-    doc.text(`Status: ${order.status.toUpperCase()}`, 140, 38);
+    doc.text(`Status: ${getOrderStatus(order.date).toUpperCase()}`, 140, 38);
 
     // Bill To
     doc.text('Bill To:', 14, 50);
@@ -192,56 +231,56 @@ export const ProfileView = () => {
               </div>
             ) : (
               <div className="divide-y divide-gray-100 dark:divide-slate-700">
-                {orders.map(order => (
-                  <div key={order.id} className="p-6 hover:bg-gray-50/50 dark:hover:bg-slate-700/50 transition duration-150">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-4">
-                      <div>
-                        <div className="flex items-center gap-3 mb-1">
-                          <span className="text-sm font-bold text-gray-900 dark:text-white">Order #{order.id}</span>
-                          <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${order.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-yellow-100 text-yellow-800'}`}>
-                            {order.status === 'completed' && <i className="fa-solid fa-check mr-1"></i>}
-                            {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                          </span>
+                {orders.map(order => {
+                  const status = getOrderStatus(order.date);
+                  return (
+                    <div key={order.id} className="p-6 hover:bg-gray-50/50 dark:hover:bg-slate-700/50 transition duration-150">
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4 gap-4">
+                        <div>
+                          <div className="flex items-center gap-3 mb-1">
+                            <span className="text-sm font-bold text-gray-900 dark:text-white">Order #{order.id}</span>
+                            {getStatusBadge(status)}
+                          </div>
+                          <p className="text-xs text-gray-500 dark:text-slate-400">
+                            {new Date(order.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(order.date).toLocaleTimeString()}
+                          </p>
                         </div>
-                        <p className="text-xs text-gray-500 dark:text-slate-400">
-                          {new Date(order.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {new Date(order.date).toLocaleTimeString()}
-                        </p>
+                        <div className="text-right">
+                          <span className="text-xl font-bold text-brand-600 dark:text-brand-400">${order.total.toFixed(2)}</span>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <span className="text-xl font-bold text-brand-600 dark:text-brand-400">${order.total.toFixed(2)}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4 border border-gray-100 dark:border-slate-700">
-                      <div className="space-y-3">
-                        {order.items.map((item, idx) => {
-                          const product = products.find(p => p.id === item.productId);
-                          return (
-                            <div key={idx} className="flex justify-between items-center text-sm group">
-                               <div className="flex items-center">
-                                 <div className="w-8 h-8 rounded bg-white dark:bg-slate-600 border border-gray-200 dark:border-slate-500 flex items-center justify-center mr-3 text-brand-500 dark:text-brand-400">
-                                   <i className={product?.icon || 'fa-solid fa-box'}></i>
+                      
+                      <div className="bg-gray-50 dark:bg-slate-700/50 rounded-lg p-4 border border-gray-100 dark:border-slate-700">
+                        <div className="space-y-3">
+                          {order.items.map((item, idx) => {
+                            const product = products.find(p => p.id === item.productId);
+                            return (
+                              <div key={idx} className="flex justify-between items-center text-sm group">
+                                 <div className="flex items-center">
+                                   <div className="w-8 h-8 rounded bg-white dark:bg-slate-600 border border-gray-200 dark:border-slate-500 flex items-center justify-center mr-3 text-brand-500 dark:text-brand-400">
+                                     <i className={product?.icon || 'fa-solid fa-box'}></i>
+                                   </div>
+                                   <span className="text-gray-700 dark:text-slate-300 font-medium">{product?.title || 'Unknown Product'}</span>
+                                   <span className="text-gray-400 mx-2">×</span>
+                                   <span className="text-gray-600 dark:text-slate-400">{item.quantity}</span>
                                  </div>
-                                 <span className="text-gray-700 dark:text-slate-300 font-medium">{product?.title || 'Unknown Product'}</span>
-                                 <span className="text-gray-400 mx-2">×</span>
-                                 <span className="text-gray-600 dark:text-slate-400">{item.quantity}</span>
-                               </div>
-                               <span className="font-semibold text-gray-900 dark:text-white">${(item.price * item.quantity).toFixed(2)}</span>
-                            </div>
-                          );
-                        })}
+                                 <span className="font-semibold text-gray-900 dark:text-white">${(item.price * item.quantity).toFixed(2)}</span>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      <div className="mt-4 flex justify-end">
+                         <button 
+                           onClick={() => handleDownloadInvoice(order)}
+                           className="text-sm text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 font-medium flex items-center"
+                         >
+                           <i className="fa-regular fa-file-pdf mr-2"></i> Download Invoice
+                         </button>
                       </div>
                     </div>
-                    <div className="mt-4 flex justify-end">
-                       <button 
-                         onClick={() => handleDownloadInvoice(order)}
-                         className="text-sm text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 font-medium flex items-center"
-                       >
-                         <i className="fa-regular fa-file-pdf mr-2"></i> Download Invoice
-                       </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
