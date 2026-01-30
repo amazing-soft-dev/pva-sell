@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react';
 export type ViewState = 'home' | 'profile' | 'products' | 'whyus';
 
 export const useRouter = () => {
-  // Get the base URL from Vite configuration (e.g., '/pva-sell/')
-  const baseUrl = import.meta.env.BASE_URL;
+  // Get the base URL safely. Vite replaces import.meta.env.BASE_URL at build time.
+  // We use optional chaining and a fallback in case the replacement doesn't happen or env is undefined.
+  const baseUrl = (import.meta as any).env?.BASE_URL || '/pva-sell/';
 
   const getRoute = (): ViewState => {
     let path = window.location.pathname;
@@ -14,7 +15,8 @@ export const useRouter = () => {
       path = path.slice(baseUrl.length);
     } else if (path.startsWith('/')) {
       // Fallback for cases where baseUrl might not be strictly followed in dev
-      path = path.slice(1);
+      // Clean up leading slash
+       path = path.slice(1);
     }
     
     // Remove any remaining leading slash

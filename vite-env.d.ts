@@ -1,4 +1,16 @@
-/// <reference types="vite/client" />
+// Manually define Vite types to avoid "Cannot find type definition file" error
+interface ImportMetaEnv {
+  readonly BASE_URL: string;
+  readonly MODE: string;
+  readonly DEV: boolean;
+  readonly PROD: boolean;
+  readonly SSR: boolean;
+  [key: string]: any;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
 
 declare module '*.svg' {
   const content: string;

@@ -30,24 +30,24 @@ export const WhyUsView = () => {
       </div>
 
       {/* Trust Stats Bar */}
-      <div className="bg-brand-800 border-y border-brand-700">
+      <div className="bg-white dark:bg-slate-800 border-y border-gray-100 dark:border-slate-700 transition-colors duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-white mb-1">50,000+</div>
-              <div className="text-brand-200 text-sm uppercase tracking-wider">Accounts Sold</div>
+              <div className="text-3xl font-bold text-brand-600 dark:text-brand-400 mb-1">50,000+</div>
+              <div className="text-gray-600 dark:text-slate-400 text-sm uppercase tracking-wider">Accounts Sold</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-1">99.8%</div>
-              <div className="text-brand-200 text-sm uppercase tracking-wider">Success Rate</div>
+              <div className="text-3xl font-bold text-brand-600 dark:text-brand-400 mb-1">99.8%</div>
+              <div className="text-gray-600 dark:text-slate-400 text-sm uppercase tracking-wider">Success Rate</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-1">15 min</div>
-              <div className="text-brand-200 text-sm uppercase tracking-wider">Avg. Support Response</div>
+              <div className="text-3xl font-bold text-brand-600 dark:text-brand-400 mb-1">15 min</div>
+              <div className="text-gray-600 dark:text-slate-400 text-sm uppercase tracking-wider">Avg. Support Response</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-1">3 Days</div>
-              <div className="text-brand-200 text-sm uppercase tracking-wider">Replacement Warranty</div>
+              <div className="text-3xl font-bold text-brand-600 dark:text-brand-400 mb-1">3 Days</div>
+              <div className="text-gray-600 dark:text-slate-400 text-sm uppercase tracking-wider">Replacement Warranty</div>
             </div>
           </div>
         </div>
