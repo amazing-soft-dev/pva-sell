@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { ViewState } from '../utils/router';
+import { useApp } from '../contexts/AppContext';
 
 interface FooterProps {
   onNavigate?: (view: ViewState) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const { openChat } = useApp();
   const [logoError, setLogoError] = useState(false);
   const logo = '/logo.png';
   
@@ -67,9 +69,16 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h4 className="font-bold text-gray-900 dark:text-white mb-4">Support</h4>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-slate-400">
+              <li>
+                <button 
+                  onClick={openChat} 
+                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left"
+                >
+                  Live Chat
+                </button>
+              </li>
               <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Help Center</a></li>
               <li><a href="mailto:support@credexus.com" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
-              <li><a href="https://t.me/credexusmarket" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 dark:hover:text-brand-400">Telegram Channel</a></li>
             </ul>
             <div className="mt-4 flex space-x-4">
               <a href="https://x.com/credexus" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="X (Twitter)">

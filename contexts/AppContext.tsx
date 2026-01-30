@@ -13,6 +13,7 @@ interface AppContextType {
   cart: CartItem[];
   isLoading: boolean;
   theme: Theme;
+  isChatOpen: boolean;
   login: (email: string, pass: string) => Promise<void>;
   register: (name: string, email: string, pass: string) => Promise<void>;
   logout: () => void;
@@ -21,6 +22,9 @@ interface AppContextType {
   clearCart: () => void;
   checkout: (guestEmail?: string) => Promise<void>;
   toggleTheme: () => void;
+  openChat: () => void;
+  closeChat: () => void;
+  toggleChat: () => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -31,6 +35,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // Initialize theme
   useEffect(() => {
@@ -139,11 +144,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  const openChat = () => setIsChatOpen(true);
+  const closeChat = () => setIsChatOpen(false);
+  const toggleChat = () => setIsChatOpen(prev => !prev);
+
   return (
     <AppContext.Provider value={{ 
-      user, products, cart, isLoading, theme,
+      user, products, cart, isLoading, theme, isChatOpen,
       login, register, logout, 
-      addToCart, removeFromCart, clearCart, checkout, toggleTheme
+      addToCart, removeFromCart, clearCart, checkout, toggleTheme,
+      openChat, closeChat, toggleChat
     }}>
       {children}
     </AppContext.Provider>

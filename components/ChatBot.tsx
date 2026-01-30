@@ -3,8 +3,7 @@ import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 import { useApp } from '../contexts/AppContext';
 
 export const ChatBot = () => {
-  const { products } = useApp();
-  const [isOpen, setIsOpen] = useState(false);
+  const { products, isChatOpen, toggleChat } = useApp();
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'model'; text: string }>>([
     { role: 'model', text: 'Hi! I\'m the Credexus AI assistant. How can I help you find verified accounts today?' }
   ]);
@@ -23,10 +22,16 @@ export const ChatBot = () => {
   }, [messages, showContact]);
 
   useEffect(() => {
-    if (isOpen && !chatSession) {
+    if (isChatOpen && !chatSession) {
+      const apiKey = process.env.API_KEY;
+      if (!apiKey) {
+        setMessages(prev => [...prev, { role: 'model', text: "Chat system is currently offline (API Key missing). Please use the contact buttons above." }]);
+        return;
+      }
+
       const initChat = async () => {
         try {
-          const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+          const ai = new GoogleGenAI({ apiKey });
           
           const productContext = products.map(p => 
             `- ${p.title} (${p.category}): $${p.price} [${p.stock > 0 ? 'In Stock' : 'Out of Stock'}] Features: ${p.features.join(', ')}`
@@ -49,11 +54,12 @@ Keep answers concise and friendly.`,
           setChatSession(chat);
         } catch (error) {
           console.error("Failed to init chat", error);
+          setMessages(prev => [...prev, { role: 'model', text: "Connection error. Please try again later." }]);
         }
       };
       initChat();
     }
-  }, [isOpen, products]);
+  }, [isChatOpen, products]);
 
   const handleSend = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -76,21 +82,22 @@ Keep answers concise and friendly.`,
     }
   };
 
-  if (!process.env.API_KEY) return null;
-
+  // Safe check for rendering the component, but allow UI to show even if key is missing (handled in useEffect)
+  // This allows the "Contact Owner" buttons to still work.
+  
   return (
     <>
       {/* Floating Toggle Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleChat}
         className="fixed bottom-6 right-6 h-14 w-14 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg shadow-brand-500/30 flex items-center justify-center z-50 transition-transform hover:scale-105"
         aria-label="Open Support Chat"
       >
-        {isOpen ? <i className="fa-solid fa-xmark text-2xl"></i> : <i className="fa-solid fa-message text-2xl"></i>}
+        {isChatOpen ? <i className="fa-solid fa-xmark text-2xl"></i> : <i className="fa-solid fa-message text-2xl"></i>}
       </button>
 
       {/* Chat Window */}
-      {isOpen && (
+      {isChatOpen && (
         <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-8rem)] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 flex flex-col z-50 overflow-hidden animate-fade-in">
           
           {/* Header */}
@@ -182,12 +189,13 @@ Keep answers concise and friendly.`,
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about accounts..."
-                className="w-full pl-4 pr-12 py-3 bg-gray-100 dark:bg-slate-900 border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-950 rounded-xl text-sm focus:ring-0 transition-colors text-gray-900 dark:text-white"
+                placeholder={process.env.API_KEY ? "Ask about accounts..." : "Chat offline (No API Key)"}
+                disabled={!process.env.API_KEY}
+                className="w-full pl-4 pr-12 py-3 bg-gray-100 dark:bg-slate-900 border-transparent focus:border-brand-500 focus:bg-white dark:focus:bg-slate-950 rounded-xl text-sm focus:ring-0 transition-colors text-gray-900 dark:text-white disabled:opacity-70 disabled:cursor-not-allowed"
               />
               <button 
                 type="submit" 
-                disabled={isLoading || !input.trim()}
+                disabled={isLoading || !input.trim() || !process.env.API_KEY}
                 className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-brand-600 dark:text-brand-400 hover:bg-brand-50 dark:hover:bg-slate-800 rounded-lg transition disabled:opacity-50"
               >
                 <i className="fa-solid fa-paper-plane"></i>

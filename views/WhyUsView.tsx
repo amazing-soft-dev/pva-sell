@@ -1,8 +1,11 @@
 import React from 'react';
 import { FeaturesSection } from '../components/FeaturesSection';
 import { SEO } from '../components/SEO';
+import { useApp } from '../contexts/AppContext';
 
 export const WhyUsView = () => {
+  const { openChat } = useApp();
+
   return (
     <div className="bg-white dark:bg-slate-900 animate-fade-in transition-colors duration-200">
       <SEO 
@@ -156,18 +159,18 @@ export const WhyUsView = () => {
                     Have a specific requirement? Need help with a bulk order? Or facing an issue with a purchase? Our dedicated support team is available 24/7.
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                     <div className="flex items-center text-white">
+                     <button onClick={openChat} className="flex items-center text-white hover:text-brand-200 transition text-left">
                         <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
-                        <span>Live Chat Support</span>
-                     </div>
+                        <span className="underline decoration-dotted underline-offset-4">Live Chat Support</span>
+                     </button>
                      <div className="flex items-center text-white">
                         <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
                         <span>Email Ticket System</span>
                      </div>
-                     <div className="flex items-center text-white">
+                     <a href="https://t.me/credexusmarket" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-brand-200 transition">
                         <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
-                        <span>Active Telegram Channel</span>
-                     </div>
+                        <span className="underline decoration-dotted underline-offset-4">Active Telegram Channel</span>
+                     </a>
                      <div className="flex items-center text-white">
                         <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
                         <span>Detailed FAQ & Guides</span>
@@ -180,7 +183,10 @@ export const WhyUsView = () => {
                    </div>
                    <h3 className="text-2xl font-bold text-white mb-2">Need Help?</h3>
                    <p className="text-brand-200 mb-6">Contact us anytime.</p>
-                   <button className="bg-white text-brand-700 px-8 py-3 rounded-full font-bold hover:bg-brand-50 transition shadow-lg">
+                   <button 
+                     onClick={openChat}
+                     className="bg-white text-brand-700 px-8 py-3 rounded-full font-bold hover:bg-brand-50 transition shadow-lg transform hover:scale-105"
+                   >
                      Open Support Ticket
                    </button>
                </div>
