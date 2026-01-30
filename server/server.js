@@ -11,9 +11,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Allow CORS for GitHub Pages or Localhost
+// Middleware: Log all requests to console for debugging
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+// Allow CORS
 app.use(cors({
-    origin: '*', // For production security, replace '*' with your actual GitHub Pages URL later
+    origin: '*', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -93,13 +99,12 @@ const sendTelegramNotification = async (message) => {
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (!token || !chatId || chatId === 'your_chat_id_here') {
-    console.log('Telegram not configured, skipping notification. Check .env file.');
     return;
   }
 
   try {
     const url = `https://api.telegram.org/bot${token}/sendMessage`;
-    const response = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -108,13 +113,6 @@ const sendTelegramNotification = async (message) => {
         parse_mode: 'HTML'
       })
     });
-    
-    const result = await response.json();
-    if (!result.ok) {
-        console.error('Telegram API Error:', result);
-    } else {
-        console.log('Telegram notification sent successfully.');
-    }
   } catch (err) {
     console.error('Telegram notification error:', err);
   }
@@ -124,6 +122,10 @@ const sendTelegramNotification = async (message) => {
 
 app.get('/', (req, res) => {
     res.send('Credexus Market API is Running');
+});
+
+app.get("/api", (req, res) => {
+  res.json({ status: "API is running" });
 });
 
 // 1. Auth
@@ -189,7 +191,6 @@ app.post('/api/admin/login', (req, res) => {
 });
 
 app.get('/api/admin/orders', async (req, res) => {
-  // In a real app, verify admin token here
   try {
     if (isMongoConnected) {
       const orders = await Order.find().sort({ date: -1 });
@@ -247,7 +248,6 @@ app.post('/api/orders', async (req, res) => {
   try {
     const { userId, guestEmail, items, total } = req.body;
     
-    // Create Order Object
     let newOrderData = { userId, guestEmail, items, total, status: 'pending', date: new Date() };
     let savedOrder;
 
@@ -261,10 +261,9 @@ app.post('/api/orders', async (req, res) => {
       savedOrder = { ...newOrderData, id: newOrderData._id };
     }
 
-    // --- TELEGRAM NOTIFICATION ---
+    // Notify
     let customer = guestEmail;
     if (!customer && userId) {
-        // Try to find user email if not provided as guest
         if (isMongoConnected) {
             const user = await User.findById(userId);
             if (user) customer = user.email;
@@ -274,20 +273,9 @@ app.post('/api/orders', async (req, res) => {
         }
     }
     customer = customer || 'Unknown User';
-
     const itemsList = items.map(i => `${i.quantity}x ${i.title}`).join(', ');
-    
-    const message = `
-🎉 <b>NEW ORDER RECEIVED!</b>
-📦 ID: <code>${savedOrder.id}</code>
-👤 Customer: ${customer}
-📋 Items: ${itemsList}
-💰 Total: <b>$${total.toFixed(2)}</b>
-    `;
-    
-    // Non-blocking notification
+    const message = `🎉 NEW ORDER! ID: ${savedOrder.id}, Customer: ${customer}, Total: $${total.toFixed(2)}`;
     sendTelegramNotification(message);
-    // -----------------------------
 
     res.json(savedOrder);
   } catch (err) {
@@ -299,23 +287,17 @@ app.post('/api/orders', async (req, res) => {
 app.get('/api/orders', async (req, res) => {
   try {
     const { userId, email } = req.query;
-    
     if (isMongoConnected) {
       let query = {};
       if (userId && email) query = { $or: [{ userId }, { guestEmail: email }] };
       else if (userId) query = { userId };
       else if (email) query = { guestEmail: email };
       else return res.json([]);
-      
       const orders = await Order.find(query).sort({ date: -1 });
-      const formatted = orders.map(o => ({ ...o._doc, id: o._id.toString() }));
-      res.json(formatted);
+      res.json(orders.map(o => ({ ...o._doc, id: o._id.toString() })));
     } else {
-      const orders = memoryOrders.filter(o => 
-        (userId && o.userId === userId) || (email && o.guestEmail === email)
-      );
-      const formatted = orders.map(o => ({ ...o, id: o._id }));
-      res.json(formatted);
+      const orders = memoryOrders.filter(o => (userId && o.userId === userId) || (email && o.guestEmail === email));
+      res.json(orders.map(o => ({ ...o, id: o._id })));
     }
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -331,13 +313,7 @@ app.post('/api/chat', async (req, res) => {
     if (!apiKey) return res.json({ text: "I'm sorry, I'm currently offline (Server API Key missing)." });
 
     const messages = [
-        { 
-            role: "system", 
-            content: `You are the helpful AI support agent for Credexus Market. 
-            We sell verified PVA (Personal Verified Accounts) for social media (LinkedIn, etc), payments (PayPal, etc), and freelancing (Upwork).
-            Instant delivery, 3-day warranty, 24/7 support.
-            Current date: ${new Date().toLocaleDateString()}.` 
-        },
+        { role: "system", content: "You are the helpful AI support agent for Credexus Market." },
         ...history,
         { role: "user", content: message }
     ];
@@ -347,8 +323,6 @@ app.post('/api/chat', async (req, res) => {
       headers: {
         "Authorization": `Bearer ${apiKey}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "http://localhost:5173",
-        "X-Title": "Credexus Market"
       },
       body: JSON.stringify({
         model: "arcee-ai/trinity-large-preview:free",
@@ -362,10 +336,14 @@ app.post('/api/chat', async (req, res) => {
     } else {
         res.status(500).json({ message: "No response from AI provider" });
     }
-
   } catch (err) {
     res.status(500).json({ message: "Failed to generate chat response" });
   }
+});
+
+// Handle 404 for API routes so we return JSON instead of HTML
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ message: 'API Endpoint Not Found' });
 });
 
 app.listen(PORT, '0.0.0.0', () => {

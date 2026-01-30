@@ -66,7 +66,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const loadData = async () => {
       try {
         const prodData = await api.getProducts();
-        setProducts(prodData);
+        if (Array.isArray(prodData)) {
+            setProducts(prodData);
+        }
         
         const savedUser = localStorage.getItem('currentUser');
         if (savedUser) setUser(JSON.parse(savedUser));
@@ -74,7 +76,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         const savedCart = localStorage.getItem('cart');
         if (savedCart) setCart(JSON.parse(savedCart));
       } catch (e) {
-        console.error("Init error", e);
+        console.error("Init error: Failed to connect to backend.", e);
+        // Do not crash the app, just leave products empty
       }
     };
     loadData();

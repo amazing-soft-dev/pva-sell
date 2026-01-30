@@ -27,10 +27,16 @@ export interface Order {
 }
 
 // ENVIRONMENT CONFIGURATION
-// If VITE_API_URL is set (in .env), use it. 
-// Otherwise, in Dev use '/api' (proxy).
-// Use safe access pattern (import.meta as any).env? to prevent "Cannot read properties of undefined"
-const BASE_URL = (import.meta as any).env?.VITE_API_URL || '/api';
+// Use safe access pattern. Remove trailing slash if present to avoid //api/products.
+const getBaseUrl = () => {
+  let url = (import.meta as any).env?.VITE_API_URL || '/api';
+  if (url.endsWith('/')) {
+    url = url.slice(0, -1);
+  }
+  return url;
+};
+
+const BASE_URL = getBaseUrl();
 
 const getHeaders = () => {
   const token = localStorage.getItem('authToken');
@@ -42,48 +48,41 @@ const getHeaders = () => {
 };
 
 // Helper to handle responses safely
-const handleResponse = async (res: Response) => {
-  // We get the text first to avoid "Unexpected token <" if JSON.parse fails on streams directly
+const handleResponse = async (res: Response, url: string) => {
   const text = await res.text();
   
   try {
-    // Try to parse the text as JSON
     const data = JSON.parse(text);
-    
-    // Check for API-level errors
     if (!res.ok) {
       throw new Error(data.message || data.error || 'API request failed');
     }
-    
     return data;
   } catch (e) {
-    // If it's not JSON, it's likely HTML (404/500/Proxy Error)
-    if (e instanceof SyntaxError) {
-      console.warn("API returned non-JSON response:", text.substring(0, 150));
-      throw new Error(`Server connection failed. The server returned HTML instead of data. Check VITE_API_URL.`);
+    // If we get an HTML response (starts with <), it's usually a 404/500 from the proxy or web server
+    // indicating the API endpoint is not hit correctly.
+    if (text.trim().startsWith('<')) {
+      console.error(`API Error: Received HTML instead of JSON from ${url}`);
+      console.error("Preview of response:", text.substring(0, 100));
+      throw new Error(`Server connection failed. Ensure the backend is running. (Got HTML response from ${url})`);
     }
-    // Re-throw other errors (like the API error thrown in the try block)
     throw e;
   }
 };
 
 // Wrapper to catch Network Errors
 const fetchWithCheck = async (endpoint: string, options: RequestInit = {}) => {
-    // Ensure we don't double slash
+    // Ensure endpoint starts with /
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-    
-    // Handle potential double /api if user put it in ENV and we also have it in path
-    // But simplistic approach: join BASE + endpoint
     const url = `${BASE_URL}${cleanEndpoint}`;
 
     try {
         const res = await fetch(url, options);
-        return await handleResponse(res);
+        return await handleResponse(res, url);
     } catch (error: any) {
-        console.error(`API Call Failed [${url}]:`, error);
+        console.error(`API Call Failed [${url}]:`, error.message);
         
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-            throw new Error("Backend server unreachable. Please check your internet or server status.");
+            throw new Error("Backend server unreachable. Please run 'npm run dev:server' or check your connection.");
         }
         throw error;
     }
