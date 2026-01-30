@@ -36,6 +36,8 @@ jobs:
         env:
           # Injects the secret from GitHub Actions into the build process
           API_KEY: ${{ secrets.API_KEY }}
+          # Injects the backend URL for the frontend build
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
           
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

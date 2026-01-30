@@ -27,12 +27,26 @@ export interface Order {
 }
 
 // ENVIRONMENT CONFIGURATION
-// Use safe access pattern. Remove trailing slash if present to avoid //api/products.
 const getBaseUrl = () => {
-  let url = (import.meta as any).env?.VITE_API_URL || '/api';
+  // 1. Check if VITE_API_URL is set.
+  // We check import.meta.env (standard Vite) AND process.env (injected via vite.config.ts define)
+  // This ensures that even if one method fails during the GH Actions build, the other might catch it.
+  let url = import.meta.env.VITE_API_URL || (process.env.VITE_API_URL as string);
+
+  // 2. Fallback for local development (uses Vite proxy pointing to localhost:5000)
+  if (!url) {
+    // If we are in production (e.g. GitHub Pages) and url is missing, this is critical.
+    if (import.meta.env.PROD) {
+      console.error("CRITICAL: VITE_API_URL is missing in production build. API calls will fail (404).");
+    }
+    url = '/api';
+  }
+
+  // Remove trailing slash if present to avoid double slashes (e.g. //api/products)
   if (url.endsWith('/')) {
     url = url.slice(0, -1);
   }
+  
   return url;
 };
 
@@ -52,19 +66,49 @@ const handleResponse = async (res: Response, url: string) => {
   const text = await res.text();
   
   try {
+    // Attempt to parse JSON
     const data = JSON.parse(text);
+    
+    // If it's a JSON response but has an API-level error status code (e.g. 400, 401, 500)
+    // The backend should return { message: "..." } or { error: "..." }
     if (!res.ok) {
-      throw new Error(data.message || data.error || 'API request failed');
+        throw new Error(data.message || data.error || `API Error: ${res.status} ${res.statusText}`);
     }
     return data;
-  } catch (e) {
-    // If we get an HTML response (starts with <), it's usually a 404/500 from the proxy or web server
-    // indicating the API endpoint is not hit correctly.
-    if (text.trim().startsWith('<')) {
-      console.error(`API Error: Received HTML instead of JSON from ${url}`);
-      console.error("Preview of response:", text.substring(0, 100));
-      throw new Error(`Server connection failed. Ensure the backend is running. (Got HTML response from ${url})`);
+  } catch (e: any) {
+    // If the error was thrown by our check above, re-throw it
+    if (e.message && e.message.startsWith('API Error')) {
+      throw e;
     }
+
+    // Otherwise, it's likely a JSON SyntaxError (parsing failed)
+    // This happens when the server (or proxy) returns plain text (e.g. "504 Gateway Timeout", "404 Not Found")
+    // instead of JSON.
+    const isJsonError = e instanceof SyntaxError || e.message.includes('Unexpected token') || e.message.includes('Unexpected non-whitespace');
+    
+    if (isJsonError) {
+        console.error(`API Parse Error [${url}]: Response was not JSON.`);
+        console.error(`Status: ${res.status} ${res.statusText}`);
+        
+        // Truncate long HTML/text for cleaner logs
+        const preview = text.length > 200 ? text.substring(0, 200) + '...' : text;
+        console.error(`Body Preview: "${preview}"`);
+        
+        // Provide a user-friendly error based on status code
+        if (res.status === 404) {
+             throw new Error(`Endpoint not found (${url}). The frontend is trying to reach a missing URL.`);
+        }
+        if (res.status === 502 || res.status === 503 || res.status === 504) {
+             throw new Error(`Server unreachable (${res.status}). The backend might be starting up or down.`);
+        }
+        if (!res.ok) {
+            throw new Error(`Server Error (${res.status}): ${text.substring(0, 100)}`);
+        }
+        
+        // If status was 200 but content wasn't JSON (very rare)
+        throw new Error(`Invalid API Response: Expected JSON but got text.`);
+    }
+    
     throw e;
   }
 };
@@ -81,6 +125,7 @@ const fetchWithCheck = async (endpoint: string, options: RequestInit = {}) => {
     } catch (error: any) {
         console.error(`API Call Failed [${url}]:`, error.message);
         
+        // Enhance network error messages
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
             throw new Error("Backend server unreachable. Please run 'npm run dev:server' or check your connection.");
         }

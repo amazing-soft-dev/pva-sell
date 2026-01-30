@@ -124,10 +124,6 @@ app.get('/', (req, res) => {
     res.send('Credexus Market API is Running');
 });
 
-app.get("/api", (req, res) => {
-  res.json({ status: "API is running" });
-});
-
 // 1. Auth
 app.post('/api/auth/register', async (req, res) => {
   try {
