@@ -26,8 +26,10 @@ export interface Order {
   status: 'pending' | 'processing' | 'shipped' | 'completed';
 }
 
-// API URL (Relative for proxy or absolute)
-const API_URL = '/api';
+// ENVIRONMENT CONFIGURATION
+// If VITE_API_URL is set (in .env), use it. 
+// Otherwise, in Dev use '/api' (proxy), in Prod warn user.
+const BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 const getHeaders = () => {
   const token = localStorage.getItem('authToken');
@@ -49,19 +51,23 @@ const handleResponse = async (res: Response) => {
     // If response is not JSON (likely HTML from 404/500/Proxy error)
     const text = await res.text();
     console.warn("Received non-JSON response:", text.substring(0, 150));
-    throw new Error("Server response invalid. Please check if backend is running.");
+    throw new Error("Server connection failed. Ensure Backend is running and reachable.");
   }
 };
 
 // Wrapper to catch Network Errors (Server down)
-const fetchWithCheck = async (url: string, options: RequestInit = {}) => {
+const fetchWithCheck = async (endpoint: string, options: RequestInit = {}) => {
+    // Ensure we don't double slash
+    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const url = `${BASE_URL}${cleanEndpoint}`;
+
     try {
         const res = await fetch(url, options);
         return handleResponse(res);
     } catch (error: any) {
         console.error("API Error:", error);
         if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
-            throw new Error("Backend server unreachable. Run 'npm run server' in a separate terminal.");
+            throw new Error("Backend server unreachable. Please check your internet or server status.");
         }
         throw error;
     }
@@ -70,34 +76,32 @@ const fetchWithCheck = async (url: string, options: RequestInit = {}) => {
 export const api = {
   // Auth
   login: async (email: string, password: string): Promise<{ user: User; token: string }> => {
-    return fetchWithCheck(`${API_URL}/auth/login`, {
+    const data = await fetchWithCheck(`/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    // Response handled by wrapper
-    const data = await fetchWithCheck(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-    });
-    localStorage.setItem('authToken', data.token);
+    if (data.token) {
+        localStorage.setItem('authToken', data.token);
+    }
     return data;
   },
 
   register: async (name: string, email: string, password: string): Promise<{ user: User; token: string }> => {
-    const data = await fetchWithCheck(`${API_URL}/auth/register`, {
+    const data = await fetchWithCheck(`/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password })
     });
-    localStorage.setItem('authToken', data.token);
+    if (data.token) {
+        localStorage.setItem('authToken', data.token);
+    }
     return data;
   },
 
   // Products
   getProducts: async (): Promise<Product[]> => {
-    return fetchWithCheck(`${API_URL}/products`);
+    return fetchWithCheck(`/products`);
   },
 
   // Orders
@@ -109,7 +113,7 @@ export const api = {
         price: i.price
     }));
 
-    return fetchWithCheck(`${API_URL}/orders`, {
+    return fetchWithCheck(`/orders`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({ userId, guestEmail, items: orderItems, total })
@@ -117,15 +121,15 @@ export const api = {
   },
 
   getOrders: async (userId: string, userEmail?: string): Promise<Order[]> => {
-    let url = `${API_URL}/orders?userId=${userId}`;
-    if (userEmail) url += `&email=${userEmail}`;
+    let query = `?userId=${userId}`;
+    if (userEmail) query += `&email=${userEmail}`;
     
-    return fetchWithCheck(url, { headers: getHeaders() });
+    return fetchWithCheck(`/orders${query}`, { headers: getHeaders() });
   },
 
   // Chat
   sendChatMessage: async (message: string, history: { role: string; content: string }[]) => {
-      return fetchWithCheck(`${API_URL}/chat`, {
+      return fetchWithCheck(`/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, history })
@@ -134,7 +138,7 @@ export const api = {
 
   // Admin
   adminLogin: async (password: string) => {
-    return fetchWithCheck(`${API_URL}/admin/login`, {
+    return fetchWithCheck(`/admin/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password })
@@ -142,13 +146,13 @@ export const api = {
   },
 
   getAllOrders: async (): Promise<Order[]> => {
-    return fetchWithCheck(`${API_URL}/admin/orders`);
+    return fetchWithCheck(`/admin/orders`, { headers: getHeaders() });
   },
 
   updateOrderStatus: async (id: string, status: string): Promise<Order> => {
-    return fetchWithCheck(`${API_URL}/admin/orders/${id}`, {
+    return fetchWithCheck(`/admin/orders/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', ...getHeaders() as any },
       body: JSON.stringify({ status })
     });
   }

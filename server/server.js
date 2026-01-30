@@ -11,7 +11,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// Allow CORS for GitHub Pages or Localhost
+app.use(cors({
+    origin: '*', // For production security, replace '*' with your actual GitHub Pages URL later
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // --- In-Memory Fallback Store ---
@@ -115,6 +121,10 @@ const sendTelegramNotification = async (message) => {
 };
 
 // --- Routes ---
+
+app.get('/', (req, res) => {
+    res.send('Credexus Market API is Running');
+});
 
 // 1. Auth
 app.post('/api/auth/register', async (req, res) => {
