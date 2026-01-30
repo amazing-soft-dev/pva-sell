@@ -4,13 +4,34 @@ import { useApp } from '../contexts/AppContext';
 import { Hero } from '../components/Hero';
 import { ProductCard } from '../components/ProductCard';
 import { FeaturesSection } from '../components/FeaturesSection';
+import { SEO } from '../components/SEO';
 
 export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void }) => {
   const { products } = useApp();
   const featuredProducts = products.slice(0, 3);
 
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Credexus Market",
+    "url": "https://credexus.com",
+    "logo": "https://credexus.com/assets/logo.png",
+    "sameAs": [
+      "https://twitter.com/credexus",
+      "https://facebook.com/credexus"
+    ],
+    "description": "The #1 marketplace for verified accounts. Secure, fast, and reliable delivery for all your social and business needs."
+  };
+
   return (
     <>
+      <SEO 
+        title="Credexus Market | Buy Verified PVA Accounts Instantly"
+        description="Buy phone verified accounts (PVA) for LinkedIn, Upwork, PayPal, and more. Instant delivery, 24/7 support, and 3-day replacement warranty. Secure & Anonymous."
+        keywords="buy pva accounts, verified linkedin accounts, upwork accounts for sale, buy paypal business account, verified social media accounts"
+        canonicalUrl="/"
+        schema={organizationSchema}
+      />
       <Hero onNavigate={onNavigate} />
       
       {/* Featured Products Preview */}

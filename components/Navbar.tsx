@@ -28,13 +28,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
   };
 
   return (
-    <nav className="bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 sticky top-0 z-40 transition-colors duration-200">
+    <nav className="bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-800 sticky top-0 z-40 transition-colors duration-200" role="navigation" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Logo */}
           <div 
             className="flex items-center gap-2 cursor-pointer z-50"
             onClick={() => handleNav('home')}
+            aria-label="Credexus Market Home"
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && handleNav('home')}
           >
             {!logoError ? (
               <img 
@@ -81,7 +85,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
             <button 
               onClick={toggleTheme}
               className="p-2 text-gray-600 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition"
-              aria-label="Toggle Theme"
+              aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             >
               {theme === 'light' ? (
                 <i className="fa-solid fa-moon text-xl"></i>
@@ -95,6 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                 <button 
                   onClick={() => handleNav('profile')}
                   className={`flex items-center gap-2 text-sm font-medium ${currentView === 'profile' ? 'text-brand-600' : 'text-gray-700 dark:text-slate-300'} hover:text-brand-600 dark:hover:text-brand-400`}
+                  aria-label="User Profile"
                 >
                   <div className="w-8 h-8 bg-brand-100 dark:bg-brand-900 rounded-full flex items-center justify-center text-brand-600 dark:text-brand-400 shrink-0">
                     {user.name.charAt(0).toUpperCase()}
@@ -110,7 +115,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
               </button>
             )}
             
-            <button onClick={onOpenCart} className="relative p-2 text-gray-600 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition">
+            <button onClick={onOpenCart} className="relative p-2 text-gray-600 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition" aria-label="Open shopping cart">
               <i className="fa-solid fa-cart-shopping text-xl"></i>
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-accent-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
@@ -123,6 +128,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
             <button 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2 text-gray-600 hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400 transition rounded-md hover:bg-gray-100 dark:hover:bg-slate-800"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
             >
               <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'} text-xl`}></i>
             </button>

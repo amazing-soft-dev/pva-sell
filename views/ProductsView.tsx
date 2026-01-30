@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { ProductCard } from '../components/ProductCard';
+import { SEO } from '../components/SEO';
 
 export const ProductsView = () => {
   const { products } = useApp();
@@ -18,8 +19,34 @@ export const ProductsView = () => {
     return matchesSearch && matchesCategory;
   });
 
+  const marketplaceSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Credexus Accounts Marketplace",
+    "description": "Browse our extensive catalog of verified accounts for social media, payments, and freelancing.",
+    "url": "https://credexus.com/products",
+    "hasPart": products.slice(0, 10).map(p => ({
+      "@type": "Product",
+      "name": p.title,
+      "description": p.description,
+      "offers": {
+        "@type": "Offer",
+        "price": p.price,
+        "priceCurrency": "USD",
+        "availability": p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
+      }
+    }))
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <SEO 
+        title="Marketplace - Buy Verified Accounts | Credexus"
+        description="Browse our catalog of verified LinkedIn, Upwork, PayPal, CashApp, and other PVA accounts. Secure transactions and instant delivery."
+        keywords="buy social media accounts, buy payment accounts, buy freelance accounts, verified accounts marketplace"
+        canonicalUrl="/products"
+        schema={marketplaceSchema}
+      />
       <div className="text-center mb-12">
         <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">Marketplace</h1>
         <p className="text-xl text-gray-500 dark:text-slate-400 max-w-2xl mx-auto">
@@ -44,6 +71,7 @@ export const ProductsView = () => {
             <button 
               onClick={() => setSearchQuery('')}
               className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-slate-300"
+              aria-label="Clear search"
             >
               <i className="fa-solid fa-xmark"></i>
             </button>

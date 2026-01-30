@@ -1,9 +1,16 @@
 import React from 'react';
 import { FeaturesSection } from '../components/FeaturesSection';
+import { SEO } from '../components/SEO';
 
 export const WhyUsView = () => {
   return (
     <div className="bg-white dark:bg-slate-900 animate-fade-in transition-colors duration-200">
+      <SEO 
+        title="Why Choose Credexus | Trusted Account Provider"
+        description="We are the industry leader in verified accounts. With over 50,000 accounts sold and a 99.8% success rate, learn why marketers trust us."
+        keywords="credexus reviews, legitimate pva seller, trusted account vendor, verified accounts guarantee"
+        canonicalUrl="/whyus"
+      />
       {/* Hero Header - Enhanced with gradient and pattern */}
       <div className="relative bg-brand-900 py-24 sm:py-32">
         <div className="absolute inset-0 overflow-hidden">

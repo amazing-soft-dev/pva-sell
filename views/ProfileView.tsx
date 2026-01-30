@@ -3,6 +3,7 @@ import { jsPDF } from "jspdf";
 import autoTable from 'jspdf-autotable';
 import { useApp } from '../contexts/AppContext';
 import { api, Order } from '../services/api';
+import { SEO } from '../components/SEO';
 
 export const ProfileView = () => {
   const { user, products } = useApp();
@@ -118,6 +119,10 @@ export const ProfileView = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <SEO 
+        title="My Dashboard | Credexus"
+        description="Manage your verified account orders and settings."
+      />
       <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">My Dashboard</h2>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
