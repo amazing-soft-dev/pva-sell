@@ -15,6 +15,7 @@ import { HomeView } from './views/HomeView';
 import { ProductsView } from './views/ProductsView';
 import { WhyUsView } from './views/WhyUsView';
 import { ProfileView } from './views/ProfileView';
+import { AdminView } from './views/AdminView';
 
 const App = () => {
   const { route, navigate } = useRouter();
@@ -35,6 +36,7 @@ const App = () => {
           {route === 'products' && <ProductsView />}
           {route === 'whyus' && <WhyUsView />}
           {route === 'profile' && <ProfileView />}
+          {route === 'admin' && <AdminView />}
         </main>
         <Footer onNavigate={navigate} />
         <ChatBot />

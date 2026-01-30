@@ -76,7 +76,6 @@ export const api = {
 
   // Orders
   createOrder: async (userId: string | null, items: any[], total: number, guestEmail?: string): Promise<Order> => {
-    // Simplify items for backend storage (ensure title is included for history)
     const orderItems = items.map(i => ({
         productId: i.id,
         title: i.title,
@@ -113,5 +112,34 @@ export const api = {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Chat error');
       return data;
+  },
+
+  // Admin
+  adminLogin: async (password: string) => {
+    const res = await fetch(`${API_URL}/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Admin login failed');
+    return data;
+  },
+
+  getAllOrders: async (): Promise<Order[]> => {
+    const res = await fetch(`${API_URL}/admin/orders`);
+    if (!res.ok) throw new Error('Failed to fetch orders');
+    return res.json();
+  },
+
+  updateOrderStatus: async (id: string, status: string): Promise<Order> => {
+    const res = await fetch(`${API_URL}/admin/orders/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error('Failed to update status');
+    return data;
   }
 };

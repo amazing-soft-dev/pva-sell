@@ -79,6 +79,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Help Center</a></li>
               <li><a href="mailto:support@credexus.com" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
+              <li>
+                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xs">
+                  Admin
+                </button>
+              </li>
             </ul>
             <div className="mt-4 flex space-x-4">
               <a href="https://x.com/credexus" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="X (Twitter)">

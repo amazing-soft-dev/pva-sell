@@ -14,10 +14,22 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// --- In-Memory Fallback Store ---
+let memoryUsers = [];
+let memoryOrders = [];
+
 // --- MongoDB Connection ---
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB Connected'))
-  .catch(err => console.error('MongoDB Connection Error:', err));
+let isMongoConnected = false;
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pva-markets')
+  .then(() => {
+    console.log('MongoDB Connected');
+    isMongoConnected = true;
+    seedProducts();
+  })
+  .catch(err => {
+    console.warn('MongoDB Connection Failed, switching to in-memory mode:', err.message);
+    isMongoConnected = false;
+  });
 
 // --- Schemas & Models ---
 const userSchema = new mongoose.Schema({
@@ -47,16 +59,17 @@ const orderSchema = new mongoose.Schema({
     price: Number
   }],
   total: Number,
-  status: { type: String, default: 'pending' },
+  status: { type: String, default: 'pending' }, // pending, processing, shipped, completed
   date: { type: Date, default: Date.now }
 });
 
-const User = mongoose.model('User', userSchema);
-const Product = mongoose.model('Product', productSchema);
-const Order = mongoose.model('Order', orderSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 
 // --- Seeder ---
 const seedProducts = async () => {
+  if (!isMongoConnected) return;
   try {
     const count = await Product.countDocuments();
     if (count === 0) {
@@ -67,19 +80,32 @@ const seedProducts = async () => {
     console.error('Seeding error:', err);
   }
 };
-seedProducts();
 
-// --- Middleware ---
-const auth = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
-  if (!token) return res.status(401).json({ message: 'No token, authorization denied' });
+// --- Helper: Telegram Notification ---
+const sendTelegramNotification = async (message) => {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+
+  if (!token || !chatId || chatId === 'your_chat_id_here') {
+    console.log('Telegram not configured, skipping notification.');
+    return;
+  }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
-    next();
-  } catch (e) {
-    res.status(400).json({ message: 'Token is not valid' });
+    const url = `https://api.telegram.org/bot${token}/sendMessage`;
+    // Use native fetch (Node 18+)
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+        parse_mode: 'HTML'
+      })
+    });
+    console.log('Telegram notification sent.');
+  } catch (err) {
+    console.error('Telegram notification error:', err);
   }
 };
 
@@ -89,17 +115,25 @@ const auth = (req, res, next) => {
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: 'User already exists' });
-
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    user = new User({ name, email, password: hashedPassword });
-    await user.save();
+    if (isMongoConnected) {
+      let user = await User.findOne({ email });
+      if (user) return res.status(400).json({ message: 'User already exists' });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, name, email } });
+      user = new User({ name, email, password: hashedPassword });
+      await user.save();
+
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'default', { expiresIn: '7d' });
+      res.json({ token, user: { id: user._id, name, email } });
+    } else {
+      if (memoryUsers.find(u => u.email === email)) return res.status(400).json({ message: 'User exists' });
+      const newUser = { _id: Date.now().toString(), name, email, password: hashedPassword };
+      memoryUsers.push(newUser);
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET || 'default', { expiresIn: '7d' });
+      res.json({ token, user: { id: newUser._id, name, email } });
+    }
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -108,39 +142,128 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    let user;
+    if (isMongoConnected) {
+      user = await User.findOne({ email });
+    } else {
+      user = memoryUsers.find(u => u.email === email);
+    }
+
     if (!user) return res.status(400).json({ message: 'Invalid credentials' });
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id, name: user.name, email } });
+    const token = jwt.sign({ id: user._id || user._id }, process.env.JWT_SECRET || 'default', { expiresIn: '7d' });
+    res.json({ token, user: { id: user._id || user._id, name: user.name, email } });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 2. Products
+// 2. Admin Routes
+app.post('/api/admin/login', (req, res) => {
+  const { password } = req.body;
+  const adminPass = process.env.ADMIN_PASSWORD || 'admin123';
+  if (password === adminPass) {
+    const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET || 'default', { expiresIn: '1d' });
+    res.json({ success: true, token });
+  } else {
+    res.status(401).json({ message: 'Invalid admin password' });
+  }
+});
+
+app.get('/api/admin/orders', async (req, res) => {
+  // In a real app, verify admin token here
+  try {
+    if (isMongoConnected) {
+      const orders = await Order.find().sort({ date: -1 });
+      const formatted = orders.map(o => ({ ...o._doc, id: o._id.toString() }));
+      res.json(formatted);
+    } else {
+      const formatted = memoryOrders.map(o => ({ ...o, id: o._id }));
+      res.json(formatted);
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching orders' });
+  }
+});
+
+app.put('/api/admin/orders/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    if (isMongoConnected) {
+      const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+      res.json({ ...order._doc, id: order._id.toString() });
+    } else {
+      const orderIndex = memoryOrders.findIndex(o => o._id === id);
+      if (orderIndex > -1) {
+        memoryOrders[orderIndex].status = status;
+        res.json({ ...memoryOrders[orderIndex], id });
+      } else {
+        res.status(404).json({ message: 'Order not found' });
+      }
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating order' });
+  }
+});
+
+// 3. Products
 app.get('/api/products', async (req, res) => {
   try {
-    const products = await Product.find();
-    // Map _id to id for frontend compatibility
-    const formatted = products.map(p => ({ ...p._doc, id: p._id.toString() }));
-    res.json(formatted);
+    if (isMongoConnected) {
+      const products = await Product.find();
+      const formatted = products.map(p => ({ ...p._doc, id: p._id.toString() }));
+      res.json(formatted);
+    } else {
+      const formatted = INITIAL_PRODUCTS.map((p, i) => ({ ...p, id: `local-${i}` }));
+      res.json(formatted);
+    }
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 3. Orders
+// 4. Orders
 app.post('/api/orders', async (req, res) => {
   try {
     const { userId, guestEmail, items, total } = req.body;
-    const newOrder = new Order({ userId, guestEmail, items, total, status: 'completed' });
-    await newOrder.save();
-    res.json({ ...newOrder._doc, id: newOrder._id.toString() });
+    
+    // Create Order Object
+    let newOrderData = { userId, guestEmail, items, total, status: 'pending', date: new Date() };
+    let savedOrder;
+
+    if (isMongoConnected) {
+      const newOrder = new Order(newOrderData);
+      await newOrder.save();
+      savedOrder = { ...newOrder._doc, id: newOrder._id.toString() };
+    } else {
+      newOrderData._id = Date.now().toString();
+      memoryOrders.push(newOrderData);
+      savedOrder = { ...newOrderData, id: newOrderData._id };
+    }
+
+    // --- TELEGRAM NOTIFICATION ---
+    const customer = guestEmail || 'Registered User';
+    const itemsList = items.map(i => `${i.quantity}x ${i.title}`).join(', ');
+    
+    const message = `
+🎉 <b>NEW ORDER RECEIVED!</b>
+📦 ID: <code>${savedOrder.id}</code>
+👤 Customer: ${customer}
+📋 Items: ${itemsList}
+💰 Total: <b>$${total}</b>
+    `;
+    
+    await sendTelegramNotification(message);
+    // -----------------------------
+
+    res.json(savedOrder);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -148,29 +271,36 @@ app.post('/api/orders', async (req, res) => {
 app.get('/api/orders', async (req, res) => {
   try {
     const { userId, email } = req.query;
-    let query = {};
-    if (userId && email) {
-      query = { $or: [{ userId }, { guestEmail: email }] };
-    } else if (userId) {
-      query = { userId };
-    } else if (email) {
-      query = { guestEmail: email };
-    } else {
-        return res.json([]);
-    }
     
-    const orders = await Order.find(query).sort({ date: -1 });
-    const formatted = orders.map(o => ({ ...o._doc, id: o._id.toString() }));
-    res.json(formatted);
+    if (isMongoConnected) {
+      let query = {};
+      if (userId && email) query = { $or: [{ userId }, { guestEmail: email }] };
+      else if (userId) query = { userId };
+      else if (email) query = { guestEmail: email };
+      else return res.json([]);
+      
+      const orders = await Order.find(query).sort({ date: -1 });
+      const formatted = orders.map(o => ({ ...o._doc, id: o._id.toString() }));
+      res.json(formatted);
+    } else {
+      const orders = memoryOrders.filter(o => 
+        (userId && o.userId === userId) || (email && o.guestEmail === email)
+      );
+      const formatted = orders.map(o => ({ ...o, id: o._id }));
+      res.json(formatted);
+    }
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// 4. Chatbot (OpenRouter)
+// 5. Chatbot
 app.post('/api/chat', async (req, res) => {
   try {
     const { message, history } = req.body;
+    const apiKey = process.env.OPENROUTER_API_KEY;
+
+    if (!apiKey) return res.json({ text: "I'm sorry, I'm currently offline (Server API Key missing)." });
 
     const messages = [
         { 
@@ -178,8 +308,7 @@ app.post('/api/chat', async (req, res) => {
             content: `You are the helpful AI support agent for Credexus Market. 
             We sell verified PVA (Personal Verified Accounts) for social media (LinkedIn, etc), payments (PayPal, etc), and freelancing (Upwork).
             Instant delivery, 3-day warranty, 24/7 support.
-            Current date: ${new Date().toLocaleDateString()}.
-            If you don't know the specific price of an item, ask them to check the Products page.` 
+            Current date: ${new Date().toLocaleDateString()}.` 
         },
         ...history,
         { role: "user", content: message }
@@ -188,8 +317,10 @@ app.post('/api/chat', async (req, res) => {
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json"
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "http://localhost:5173",
+        "X-Title": "Credexus Market"
       },
       body: JSON.stringify({
         model: "arcee-ai/trinity-large-preview:free",
@@ -198,7 +329,6 @@ app.post('/api/chat', async (req, res) => {
     });
 
     const data = await response.json();
-    
     if (data.choices && data.choices.length > 0) {
         res.json({ text: data.choices[0].message.content });
     } else {
@@ -206,11 +336,10 @@ app.post('/api/chat', async (req, res) => {
     }
 
   } catch (err) {
-    console.error("Chat Error:", err);
     res.status(500).json({ message: "Failed to generate chat response" });
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });

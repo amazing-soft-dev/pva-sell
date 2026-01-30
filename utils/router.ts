@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export type ViewState = 'home' | 'profile' | 'products' | 'whyus';
+export type ViewState = 'home' | 'profile' | 'products' | 'whyus' | 'admin';
 
 export const useRouter = () => {
   // Get the base URL safely. Vite replaces import.meta.env.BASE_URL at build time.
@@ -23,7 +23,7 @@ export const useRouter = () => {
     path = path.replace(/^\//, '');
 
     // Check if the path matches a valid view, otherwise default to home
-    if (['home', 'profile', 'products', 'whyus'].includes(path)) {
+    if (['home', 'profile', 'products', 'whyus', 'admin'].includes(path)) {
       return path as ViewState;
     }
     return 'home';
