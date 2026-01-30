@@ -99,9 +99,9 @@ const INITIAL_PRODUCTS: Product[] = [
   // Payment Accounts - Custom
   { id: 'pay-1', title: 'Custom Payoneer', category: 'Payment', price: 200, stock: 20, icon: 'fa-solid fa-money-check-dollar', description: 'Custom created Payoneer account.', features: ['Fully Verified', 'Custom Details'] },
   { id: 'pay-2', title: 'Custom Company Payoneer', category: 'Payment', price: 300, stock: 10, icon: 'fa-solid fa-briefcase', description: 'Business Payoneer account.', features: ['Business Verified', 'Custom Details'] },
-  { id: 'pay-3', title: 'Custom Airtm', category: 'Payment', price: 150, stock: 20, icon: 'fa-solid fa-wallet', description: 'Verified Airtm account.', features: ['Fully Verified'] },
+  { id: 'pay-3', title: 'Custom Airtm', category: 'Payment', price: 150, stock: 20, icon: 'fa-solid fa-paper-plane', description: 'Verified Airtm account.', features: ['Fully Verified'] },
   { id: 'pay-4', title: 'Custom Hurupay', category: 'Payment', price: 150, stock: 20, icon: 'fa-solid fa-wallet', description: 'Verified Hurupay account.', features: ['Fully Verified'] },
-  { id: 'pay-5', title: 'Custom Fluidkey', category: 'Payment', price: 150, stock: 20, icon: 'fa-solid fa-key', description: 'Verified Fluidkey account.', features: ['Fully Verified'] },
+  { id: 'pay-5', title: 'Custom Fluidkey', category: 'Payment', price: 150, stock: 20, icon: 'fa-solid fa-fingerprint', description: 'Verified Fluidkey account.', features: ['Fully Verified'] },
   
   // Payment Accounts - Standard
   { id: 'pay-6', title: 'PayPal (Personal)', category: 'Payment', price: 100, stock: 50, icon: 'fa-brands fa-paypal', description: 'Verified Personal PayPal account.', features: ['Phone Verified', 'Email Verified'] },
@@ -114,8 +114,8 @@ const INITIAL_PRODUCTS: Product[] = [
   { id: 'ex-2', title: 'Bybit', category: 'Payment', price: 40, stock: 50, icon: 'fa-solid fa-chart-line', description: 'Verified Bybit account.', features: ['KYC Verified'] },
   { id: 'ex-3', title: 'Kucoin', category: 'Payment', price: 40, stock: 50, icon: 'fa-solid fa-chart-simple', description: 'Verified Kucoin account.', features: ['KYC Verified'] },
   { id: 'ex-4', title: 'Mexc', category: 'Payment', price: 40, stock: 50, icon: 'fa-solid fa-chart-pie', description: 'Verified Mexc account.', features: ['KYC Verified'] },
-  { id: 'ex-5', title: 'OKX', category: 'Payment', price: 40, stock: 50, icon: 'fa-solid fa-o', description: 'Verified OKX account.', features: ['KYC Verified'] },
-  { id: 'ex-6', title: 'Gate.io', category: 'Payment', price: 40, stock: 50, icon: 'fa-solid fa-door-open', description: 'Verified Gate.io account.', features: ['KYC Verified'] },
+  { id: 'ex-5', title: 'OKX', category: 'Payment', price: 40, stock: 50, icon: 'fa-solid fa-layer-group', description: 'Verified OKX account.', features: ['KYC Verified'] },
+  { id: 'ex-6', title: 'Gate.io', category: 'Payment', price: 40, stock: 50, icon: 'fa-solid fa-arrow-trend-up', description: 'Verified Gate.io account.', features: ['KYC Verified'] },
 
   // Card Services
   { id: 'card-1', title: 'Capitalist', category: 'Payment', price: 80, stock: 25, icon: 'fa-solid fa-credit-card', description: 'Verified Capitalist account.', features: ['Card Enabled'] },
@@ -150,17 +150,17 @@ const INITIAL_PRODUCTS: Product[] = [
   { id: 'tg-3', title: 'Telegram Premium (1 Year)', category: 'Social Media', price: 40, stock: 100, icon: 'fa-brands fa-telegram', description: 'Gift link for 1 year premium.', features: ['Instant Delivery', 'Gift Link'] },
 
   // Virtual Phone
-  { id: 'vp-1', title: 'Google Voice', category: 'Verification', price: 15, stock: 50, icon: 'fa-solid fa-phone', description: 'Google Voice US number.', features: ['US Number', 'Voice & SMS'] },
-  { id: 'vp-2', title: 'Hushed (1 Year)', category: 'Verification', price: 50, stock: 20, icon: 'fa-solid fa-mobile-screen', description: 'Hushed app number 1 year subscription.', features: ['1 Year', 'Private Number'] },
+  { id: 'vp-1', title: 'Google Voice', category: 'Verification', price: 15, stock: 50, icon: 'fa-brands fa-google', description: 'Google Voice US number.', features: ['US Number', 'Voice & SMS'] },
+  { id: 'vp-2', title: 'Hushed (1 Year)', category: 'Verification', price: 50, stock: 20, icon: 'fa-solid fa-user-secret', description: 'Hushed app number 1 year subscription.', features: ['1 Year', 'Private Number'] },
 
   // VPN
-  { id: 'vpn-1', title: 'Nord VPN (1 Year)', category: 'VPN & Security', price: 30, stock: 40, icon: 'fa-solid fa-shield-halved', description: 'NordVPN Premium 1 Year Account.', features: ['Premium', '1 Year Warranty'] },
+  { id: 'vpn-1', title: 'Nord VPN (1 Year)', category: 'VPN & Security', price: 30, stock: 40, icon: 'fa-solid fa-lock', description: 'NordVPN Premium 1 Year Account.', features: ['Premium', '1 Year Warranty'] },
   { id: 'vpn-2', title: 'ExpressVPN (1 Month)', category: 'VPN & Security', price: 8, stock: 60, icon: 'fa-solid fa-shield-halved', description: 'ExpressVPN Premium 1 Month Account.', features: ['Premium', 'Mobile/PC'] },
 
   // Freelance - Other
-  { id: 'oth-1', title: 'Deel Account', category: 'Freelance', price: 80, stock: 10, icon: 'fa-solid fa-briefcase', description: 'Verified Deel account.', features: ['Fully Verified'] },
-  { id: 'oth-2', title: 'Iployal Account', category: 'Freelance', price: 30, stock: 10, icon: 'fa-solid fa-briefcase', description: 'Verified Iployal account.', features: ['Verified'] },
-  { id: 'oth-3', title: 'Ruul Account', category: 'Freelance', price: 80, stock: 10, icon: 'fa-solid fa-briefcase', description: 'Verified Ruul account.', features: ['Verified'] },
+  { id: 'oth-1', title: 'Deel Account', category: 'Freelance', price: 80, stock: 10, icon: 'fa-solid fa-handshake', description: 'Verified Deel account.', features: ['Fully Verified'] },
+  { id: 'oth-2', title: 'Iployal Account', category: 'Freelance', price: 30, stock: 10, icon: 'fa-solid fa-user-tie', description: 'Verified Iployal account.', features: ['Verified'] },
+  { id: 'oth-3', title: 'Ruul Account', category: 'Freelance', price: 80, stock: 10, icon: 'fa-solid fa-file-invoice-dollar', description: 'Verified Ruul account.', features: ['Verified'] },
 ];
 
 // Helper to simulate network delay

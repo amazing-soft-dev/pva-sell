@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { ViewState } from '../utils/router';
-import logo from '../assets/logo.png';
 
 interface NavbarProps {
   onOpenAuth: () => void;
@@ -15,6 +14,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [logoError, setLogoError] = useState(false);
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const logo = '/logo.png';
 
   const handleLogout = () => {
     logout();

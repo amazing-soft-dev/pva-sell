@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { ViewState } from '../utils/router';
-import logo from '../assets/logo.png';
 
 interface FooterProps {
   onNavigate?: (view: ViewState) => void;
@@ -8,6 +7,7 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const [logoError, setLogoError] = useState(false);
+  const logo = '/logo.png';
   
   const handleNav = (e: React.MouseEvent, view: ViewState) => {
     e.preventDefault();

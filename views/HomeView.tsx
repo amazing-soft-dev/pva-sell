@@ -15,7 +15,7 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
     "@type": "Organization",
     "name": "Credexus Market",
     "url": "https://credexus.com",
-    "logo": "https://credexus.com/assets/logo.png",
+    "logo": "https://credexus.com/logo.png",
     "sameAs": [
       "https://twitter.com/credexus",
       "https://facebook.com/credexus"
