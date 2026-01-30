@@ -41,16 +41,16 @@ export const ProductsView = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <SEO 
-        title="Marketplace - Buy Verified Accounts | Credexus"
-        description="Browse our catalog of verified LinkedIn, Upwork, PayPal, CashApp, and other PVA accounts. Secure transactions and instant delivery."
-        keywords="buy social media accounts, buy payment accounts, buy freelance accounts, verified accounts marketplace"
+        title="Marketplace - Buy Verified Accounts (PVA) | Credexus"
+        description="Browse our catalog of verified LinkedIn, Upwork, PayPal, CashApp, and other PVA accounts. Secure transactions and instant delivery guaranteed."
+        keywords="buy social media accounts, buy payment accounts, buy freelance accounts, verified accounts marketplace, buy linkedin pva, buy upwork account"
         canonicalUrl="/products"
         schema={marketplaceSchema}
       />
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">Marketplace</h1>
+        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">PVA Account Marketplace</h1>
         <p className="text-xl text-gray-500 dark:text-slate-400 max-w-2xl mx-auto">
-          Browse our extensive catalog of verified accounts. Filter by category or search for specific platforms.
+          Browse our extensive catalog of verified accounts. Filter by category or search for specific platforms like LinkedIn, Upwork, or PayPal.
         </p>
       </div>
 
@@ -66,6 +66,7 @@ export const ProductsView = () => {
             placeholder="Search for accounts (e.g., 'Gmail', 'old', 'verified')..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search accounts"
           />
           {searchQuery && (
             <button 
@@ -80,7 +81,7 @@ export const ProductsView = () => {
       </div>
 
       {/* Category Filter */}
-      <div className="flex flex-wrap justify-center gap-2 mb-12">
+      <div className="flex flex-wrap justify-center gap-2 mb-12" role="group" aria-label="Product categories">
           {categories.map(category => (
             <button
                 key={category}

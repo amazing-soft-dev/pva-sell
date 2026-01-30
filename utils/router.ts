@@ -3,8 +3,23 @@ import { useState, useEffect } from 'react';
 export type ViewState = 'home' | 'profile' | 'products' | 'whyus';
 
 export const useRouter = () => {
+  // Get the base URL from Vite configuration (e.g., '/pva-sell/')
+  const baseUrl = import.meta.env.BASE_URL;
+
   const getRoute = (): ViewState => {
-    const path = window.location.pathname.replace(/^\//, '');
+    let path = window.location.pathname;
+    
+    // Remove the base URL from the beginning of the path if present
+    if (path.startsWith(baseUrl)) {
+      path = path.slice(baseUrl.length);
+    } else if (path.startsWith('/')) {
+      // Fallback for cases where baseUrl might not be strictly followed in dev
+      path = path.slice(1);
+    }
+    
+    // Remove any remaining leading slash
+    path = path.replace(/^\//, '');
+
     // Check if the path matches a valid view, otherwise default to home
     if (['home', 'profile', 'products', 'whyus'].includes(path)) {
       return path as ViewState;
@@ -24,7 +39,12 @@ export const useRouter = () => {
   }, []);
 
   const navigate = (view: ViewState) => {
-    window.history.pushState(null, '', `/${view}`);
+    // If navigating to home, we use the root path of the base
+    const pathSuffix = view === 'home' ? '' : view;
+    // Construct the full URL including the base path
+    const url = `${baseUrl}${pathSuffix}`;
+    
+    window.history.pushState(null, '', url);
     setRoute(view);
   };
 

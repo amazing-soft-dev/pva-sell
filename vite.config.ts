@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, (process as any).cwd(), '');
   return {
     plugins: [react()],
-    base: '/', // Changed to absolute path to support client-side routing (History API)
+    base: '/pva-sell/', // Updated to match GitHub Pages repository name
     server: {
       host: true, // Listen on all local IPs (0.0.0.0)
     },

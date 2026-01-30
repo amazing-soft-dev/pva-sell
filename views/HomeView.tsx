@@ -20,33 +20,33 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
       "https://twitter.com/credexus",
       "https://facebook.com/credexus"
     ],
-    "description": "The #1 marketplace for verified accounts. Secure, fast, and reliable delivery for all your social and business needs."
+    "description": "The #1 marketplace to buy verified accounts. Secure, fast, and reliable delivery for all your social and business needs."
   };
 
   return (
     <>
       <SEO 
-        title="Credexus Market | Buy Verified PVA Accounts Instantly"
-        description="Buy phone verified accounts (PVA) for LinkedIn, Upwork, PayPal, and more. Instant delivery, 24/7 support, and 3-day replacement warranty. Secure & Anonymous."
-        keywords="buy pva accounts, verified linkedin accounts, upwork accounts for sale, buy paypal business account, verified social media accounts"
+        title="Buy Verified PVA Accounts | LinkedIn, Upwork, PayPal | Credexus Market"
+        description="The trusted marketplace to buy verified accounts (PVA) for LinkedIn, Upwork, PayPal, and more. Instant secure delivery, 100% replacement guarantee."
+        keywords="buy pva accounts, buy verified linkedin account, buy upwork account, buy paypal business account, verified social media accounts for sale, buy aged discord accounts"
         canonicalUrl="/"
         schema={organizationSchema}
       />
       <Hero onNavigate={onNavigate} />
       
       {/* Featured Products Preview */}
-      <div className="bg-white dark:bg-slate-900 py-16 transition-colors duration-200">
+      <section className="bg-white dark:bg-slate-900 py-16 transition-colors duration-200" aria-labelledby="featured-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-8">
             <div>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Featured Accounts</h2>
-              <p className="mt-2 text-gray-500 dark:text-slate-400">Our most popular verified accounts.</p>
+              <h2 id="featured-heading" className="text-3xl font-extrabold text-gray-900 dark:text-white">Featured Verified Accounts</h2>
+              <p className="mt-2 text-gray-500 dark:text-slate-400">Our most popular verified PVA accounts for sale.</p>
             </div>
             <button 
               onClick={() => onNavigate('products')}
               className="text-brand-600 dark:text-brand-400 font-medium hover:text-brand-700 dark:hover:text-brand-300 flex items-center"
             >
-              View Marketplace <i className="fa-solid fa-arrow-right ml-2"></i>
+              View Full Marketplace <i className="fa-solid fa-arrow-right ml-2"></i>
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -55,13 +55,13 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Why Us Preview */}
-      <div className="bg-gray-50 dark:bg-slate-950 py-16 transition-colors duration-200">
+      <section className="bg-gray-50 dark:bg-slate-950 py-16 transition-colors duration-200" aria-labelledby="why-us-heading">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white">Why Choose Credexus Market?</h2>
+            <h2 id="why-us-heading" className="text-3xl font-extrabold text-gray-900 dark:text-white">Why Choose Credexus Market?</h2>
           </div>
           <FeaturesSection />
           <div className="text-center mt-10">
@@ -73,7 +73,7 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
             </button>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };
