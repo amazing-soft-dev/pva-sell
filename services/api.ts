@@ -38,6 +38,21 @@ const getHeaders = () => {
   return headers;
 };
 
+// Helper to handle responses and check for valid JSON
+const handleResponse = async (res: Response) => {
+  const contentType = res.headers.get("content-type");
+  if (contentType && contentType.includes("application/json")) {
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'API request failed');
+    return data;
+  } else {
+    // If response is not JSON (likely HTML from 404/500/Proxy error)
+    const text = await res.text();
+    console.warn("Received non-JSON response:", text.substring(0, 150));
+    throw new Error("Server not reachable. Please ensure the backend server is running on port 5000.");
+  }
+};
+
 export const api = {
   // Auth
   login: async (email: string, password: string): Promise<{ user: User; token: string }> => {
@@ -46,8 +61,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Login failed');
+    const data = await handleResponse(res);
     
     // Store token
     localStorage.setItem('authToken', data.token);
@@ -60,8 +74,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Registration failed');
+    const data = await handleResponse(res);
     
     localStorage.setItem('authToken', data.token);
     return data;
@@ -70,8 +83,7 @@ export const api = {
   // Products
   getProducts: async (): Promise<Product[]> => {
     const res = await fetch(`${API_URL}/products`);
-    if (!res.ok) throw new Error('Failed to fetch products');
-    return res.json();
+    return handleResponse(res);
   },
 
   // Orders
@@ -88,9 +100,7 @@ export const api = {
       headers: getHeaders(),
       body: JSON.stringify({ userId, guestEmail, items: orderItems, total })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Failed to create order');
-    return data;
+    return handleResponse(res);
   },
 
   getOrders: async (userId: string, userEmail?: string): Promise<Order[]> => {
@@ -98,8 +108,7 @@ export const api = {
     if (userEmail) url += `&email=${userEmail}`;
     
     const res = await fetch(url, { headers: getHeaders() });
-    if (!res.ok) throw new Error('Failed to fetch orders');
-    return res.json();
+    return handleResponse(res);
   },
 
   // Chat
@@ -109,9 +118,7 @@ export const api = {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, history })
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Chat error');
-      return data;
+      return handleResponse(res);
   },
 
   // Admin
@@ -121,15 +128,12 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || 'Admin login failed');
-    return data;
+    return handleResponse(res);
   },
 
   getAllOrders: async (): Promise<Order[]> => {
     const res = await fetch(`${API_URL}/admin/orders`);
-    if (!res.ok) throw new Error('Failed to fetch orders');
-    return res.json();
+    return handleResponse(res);
   },
 
   updateOrderStatus: async (id: string, status: string): Promise<Order> => {
@@ -138,8 +142,6 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error('Failed to update status');
-    return data;
+    return handleResponse(res);
   }
 };

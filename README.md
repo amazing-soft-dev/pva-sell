@@ -21,8 +21,8 @@ A full-stack e-commerce application for selling Personal Verified Accounts (PVA)
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/pva-markets.git
-    cd pva-markets
+    git clone https://github.com/amazing-soft-dev/pva-sell.git
+    cd pva-sell
     ```
 
 2.  **Install Dependencies:**
@@ -56,6 +56,7 @@ Open a terminal and run:
 npm run server
 ```
 *   *Note: If MongoDB is not running, the server will log a warning and switch to In-Memory mode. Data will be lost on restart in this mode.*
+*   *Ensure the server is running on port 5000 before starting the frontend.*
 
 ### 2. Start the Frontend (Vite)
 Open a **new** terminal window and run:
