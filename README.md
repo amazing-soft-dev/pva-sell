@@ -1,93 +1,81 @@
 # Credexus Market - MERN Stack PVA Marketplace
 
-A full-stack e-commerce application for selling Personal Verified Accounts (PVA). Built with the MERN stack (MongoDB, Express, React, Node.js), this project features a modern UI, an AI-powered chatbot, an Admin Dashboard, and real-time order notifications via Telegram.
+A full-stack e-commerce application for selling Personal Verified Accounts (PVA). Built with the MERN stack (MongoDB, Express, React, Node.js).
 
-## 🚀 Features
+## 🚨 Important: Architecture Note
 
--   **Full-Stack Architecture**: React frontend (Vite) + Express/Node.js backend.
--   **Dual Database Mode**: Works with **MongoDB** (Local/Atlas) for persistence, or falls back to **In-Memory** storage if no DB is detected (great for quick testing).
--   **Admin Dashboard**: Secure panel to view orders and update statuses (`/admin`).
--   **AI Chatbot**: Integrated OpenRouter (LLM) support assistant context-aware of the product catalog.
--   **Real-time Notifications**: Telegram alerts sent to the admin when a new order is placed.
--   **Authentication**: JWT-based user registration and login.
--   **PDF Invoicing**: Auto-generated PDF invoices for customers.
+This is a **Full Stack Application**. It consists of two parts that must run simultaneously:
+1.  **Frontend**: The React UI (Vite).
+2.  **Backend**: The Node.js/Express Server (handles API, Auth, Database, Chatbot).
 
-## 🛠️ Prerequisites
+**Note on GitHub Pages Deployment:**
+GitHub Pages only hosts static files (Frontend). It **cannot** run the Node.js backend.
+*   If you deploy this to GitHub Pages, the site will load, but API calls (Login, Products, Chat) will fail unless you host the backend properly on a service like Render, Railway, or Heroku and update the API URL.
+*   **Recommendation:** For testing, run everything locally on your computer.
 
--   **Node.js** (v18 or higher recommended)
--   **MongoDB** (Optional but recommended for persistence)
+---
 
-## 📦 Installation
+## 🚀 Quick Start (Local Development)
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/amazing-soft-dev/pva-sell.git
-    cd pva-sell
-    ```
+### 1. Prerequisites
+*   Node.js (v18+)
+*   MongoDB (Optional - app will run in "Memory Mode" without it, but data resets on restart).
 
-2.  **Install Dependencies:**
-    ```bash
-    npm install
-    ```
+### 2. Install Dependencies
+```bash
+npm install
+```
 
-3.  **Environment Setup:**
-    Create a `.env` file in the root directory by copying the example:
-    ```bash
-    cp .env.example .env
-    ```
+### 3. Configure Environment
+Create a `.env` file in the root folder:
+```bash
+cp .env.example .env
+```
+*   (Optional) Update `MONGODB_URI` if you have MongoDB installed.
+*   (Optional) Add `OPENROUTER_API_KEY` for the chatbot to work.
 
-4.  **Configure `.env`:**
-    Open the `.env` file and update the values:
+### 4. Run the App (The Easy Way)
+We have added a script to run both backend and frontend in one command:
 
-    *   **Database**: Set `MONGODB_URI` to your local instance or Atlas connection string.
-    *   **AI Chat**: Add your `OPENROUTER_API_KEY`.
-    *   **Telegram**:
-        1.  Message `@BotFather` on Telegram to create a bot and get the `TELEGRAM_BOT_TOKEN`.
-        2.  Message your new bot, then visit `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates` to find your `id` (this is the `TELEGRAM_CHAT_ID`).
-    *   **Admin**: Set a secure `ADMIN_PASSWORD`.
+```bash
+npm run dev:all
+```
+*   Access App: `http://localhost:5173/pva-sell/`
+*   Backend API: `http://localhost:5000`
 
-## 🏃‍♂️ Running the Application
+---
 
-You need to run the **Backend Server** and the **Frontend Client** simultaneously.
+## 🛠️ Manual Run (Separate Terminals)
 
-### 1. Start the Backend Server
-Open a terminal and run:
+If you prefer running them separately to see logs clearly:
+
+**Terminal 1 (Backend):**
 ```bash
 npm run server
 ```
-*   *Note: If MongoDB is not running, the server will log a warning and switch to In-Memory mode. Data will be lost on restart in this mode.*
-*   *Ensure the server is running on port 5000 before starting the frontend.*
+*Wait until you see "Server running on port 5000"*
 
-### 2. Start the Frontend (Vite)
-Open a **new** terminal window and run:
+**Terminal 2 (Frontend):**
 ```bash
 npm run dev
 ```
-Access the app at `http://localhost:5173/pva-sell/`.
 
-## 🔐 Admin Access
-
-To access the order management dashboard:
-1.  Navigate to the **Home Page**.
-2.  Scroll to the **Footer**.
-3.  Click the small **"Admin"** link under the "Support" column.
-4.  Enter the password defined in your `.env` (Default: `admin123`).
+---
 
 ## 📂 Project Structure
 
-```
-├── components/       # React UI Components (Navbar, Cart, ChatBot, etc.)
-├── contexts/         # Global State (User, Cart, Theme)
-├── server/           # Backend Logic
-│   ├── server.js     # Express App, Routes, & DB Connection
-│   └── seedData.js   # Initial Product Data
-├── services/         # API Service (Fetch calls to backend)
-├── utils/            # Utilities (Router)
-├── views/            # Page Views (Home, Products, Admin, Profile)
-├── .env              # Environment Variables (Git ignored)
-└── index.tsx         # App Entry Point
-```
+*   `/server`: Node.js Express API, Database models, and Seed data.
+*   `/views`: React Pages (Home, Products, Admin, etc.).
+*   `/components`: Reusable UI components.
+*   `/services`: API fetch functions to talk to the backend.
 
-## 📜 License
+## 🔐 Admin Access
 
-This project is open-source and available under the MIT License.
+1.  Go to the website footer.
+2.  Click **"Admin"**.
+3.  Password: `admin123` (or check your `.env` file).
+
+## 💬 Notifications & Chat
+
+*   **Telegram**: Configure `TELEGRAM_BOT_TOKEN` in `.env` to receive instant order alerts.
+*   **AI Chat**: Configure `OPENROUTER_API_KEY` to enable the shopping assistant.

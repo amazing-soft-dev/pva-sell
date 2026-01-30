@@ -49,41 +49,55 @@ const handleResponse = async (res: Response) => {
     // If response is not JSON (likely HTML from 404/500/Proxy error)
     const text = await res.text();
     console.warn("Received non-JSON response:", text.substring(0, 150));
-    throw new Error("Server not reachable. Please ensure the backend server is running on port 5000.");
+    throw new Error("Server response invalid. Please check if backend is running.");
   }
+};
+
+// Wrapper to catch Network Errors (Server down)
+const fetchWithCheck = async (url: string, options: RequestInit = {}) => {
+    try {
+        const res = await fetch(url, options);
+        return handleResponse(res);
+    } catch (error: any) {
+        console.error("API Error:", error);
+        if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+            throw new Error("Backend server unreachable. Run 'npm run server' in a separate terminal.");
+        }
+        throw error;
+    }
 };
 
 export const api = {
   // Auth
   login: async (email: string, password: string): Promise<{ user: User; token: string }> => {
-    const res = await fetch(`${API_URL}/auth/login`, {
+    return fetchWithCheck(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
     });
-    const data = await handleResponse(res);
-    
-    // Store token
+    // Response handled by wrapper
+    const data = await fetchWithCheck(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    });
     localStorage.setItem('authToken', data.token);
     return data;
   },
 
   register: async (name: string, email: string, password: string): Promise<{ user: User; token: string }> => {
-    const res = await fetch(`${API_URL}/auth/register`, {
+    const data = await fetchWithCheck(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, email, password })
     });
-    const data = await handleResponse(res);
-    
     localStorage.setItem('authToken', data.token);
     return data;
   },
 
   // Products
   getProducts: async (): Promise<Product[]> => {
-    const res = await fetch(`${API_URL}/products`);
-    return handleResponse(res);
+    return fetchWithCheck(`${API_URL}/products`);
   },
 
   // Orders
@@ -95,53 +109,47 @@ export const api = {
         price: i.price
     }));
 
-    const res = await fetch(`${API_URL}/orders`, {
+    return fetchWithCheck(`${API_URL}/orders`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({ userId, guestEmail, items: orderItems, total })
     });
-    return handleResponse(res);
   },
 
   getOrders: async (userId: string, userEmail?: string): Promise<Order[]> => {
     let url = `${API_URL}/orders?userId=${userId}`;
     if (userEmail) url += `&email=${userEmail}`;
     
-    const res = await fetch(url, { headers: getHeaders() });
-    return handleResponse(res);
+    return fetchWithCheck(url, { headers: getHeaders() });
   },
 
   // Chat
   sendChatMessage: async (message: string, history: { role: string; content: string }[]) => {
-      const res = await fetch(`${API_URL}/chat`, {
+      return fetchWithCheck(`${API_URL}/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, history })
       });
-      return handleResponse(res);
   },
 
   // Admin
   adminLogin: async (password: string) => {
-    const res = await fetch(`${API_URL}/admin/login`, {
+    return fetchWithCheck(`${API_URL}/admin/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ password })
     });
-    return handleResponse(res);
   },
 
   getAllOrders: async (): Promise<Order[]> => {
-    const res = await fetch(`${API_URL}/admin/orders`);
-    return handleResponse(res);
+    return fetchWithCheck(`${API_URL}/admin/orders`);
   },
 
   updateOrderStatus: async (id: string, status: string): Promise<Order> => {
-    const res = await fetch(`${API_URL}/admin/orders/${id}`, {
+    return fetchWithCheck(`${API_URL}/admin/orders/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ status })
     });
-    return handleResponse(res);
   }
 };

@@ -87,14 +87,13 @@ const sendTelegramNotification = async (message) => {
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (!token || !chatId || chatId === 'your_chat_id_here') {
-    console.log('Telegram not configured, skipping notification.');
+    console.log('Telegram not configured, skipping notification. Check .env file.');
     return;
   }
 
   try {
     const url = `https://api.telegram.org/bot${token}/sendMessage`;
-    // Use native fetch (Node 18+)
-    await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -103,7 +102,13 @@ const sendTelegramNotification = async (message) => {
         parse_mode: 'HTML'
       })
     });
-    console.log('Telegram notification sent.');
+    
+    const result = await response.json();
+    if (!result.ok) {
+        console.error('Telegram API Error:', result);
+    } else {
+        console.log('Telegram notification sent successfully.');
+    }
   } catch (err) {
     console.error('Telegram notification error:', err);
   }
@@ -247,7 +252,19 @@ app.post('/api/orders', async (req, res) => {
     }
 
     // --- TELEGRAM NOTIFICATION ---
-    const customer = guestEmail || 'Registered User';
+    let customer = guestEmail;
+    if (!customer && userId) {
+        // Try to find user email if not provided as guest
+        if (isMongoConnected) {
+            const user = await User.findById(userId);
+            if (user) customer = user.email;
+        } else {
+            const user = memoryUsers.find(u => u._id === userId);
+            if (user) customer = user.email;
+        }
+    }
+    customer = customer || 'Unknown User';
+
     const itemsList = items.map(i => `${i.quantity}x ${i.title}`).join(', ');
     
     const message = `
@@ -255,10 +272,11 @@ app.post('/api/orders', async (req, res) => {
 📦 ID: <code>${savedOrder.id}</code>
 👤 Customer: ${customer}
 📋 Items: ${itemsList}
-💰 Total: <b>$${total}</b>
+💰 Total: <b>$${total.toFixed(2)}</b>
     `;
     
-    await sendTelegramNotification(message);
+    // Non-blocking notification
+    sendTelegramNotification(message);
     // -----------------------------
 
     res.json(savedOrder);
