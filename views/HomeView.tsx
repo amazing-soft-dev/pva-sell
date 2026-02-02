@@ -55,7 +55,7 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 id="why-us-heading" className="text-3xl font-black text-gray-900 dark:text-white tracking-tight sm:text-4xl mb-4">
-              Why Buy PVA Accounts From Us?
+              Why Buy Phone Verified Accounts From Us?
             </h2>
             <div className="w-20 h-1.5 bg-brand-600 mx-auto rounded-full"></div>
             <p className="mt-4 text-gray-500 dark:text-slate-400 max-w-2xl mx-auto">
@@ -79,10 +79,10 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
       {/* Quick FAQ / SEO Content Section */}
       <section className="bg-gray-50 dark:bg-slate-950 py-16 sm:py-24 border-t border-gray-100 dark:border-slate-800">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
-              <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-8 text-center uppercase tracking-widest">PVA Account Insights</h2>
+              <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-8 text-center uppercase tracking-widest">PVA Insights</h2>
               <article className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed text-gray-600 dark:text-slate-400 font-medium">
                   <div>
-                      <h3 className="font-bold text-gray-900 dark:text-white mb-2 text-lg">What is a Verified PVA Account?</h3>
+                      <h3 className="font-bold text-gray-900 dark:text-white mb-2 text-lg">What is a Phone Verified Account (PVA)?</h3>
                       <p>PVA stands for Phone Verified Account. These accounts are verified using a unique, real SIM card number. This makes them significantly more stable and resistant to security bans compared to email-only accounts on platforms like LinkedIn, Upwork, and PayPal.</p>
                   </div>
                   <div>

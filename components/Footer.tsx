@@ -91,14 +91,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button 
                   onClick={openChat} 
-                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left"
+                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left h-auto p-0 bg-none border-none"
                 >
                   Live Chat
                 </button>
               </li>
               <li><a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
               <li>
-                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xs">
+                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 h-auto p-0 bg-none border-none">
                   Admin
                 </button>
               </li>

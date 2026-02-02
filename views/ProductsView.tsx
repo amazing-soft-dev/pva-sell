@@ -96,7 +96,7 @@ export const ProductsView = () => {
       
       <header className="text-center mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">
-          PVA Account <span className="text-brand-600">Marketplace</span>
+          Phone Verified Account <span className="text-brand-600">Marketplace</span>
         </h1>
         <p className="text-sm sm:text-lg text-gray-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed px-4">
           Discover high-trust accounts optimized for stability. Instant delivery and 72-hour protection on every purchase.
