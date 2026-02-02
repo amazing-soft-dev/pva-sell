@@ -14,9 +14,9 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
   return (
     <article className="animate-fade-in">
       <SEO 
-        title="Buy Verified PVA Accounts | LinkedIn, Upwork, PayPal"
-        description="Credexus Market is the #1 platform to buy aged and verified accounts (PVA) for LinkedIn, Upwork, PayPal, and more. Instant delivery and 100% replacement guarantee."
-        keywords="buy pva accounts, verified linkedin account for sale, aged upwork account, verified paypal account, buy discord pva, buy aged telegram accounts, us pva accounts"
+        title="Buy Phone Verified Accounts (PVA) | LinkedIn, Upwork, PayPal"
+        description="Credexus Market is the #1 platform to buy aged and verified accounts for LinkedIn, Upwork, PayPal, and more. Instant delivery and 100% replacement guarantee."
+        keywords="buy phone verified accounts, verified linkedin account for sale, aged upwork account, verified paypal account, buy discord pva, buy aged telegram accounts, us pva marketplace"
       />
       
       {/* Hero Section - Semantic Header */}
