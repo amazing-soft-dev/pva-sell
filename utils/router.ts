@@ -3,9 +3,8 @@ import { useState, useEffect } from 'react';
 export type ViewState = 'home' | 'profile' | 'products' | 'whyus' | 'admin';
 
 export const useRouter = () => {
-  // Get the base URL safely. Vite replaces import.meta.env.BASE_URL at build time.
-  // We use optional chaining and a fallback in case the replacement doesn't happen or env is undefined.
-  const baseUrl = (import.meta as any).env?.BASE_URL || '/pva-sell/';
+  // Get the base URL safely using the now properly typed import.meta.env
+  const baseUrl = import.meta.env?.BASE_URL || '/pva-sell/';
 
   const getRoute = (): ViewState => {
     let path = window.location.pathname;

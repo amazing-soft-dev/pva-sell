@@ -48,6 +48,12 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  contacts: {
+    telegram: String,
+    discord: String,
+    whatsapp: String,
+    other: String
+  },
   date: { type: Date, default: Date.now }
 });
 
@@ -63,7 +69,12 @@ const productSchema = new mongoose.Schema({
 
 const orderSchema = new mongoose.Schema({
   userId: String,
-  guestEmail: String,
+  contactDetails: {
+    telegram: String,
+    discord: String,
+    whatsapp: String,
+    other: String
+  },
   items: [{
     productId: String,
     title: String,
@@ -127,7 +138,7 @@ app.get('/', (req, res) => {
 // 1. Auth
 app.post('/api/auth/register', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, contacts } = req.body;
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -135,17 +146,17 @@ app.post('/api/auth/register', async (req, res) => {
       let user = await User.findOne({ email });
       if (user) return res.status(400).json({ message: 'User already exists' });
 
-      user = new User({ name, email, password: hashedPassword });
+      user = new User({ name, email, password: hashedPassword, contacts });
       await user.save();
 
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'default', { expiresIn: '7d' });
-      res.json({ token, user: { id: user._id, name, email } });
+      res.json({ token, user: { id: user._id, name, email, contacts } });
     } else {
       if (memoryUsers.find(u => u.email === email)) return res.status(400).json({ message: 'User exists' });
-      const newUser = { _id: Date.now().toString(), name, email, password: hashedPassword };
+      const newUser = { _id: Date.now().toString(), name, email, password: hashedPassword, contacts };
       memoryUsers.push(newUser);
       const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET || 'default', { expiresIn: '7d' });
-      res.json({ token, user: { id: newUser._id, name, email } });
+      res.json({ token, user: { id: newUser._id, name, email, contacts } });
     }
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
@@ -168,7 +179,7 @@ app.post('/api/auth/login', async (req, res) => {
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
     const token = jwt.sign({ id: user._id || user._id }, process.env.JWT_SECRET || 'default', { expiresIn: '7d' });
-    res.json({ token, user: { id: user._id || user._id, name: user.name, email } });
+    res.json({ token, user: { id: user._id || user._id, name: user.name, email, contacts: user.contacts } });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -190,10 +201,18 @@ app.get('/api/admin/orders', async (req, res) => {
   try {
     if (isMongoConnected) {
       const orders = await Order.find().sort({ date: -1 });
-      const formatted = orders.map(o => ({ ...o._doc, id: o._id.toString() }));
+      const formatted = orders.map(o => ({ 
+          ...o._doc, 
+          id: o._id.toString(),
+          guestEmail: o.contactDetails ? (o.contactDetails.telegram || 'Guest') : o.guestEmail // Backwards compatibility/Visual
+      }));
       res.json(formatted);
     } else {
-      const formatted = memoryOrders.map(o => ({ ...o, id: o._id }));
+      const formatted = memoryOrders.map(o => ({ 
+          ...o, 
+          id: o._id,
+          guestEmail: o.contactDetails ? (o.contactDetails.telegram || 'Guest') : o.guestEmail
+      }));
       res.json(formatted);
     }
   } catch (err) {
@@ -242,9 +261,21 @@ app.get('/api/products', async (req, res) => {
 // 4. Orders
 app.post('/api/orders', async (req, res) => {
   try {
-    const { userId, guestEmail, items, total } = req.body;
+    const { userId, contactDetails, items, total } = req.body;
     
-    let newOrderData = { userId, guestEmail, items, total, status: 'pending', date: new Date() };
+    // Auto-fill contacts from User if not provided (for logged in users)
+    let finalContacts = contactDetails;
+    if (userId && (!finalContacts || !finalContacts.telegram)) {
+        let user;
+        if (isMongoConnected) user = await User.findById(userId);
+        else user = memoryUsers.find(u => u._id === userId);
+        
+        if (user && user.contacts) {
+            finalContacts = user.contacts;
+        }
+    }
+
+    let newOrderData = { userId, contactDetails: finalContacts, items, total, status: 'pending', date: new Date() };
     let savedOrder;
 
     if (isMongoConnected) {
@@ -257,20 +288,28 @@ app.post('/api/orders', async (req, res) => {
       savedOrder = { ...newOrderData, id: newOrderData._id };
     }
 
-    // Notify
-    let customer = guestEmail;
-    if (!customer && userId) {
-        if (isMongoConnected) {
-            const user = await User.findById(userId);
-            if (user) customer = user.email;
-        } else {
-            const user = memoryUsers.find(u => u._id === userId);
-            if (user) customer = user.email;
-        }
-    }
-    customer = customer || 'Unknown User';
-    const itemsList = items.map(i => `${i.quantity}x ${i.title}`).join(', ');
-    const message = `🎉 NEW ORDER! ID: ${savedOrder.id}, Customer: ${customer}, Total: $${total.toFixed(2)}`;
+    // Build Telegram Notification Message
+    const telegram = finalContacts?.telegram ? `@${finalContacts.telegram.replace('@', '')}` : 'N/A';
+    const discord = finalContacts?.discord ? finalContacts.discord : 'N/A';
+    const whatsapp = finalContacts?.whatsapp ? finalContacts.whatsapp : 'N/A';
+    const other = finalContacts?.other ? finalContacts.other : 'N/A';
+    
+    // Construct HTML message
+    const message = `
+<b>🎉 NEW ORDER!</b>
+<b>ID:</b> <code>${savedOrder.id}</code>
+<b>Total:</b> $${total.toFixed(2)}
+
+<b>👤 Contact Details:</b>
+<b>Telegram:</b> ${telegram}
+<b>Discord:</b> ${discord}
+<b>WhatsApp:</b> ${whatsapp}
+${other !== 'N/A' ? `<b>Other:</b> ${other}` : ''}
+
+<b>🛒 Items:</b>
+${items.map(i => `- ${i.quantity}x ${i.title}`).join('\n')}
+    `.trim();
+
     sendTelegramNotification(message);
 
     res.json(savedOrder);
@@ -282,17 +321,14 @@ app.post('/api/orders', async (req, res) => {
 
 app.get('/api/orders', async (req, res) => {
   try {
-    const { userId, email } = req.query;
+    const { userId } = req.query;
     if (isMongoConnected) {
-      let query = {};
-      if (userId && email) query = { $or: [{ userId }, { guestEmail: email }] };
-      else if (userId) query = { userId };
-      else if (email) query = { guestEmail: email };
-      else return res.json([]);
-      const orders = await Order.find(query).sort({ date: -1 });
+      // Allow users to see their orders based on ID
+      if (!userId) return res.json([]);
+      const orders = await Order.find({ userId }).sort({ date: -1 });
       res.json(orders.map(o => ({ ...o._doc, id: o._id.toString() })));
     } else {
-      const orders = memoryOrders.filter(o => (userId && o.userId === userId) || (email && o.guestEmail === email));
+      const orders = memoryOrders.filter(o => userId && o.userId === userId);
       res.json(orders.map(o => ({ ...o, id: o._id })));
     }
   } catch (err) {

@@ -1,14 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Buy fully verified PVA accounts for LinkedIn, Upwork, PayPal, and social media. Instant delivery, secure payments, and 3-day replacement warranty at Credexus Market." />
-    <meta name="keywords" content="buy verified accounts, PVA marketplace, linkedin accounts, upwork accounts, paypal verification" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
+    
+    <!-- Primary Meta Tags -->
+    <title>Buy Verified PVA Accounts | LinkedIn, Upwork, PayPal | Credexus</title>
+    <meta name="title" content="Buy Verified PVA Accounts | LinkedIn, Upwork, PayPal | Credexus">
+    <meta name="description" content="The #1 Marketplace to buy aged and verified PVA accounts. Secure, instant delivery for LinkedIn, Upwork, PayPal, and more. 72-hour replacement guarantee.">
+    <meta name="keywords" content="buy pva accounts, verified linkedin accounts, aged upwork accounts, buy paypal verification, pva marketplace, social media accounts for sale">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="author" content="Credexus Market">
     <meta name="theme-color" content="#0ea5e9" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://amazing-soft-dev.github.io/pva-sell/">
+    <meta property="og:title" content="Buy Verified PVA Accounts | Credexus Market">
+    <meta property="og:description" content="Secure marketplace for aged and verified accounts. LinkedIn, Upwork, Payment Gateways & more. Instant delivery.">
+    <meta property="og:image" content="https://amazing-soft-dev.github.io/pva-sell/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://amazing-soft-dev.github.io/pva-sell/">
+    <meta property="twitter:title" content="Buy Verified PVA Accounts | Credexus Market">
+    <meta property="twitter:description" content="Secure marketplace for aged and verified accounts. LinkedIn, Upwork, Payment Gateways & more. Instant delivery.">
+    <meta property="twitter:image" content="https://amazing-soft-dev.github.io/pva-sell/og-image.png">
+    
+    <!-- Performance Optimizations -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>Buy Verified Accounts (PVA) | Credexus Market</title>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -28,21 +56,74 @@
                 500: '#f59e0b',
                 600: '#d97706',
               }
+            },
+            animation: {
+              'shake': 'shake 0.82s cubic-bezier(.36,.07,.19,.97) both',
+              'fade-in': 'fadeIn 0.5s ease-out forwards',
+              'slide-in-right': 'slideInRight 0.3s ease-out forwards',
+            },
+            keyframes: {
+              shake: {
+                '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                '40%, 60%': { transform: 'translate3d(4px, 0, 0)' },
+              },
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideInRight: {
+                '0%': { transform: 'translateX(100%)' },
+                '100%': { transform: 'translateX(0)' },
+              }
             }
           }
         }
       }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-      body { font-family: 'Inter', sans-serif; }
-      .glass-panel {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
+      :root {
+        --brand-blue: #0ea5e9;
       }
-      .dark .glass-panel {
-        background: rgba(15, 23, 42, 0.95);
+      body { 
+        font-family: 'Inter', sans-serif; 
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+      
+      /* Mobile optimization */
+      nav button { -webkit-tap-highlight-color: transparent; }
+      .hide-scrollbar::-webkit-scrollbar { display: none; }
+      .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+      /* Fluid Typography */
+      h1 { font-size: clamp(1.875rem, 5vw, 4rem); }
+      p { font-size: clamp(0.875rem, 2vw, 1.125rem); }
+
+      /* Touch Target Fixes */
+      button, a {
+        min-height: 44px;
+        min-width: 44px;
+      }
+
+      /* Transitions */
+      .transition-all { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+      /* Skeleton Effect */
+      @keyframes skeleton-loading {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+      }
+      .skeleton {
+          background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+          background-size: 200% 100%;
+          animation: skeleton-loading 1.5s infinite;
+      }
+      .dark .skeleton {
+          background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+          background-size: 200% 100%;
       }
     </style>
   <script type="importmap">
@@ -68,7 +149,7 @@
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200">
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 antialiased overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

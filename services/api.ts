@@ -1,8 +1,16 @@
 // Types
+export interface ContactDetails {
+  telegram: string;
+  discord?: string;
+  whatsapp?: string;
+  other?: string;
+}
+
 export interface User {
   id: string;
   email: string;
   name: string;
+  contacts?: ContactDetails;
 }
 
 export interface Product {
@@ -19,7 +27,8 @@ export interface Product {
 export interface Order {
   id: string;
   userId: string | null;
-  guestEmail?: string;
+  contactDetails?: ContactDetails; // Replaces guestEmail as primary contact info
+  guestEmail?: string; // Added for backward compatibility/admin view display
   items: { productId: string; title: string; quantity: number; price: number }[];
   total: number;
   date: string;
@@ -28,17 +37,16 @@ export interface Order {
 
 // ENVIRONMENT CONFIGURATION
 const getBaseUrl = () => {
-  // 1. Check if VITE_API_URL is set.
-  // We check import.meta.env (standard Vite) AND process.env (injected via vite.config.ts define)
-  // This ensures that even if one method fails during the GH Actions build, the other might catch it.
-  let url = import.meta.env.VITE_API_URL || (process.env.VITE_API_URL as string);
+  // 1. Try safe access to import.meta.env
+  let url = import.meta.env?.VITE_API_URL;
 
-  // 2. Fallback for local development (uses Vite proxy pointing to localhost:5000)
+  // 2. Fallback to global constant injected by Vite define
+  if (!url && typeof __API_URL__ !== 'undefined') {
+    url = __API_URL__;
+  }
+
+  // 3. Fallback for local development (uses Vite proxy pointing to localhost:5000)
   if (!url) {
-    // If we are in production (e.g. GitHub Pages) and url is missing, this is critical.
-    if (import.meta.env.PROD) {
-      console.error("CRITICAL: VITE_API_URL is missing in production build. API calls will fail (404).");
-    }
     url = '/api';
   }
 
@@ -47,10 +55,25 @@ const getBaseUrl = () => {
     url = url.slice(0, -1);
   }
   
+  // Debug log to verify URL in production
+  console.log('[API] Base URL configured as:', url);
+  
   return url;
 };
 
-const BASE_URL = getBaseUrl();
+let BASE_URL = getBaseUrl();
+
+export const apiConfig = {
+  getUrl: () => BASE_URL,
+  setUrl: (url: string) => {
+    BASE_URL = url.endsWith('/') ? url.slice(0, -1) : url;
+    console.log('[API] URL updated to:', BASE_URL);
+  },
+  resetUrl: () => {
+    BASE_URL = getBaseUrl();
+    console.log('[API] URL reset to:', BASE_URL);
+  }
+};
 
 const getHeaders = () => {
   const token = localStorage.getItem('authToken');
@@ -117,6 +140,7 @@ const handleResponse = async (res: Response, url: string) => {
 const fetchWithCheck = async (endpoint: string, options: RequestInit = {}) => {
     // Ensure endpoint starts with /
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    // Use dynamic BASE_URL
     const url = `${BASE_URL}${cleanEndpoint}`;
 
     try {
@@ -147,11 +171,11 @@ export const api = {
     return data;
   },
 
-  register: async (name: string, email: string, password: string): Promise<{ user: User; token: string }> => {
+  register: async (name: string, email: string, password: string, contacts: ContactDetails): Promise<{ user: User; token: string }> => {
     const data = await fetchWithCheck(`/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
+      body: JSON.stringify({ name, email, password, contacts })
     });
     if (data.token) {
         localStorage.setItem('authToken', data.token);
@@ -165,7 +189,7 @@ export const api = {
   },
 
   // Orders
-  createOrder: async (userId: string | null, items: any[], total: number, guestEmail?: string): Promise<Order> => {
+  createOrder: async (userId: string | null, items: any[], total: number, contactDetails?: ContactDetails): Promise<Order> => {
     const orderItems = items.map(i => ({
         productId: i.id,
         title: i.title,
@@ -176,14 +200,12 @@ export const api = {
     return fetchWithCheck(`/orders`, {
       method: 'POST',
       headers: getHeaders(),
-      body: JSON.stringify({ userId, guestEmail, items: orderItems, total })
+      body: JSON.stringify({ userId, contactDetails, items: orderItems, total })
     });
   },
 
-  getOrders: async (userId: string, userEmail?: string): Promise<Order[]> => {
+  getOrders: async (userId: string): Promise<Order[]> => {
     let query = `?userId=${userId}`;
-    if (userEmail) query += `&email=${userEmail}`;
-    
     return fetchWithCheck(`/orders${query}`, { headers: getHeaders() });
   },
 

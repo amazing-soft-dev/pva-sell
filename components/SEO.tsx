@@ -6,6 +6,7 @@ interface SEOProps {
   keywords?: string;
   canonicalUrl?: string;
   ogType?: 'website' | 'article' | 'product';
+  ogImage?: string;
   schema?: object;
 }
 
@@ -15,17 +16,18 @@ export const SEO: React.FC<SEOProps> = ({
   keywords,
   canonicalUrl,
   ogType = 'website',
+  ogImage = '/og-image.png',
   schema
 }) => {
   const siteName = 'Credexus Market';
-  const domain = 'https://credexus.com'; // Replace with actual domain in production
+  const domain = 'https://amazing-soft-dev.github.io/pva-sell';
   const fullUrl = canonicalUrl ? `${domain}${canonicalUrl}` : window.location.href;
 
   useEffect(() => {
-    // Update Title
-    document.title = title;
+    // 1. Title
+    document.title = `${title} | ${siteName}`;
     
-    // Update Meta Tags
+    // Helper to efficiently update or create meta tags
     const updateMeta = (name: string, content: string, attribute = 'name') => {
       let element = document.querySelector(`meta[${attribute}="${name}"]`);
       if (!element) {
@@ -36,23 +38,27 @@ export const SEO: React.FC<SEOProps> = ({
       element.setAttribute('content', content);
     };
 
+    // 2. Basic Meta
     updateMeta('description', description);
-    updateMeta('keywords', keywords || 'PVA accounts, verified accounts, buy linkedin, buy upwork, buy payment accounts, digital marketplace');
-    updateMeta('robots', 'index, follow');
+    updateMeta('keywords', keywords || 'buy pva accounts, verified linkedin, aged upwork, paypal verified, buy verified accounts, credexus');
+    updateMeta('author', 'Credexus Market');
+    updateMeta('robots', 'index, follow, max-image-preview:large');
 
-    // Open Graph
+    // 3. Open Graph
     updateMeta('og:title', title, 'property');
     updateMeta('og:description', description, 'property');
     updateMeta('og:type', ogType, 'property');
     updateMeta('og:url', fullUrl, 'property');
     updateMeta('og:site_name', siteName, 'property');
+    updateMeta('og:image', `${domain}${ogImage}`, 'property');
 
-    // Twitter Card
+    // 4. Twitter
     updateMeta('twitter:card', 'summary_large_image', 'name');
     updateMeta('twitter:title', title, 'name');
     updateMeta('twitter:description', description, 'name');
+    updateMeta('twitter:image', `${domain}${ogImage}`, 'name');
 
-    // Canonical Link
+    // 5. Canonical Link
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) {
       link = document.createElement('link');
@@ -61,21 +67,63 @@ export const SEO: React.FC<SEOProps> = ({
     }
     link.setAttribute('href', fullUrl);
 
-    // JSON-LD Structured Data
-    if (schema) {
-      let script = document.querySelector('#structured-data');
-      if (!script) {
-        script = document.createElement('script');
-        script.id = 'structured-data';
-        script.setAttribute('type', 'application/ld+json');
-        document.head.appendChild(script);
-      }
-      script.textContent = JSON.stringify(schema);
+    // 6. JSON-LD Structured Data
+    const scriptId = 'structured-data-script';
+    let script = document.getElementById(scriptId) as HTMLScriptElement;
+    if (!script) {
+      script = document.createElement('script');
+      script.id = scriptId;
+      script.type = 'application/ld+json';
+      document.head.appendChild(script);
     }
 
-    // Cleanup function not strictly necessary for single page apps navigating forward, 
-    // but good practice if unmounting completely.
-  }, [title, description, keywords, fullUrl, ogType, schema]);
+    // Default Organization Schema
+    const baseSchema = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": siteName,
+      "url": domain,
+      "logo": `${domain}/logo.png`,
+      "sameAs": [
+        "https://t.me/credexusmarket",
+        "https://x.com/credexus"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "customer service",
+        "url": `${domain}/whyus`
+      }
+    };
+
+    // Breadcrumbs
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": domain
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": title,
+          "item": fullUrl
+        }
+      ]
+    };
+
+    // Merge provided schema with defaults
+    const jsonLdData = [baseSchema, breadcrumbSchema];
+    if (schema) {
+      jsonLdData.push(schema as any);
+    }
+
+    script.textContent = JSON.stringify(jsonLdData);
+
+  }, [title, description, keywords, fullUrl, ogType, ogImage, schema]);
 
   return null;
 };

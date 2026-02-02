@@ -1,11 +1,13 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
-import { api, Product, User } from '../services/api';
+import { api, Product, User, ContactDetails } from '../services/api';
+import { CustomAlert } from '../components/CustomAlert';
 
 export interface CartItem extends Product {
   quantity: number;
 }
 
 export type Theme = 'light' | 'dark';
+export type AlertType = 'success' | 'error' | 'info';
 
 interface AppContextType {
   user: User | null;
@@ -15,16 +17,17 @@ interface AppContextType {
   theme: Theme;
   isChatOpen: boolean;
   login: (email: string, pass: string) => Promise<void>;
-  register: (name: string, email: string, pass: string) => Promise<void>;
+  register: (name: string, email: string, pass: string, contacts: ContactDetails) => Promise<void>;
   logout: () => void;
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
-  checkout: (guestEmail?: string) => Promise<void>;
+  checkout: (contactDetails?: ContactDetails) => Promise<void>;
   toggleTheme: () => void;
   openChat: () => void;
   closeChat: () => void;
   toggleChat: () => void;
+  showAlert: (message: string, type?: AlertType) => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null);
@@ -36,6 +39,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState<Theme>('light');
   const [isChatOpen, setIsChatOpen] = useState(false);
+  
+  // Alert State
+  const [alertState, setAlertState] = useState<{ isOpen: boolean; message: string; type: AlertType }>({
+    isOpen: false,
+    message: '',
+    type: 'info'
+  });
 
   // Initialize theme
   useEffect(() => {
@@ -98,10 +108,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
-  const register = async (name: string, email: string, pass: string) => {
+  const register = async (name: string, email: string, pass: string, contacts: ContactDetails) => {
     setIsLoading(true);
     try {
-      const { user: u } = await api.register(name, email, pass);
+      const { user: u } = await api.register(name, email, pass, contacts);
       setUser(u);
       localStorage.setItem('currentUser', JSON.stringify(u));
     } finally {
@@ -131,16 +141,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const clearCart = () => setCart([]);
 
-  const checkout = async (guestEmail?: string) => {
-    if (!user && !guestEmail) throw new Error("Email required for checkout");
+  const checkout = async (contactDetails?: ContactDetails) => {
+    // Validation handled by caller or API, but ensure we have something
+    if (!user && !contactDetails) throw new Error("Contact details required for checkout");
     
     setIsLoading(true);
     try {
       const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const userId = user ? user.id : null;
-      const email = user ? user.email : guestEmail;
+      // If user is logged in, we try to use their stored contacts (handled in backend if contactDetails is missing)
+      // If guest, contactDetails is mandatory
       
-      await api.createOrder(userId, cart, total, email);
+      await api.createOrder(userId, cart, total, contactDetails);
       clearCart();
     } finally {
       setIsLoading(false);
@@ -151,14 +163,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const closeChat = () => setIsChatOpen(false);
   const toggleChat = () => setIsChatOpen(prev => !prev);
 
+  const showAlert = (message: string, type: AlertType = 'info') => {
+    setAlertState({ isOpen: true, message, type });
+  };
+
+  const closeAlert = () => {
+    setAlertState(prev => ({ ...prev, isOpen: false }));
+  };
+
   return (
     <AppContext.Provider value={{ 
       user, products, cart, isLoading, theme, isChatOpen,
       login, register, logout, 
       addToCart, removeFromCart, clearCart, checkout, toggleTheme,
-      openChat, closeChat, toggleChat
+      openChat, closeChat, toggleChat,
+      showAlert
     }}>
       {children}
+      <CustomAlert 
+        isOpen={alertState.isOpen}
+        message={alertState.message}
+        type={alertState.type}
+        onClose={closeAlert}
+      />
     </AppContext.Provider>
   );
 };

@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, (process as any).cwd(), '');
   
   return {
     plugins: [react()],
@@ -22,8 +22,8 @@ export default defineConfig(({ mode }) => {
     define: {
       // API Keys are now handled in backend, but keeping this if needed for other env vars
       'process.env.API_KEY': JSON.stringify(env.API_KEY),
-      // Explicitly define VITE_API_URL to ensure it's available in the client build
-      'process.env.VITE_API_URL': JSON.stringify(env.VITE_API_URL)
+      // Define a global constant for the API URL to avoid process.env access issues in browser
+      '__API_URL__': JSON.stringify(env.VITE_API_URL || '') 
     }
   };
 });

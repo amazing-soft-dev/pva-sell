@@ -14,7 +14,7 @@ export const ProfileView = () => {
     const fetchOrders = async () => {
       if (user) {
         try {
-          const data = await api.getOrders(user.id, user.email);
+          const data = await api.getOrders(user.id);
           setOrders(data);
         } catch (e) {
           console.error("Failed to fetch orders", e);

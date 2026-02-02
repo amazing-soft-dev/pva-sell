@@ -16,6 +16,24 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     if (onNavigate) onNavigate(view);
   };
 
+  const handleCategoryNav = (e: React.MouseEvent, category: string) => {
+    e.preventDefault();
+    
+    // Set query param for ProductsView
+    const url = new URL(window.location.href);
+    url.searchParams.set('category', category);
+    window.history.pushState({}, '', url.toString());
+
+    // Navigate to products view if not there
+    if (onNavigate) onNavigate('products');
+
+    // Dispatch event to notify ProductsView if it is already mounted
+    window.dispatchEvent(new Event('categoryChange'));
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <footer className="bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 pt-16 pb-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -31,6 +49,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   alt="Credexus Market" 
                   className="h-10 w-auto object-contain"
                   onError={() => setLogoError(true)}
+                  loading="lazy"
                 />
               ) : (
                 <div className="flex items-center gap-2">
@@ -49,10 +68,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h4 className="font-bold text-gray-900 dark:text-white mb-4">Marketplace</h4>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-slate-400">
-              <li><a href="/products" onClick={(e) => handleNav(e, 'products')} className="hover:text-brand-600 dark:hover:text-brand-400">Social Media</a></li>
-              <li><a href="/products" onClick={(e) => handleNav(e, 'products')} className="hover:text-brand-600 dark:hover:text-brand-400">Payment Accounts</a></li>
-              <li><a href="/products" onClick={(e) => handleNav(e, 'products')} className="hover:text-brand-600 dark:hover:text-brand-400">Freelance</a></li>
-              <li><a href="/products" onClick={(e) => handleNav(e, 'products')} className="hover:text-brand-600 dark:hover:text-brand-400">VPN & Security</a></li>
+              <li><a href="/products?category=Social Media" onClick={(e) => handleCategoryNav(e, 'Social Media')} className="hover:text-brand-600 dark:hover:text-brand-400">Social Media</a></li>
+              <li><a href="/products?category=Payment" onClick={(e) => handleCategoryNav(e, 'Payment')} className="hover:text-brand-600 dark:hover:text-brand-400">Payment Accounts</a></li>
+              <li><a href="/products?category=Freelance" onClick={(e) => handleCategoryNav(e, 'Freelance')} className="hover:text-brand-600 dark:hover:text-brand-400">Freelance</a></li>
+              <li><a href="/products?category=VPN & Security" onClick={(e) => handleCategoryNav(e, 'VPN & Security')} className="hover:text-brand-600 dark:hover:text-brand-400">VPN & Security</a></li>
             </ul>
           </div>
           
@@ -60,7 +79,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <h4 className="font-bold text-gray-900 dark:text-white mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-slate-400">
               <li><a href="/whyus" onClick={(e) => handleNav(e, 'whyus')} className="hover:text-brand-600 dark:hover:text-brand-400">Why Choose Us</a></li>
-              <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Reviews</a></li>
+              <li><a href="/whyus" onClick={(e) => handleNav(e, 'whyus')} className="hover:text-brand-600 dark:hover:text-brand-400">Reviews</a></li>
               <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</a></li>
               <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Terms of Service</a></li>
             </ul>
@@ -77,8 +96,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   Live Chat
                 </button>
               </li>
-              <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Help Center</a></li>
-              <li><a href="mailto:support@credexus.com" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
+              <li><a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
               <li>
                 <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-xs">
                   Admin
@@ -89,7 +107,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <a href="https://x.com/credexus" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="X (Twitter)">
                 <i className="fa-brands fa-x-twitter text-xl"></i>
               </a>
-              <a href="https://t.me/credexusmarket" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="Telegram">
+              <a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="Telegram">
                 <i className="fa-brands fa-telegram text-xl"></i>
               </a>
               <a href="https://discord.gg/46uhGrSS" target="_blank" rel="noopener noreferrer" className="text-gray-400 dark:text-slate-500 hover:text-brand-600 dark:hover:text-brand-400" aria-label="Discord">

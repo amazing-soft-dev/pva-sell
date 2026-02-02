@@ -1,44 +1,11 @@
-// Manually define Vite types to avoid "Cannot find type definition file" error
+// Manual definitions for Vite environment variables to fix the 'Cannot find type definition file for vite/client' error
 interface ImportMetaEnv {
-  readonly BASE_URL: string;
-  readonly MODE: string;
-  readonly DEV: boolean;
-  readonly PROD: boolean;
-  readonly SSR: boolean;
   readonly VITE_API_URL: string;
-  [key: string]: any;
+  readonly BASE_URL: string;
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-declare module '*.svg' {
-  const content: string;
-  export default content;
-}
-
-declare module '*.png' {
-  const content: string;
-  export default content;
-}
-
-declare module '*.jpg' {
-  const content: string;
-  export default content;
-}
-
-declare module '*.jpeg' {
-  const content: string;
-  export default content;
-}
-
-declare module '*.gif' {
-  const content: string;
-  export default content;
-}
-
-declare module '*.webp' {
-  const content: string;
-  export default content;
-}
+declare const __API_URL__: string;
