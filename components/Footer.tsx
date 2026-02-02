@@ -14,23 +14,40 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const handleNav = (e: React.MouseEvent, view: ViewState) => {
     e.preventDefault();
     if (onNavigate) onNavigate(view);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleScrollNav = (e: React.MouseEvent, view: ViewState, sectionId: string) => {
+    e.preventDefault();
+    if (onNavigate) onNavigate(view);
+    
+    // Add a small delay to allow the view to mount before scrolling
+    setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 150);
   };
 
   const handleCategoryNav = (e: React.MouseEvent, category: string) => {
     e.preventDefault();
     
-    // Set query param for ProductsView
-    const url = new URL(window.location.href);
-    url.searchParams.set('category', category);
-    window.history.pushState({}, '', url.toString());
-
-    // Navigate to products view if not there
+    // 1. Navigate to products view first (this sets URL to /products)
     if (onNavigate) onNavigate('products');
 
-    // Dispatch event to notify ProductsView if it is already mounted
+    // 2. Now update the URL with the query param on the new view
+    const url = new URL(window.location.href);
+    url.searchParams.set('category', category);
+    
+    // Use replaceState to update the current history entry created by onNavigate
+    // This ensures we land on /products?category=X without an intermediate /products history state
+    window.history.replaceState({}, '', url.toString());
+
+    // 3. Dispatch event to notify ProductsView if it is already mounted or mounting
     window.dispatchEvent(new Event('categoryChange'));
     
-    // Scroll to top
+    // 4. Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -68,20 +85,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h4 className="font-bold text-gray-900 dark:text-white mb-4">Marketplace</h4>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-slate-400">
-              <li><a href="/products?category=Social Media" onClick={(e) => handleCategoryNav(e, 'Social Media')} className="hover:text-brand-600 dark:hover:text-brand-400">Social Media</a></li>
-              <li><a href="/products?category=Payment" onClick={(e) => handleCategoryNav(e, 'Payment')} className="hover:text-brand-600 dark:hover:text-brand-400">Payment Accounts</a></li>
-              <li><a href="/products?category=Freelance" onClick={(e) => handleCategoryNav(e, 'Freelance')} className="hover:text-brand-600 dark:hover:text-brand-400">Freelance</a></li>
-              <li><a href="/products?category=VPN & Security" onClick={(e) => handleCategoryNav(e, 'VPN & Security')} className="hover:text-brand-600 dark:hover:text-brand-400">VPN & Security</a></li>
+              <li><a href="/pva-sell/products?category=Social Media" onClick={(e) => handleCategoryNav(e, 'Social Media')} className="hover:text-brand-600 dark:hover:text-brand-400">Social Media</a></li>
+              <li><a href="/pva-sell/products?category=Payment" onClick={(e) => handleCategoryNav(e, 'Payment')} className="hover:text-brand-600 dark:hover:text-brand-400">Payment Accounts</a></li>
+              <li><a href="/pva-sell/products?category=Freelance" onClick={(e) => handleCategoryNav(e, 'Freelance')} className="hover:text-brand-600 dark:hover:text-brand-400">Freelance</a></li>
+              <li><a href="/pva-sell/products?category=VPN & Security" onClick={(e) => handleCategoryNav(e, 'VPN & Security')} className="hover:text-brand-600 dark:hover:text-brand-400">VPN & Security</a></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-bold text-gray-900 dark:text-white mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-slate-400">
-              <li><a href="/whyus" onClick={(e) => handleNav(e, 'whyus')} className="hover:text-brand-600 dark:hover:text-brand-400">Why Choose Us</a></li>
-              <li><a href="/whyus" onClick={(e) => handleNav(e, 'whyus')} className="hover:text-brand-600 dark:hover:text-brand-400">Reviews</a></li>
-              <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Blog</a></li>
-              <li><a href="#" className="hover:text-brand-600 dark:hover:text-brand-400">Terms of Service</a></li>
+              <li><a href="/pva-sell/whyus" onClick={(e) => handleNav(e, 'whyus')} className="hover:text-brand-600 dark:hover:text-brand-400">Why Choose Us</a></li>
+              <li><a href="/pva-sell/whyus#reviews" onClick={(e) => handleScrollNav(e, 'whyus', 'reviews')} className="hover:text-brand-600 dark:hover:text-brand-400">Reviews</a></li>
+              <li><a href="/pva-sell/whyus#faq" onClick={(e) => handleScrollNav(e, 'whyus', 'faq')} className="hover:text-brand-600 dark:hover:text-brand-400">FAQ</a></li>
             </ul>
           </div>
           

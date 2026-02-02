@@ -32,8 +32,8 @@ export const WhyUsView = () => {
         </div>
       </div>
 
-      {/* Trust Stats Bar */}
-      <div className="bg-white dark:bg-slate-800 border-y border-gray-100 dark:border-slate-700 transition-colors duration-200">
+      {/* Trust Stats Bar - Target for Reviews Link */}
+      <div id="reviews" className="bg-white dark:bg-slate-800 border-y border-gray-100 dark:border-slate-700 transition-colors duration-200 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
@@ -194,8 +194,8 @@ export const WhyUsView = () => {
          </div>
       </div>
       
-      {/* FAQ Summary */}
-      <div className="bg-gray-50 dark:bg-slate-950 py-20 transition-colors duration-200">
+      {/* FAQ Summary - Target for FAQ Link */}
+      <div id="faq" className="bg-gray-50 dark:bg-slate-950 py-20 transition-colors duration-200 scroll-mt-24">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
            <h2 className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-12">Common Questions</h2>
            <div className="space-y-6">
