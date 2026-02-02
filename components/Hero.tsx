@@ -62,8 +62,8 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
 
       {/* Right Side Visual - Responsive adjustments */}
       <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-gray-50 dark:bg-slate-950 transition-colors duration-200 py-12 lg:py-0">
-        <div className="w-full h-full flex items-center justify-center p-6 sm:p-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-lg">
+        <div className="w-full h-full flex items-center xl:justify-center lg:justify-end justify-center p-6 sm:p-10">
+          <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 xl:w-full lg:w-3/5 w-full max-w-lg">
             {/* LinkedIn Card */}
             <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:translate-y-[-8px] transition duration-300 border border-gray-100 dark:border-slate-700">
               <i className="fa-brands fa-linkedin text-4xl sm:text-5xl text-[#0077b5] mb-4"></i>
