@@ -14,9 +14,9 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
   return (
     <article className="animate-fade-in">
       <SEO 
-        title="Buy Verified PVA Accounts | LinkedIn, Upwork, PayPal"
-        description="Credexus Market is the #1 platform to buy aged and verified accounts (PVA) for LinkedIn, Upwork, PayPal, and more. Instant delivery and 100% replacement guarantee."
-        keywords="buy pva accounts, verified linkedin account for sale, aged upwork account, verified paypal account, buy discord pva, buy aged telegram accounts, us pva accounts"
+        title="Buy Phone Verified Accounts (PVA) | LinkedIn, Upwork, PayPal"
+        description="Credexus Market is the #1 platform to buy aged and verified accounts for LinkedIn, Upwork, PayPal, and more. Instant delivery and 100% replacement guarantee."
+        keywords="buy phone verified accounts, verified linkedin account for sale, aged upwork account, verified paypal account, buy discord pva, buy aged telegram accounts, us pva marketplace"
       />
       
       {/* Hero Section - Semantic Header */}
@@ -78,19 +78,19 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
 
       {/* Quick FAQ / SEO Content Section */}
       <section className="bg-gray-50 dark:bg-slate-950 py-16 sm:py-24 border-t border-gray-100 dark:border-slate-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-8 text-center uppercase tracking-widest">PVA Insights</h2>
-          <article className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed text-gray-600 dark:text-slate-400 font-medium">
-            <div className="px-6">
-                <h3 className="font-bold text-gray-900 dark:text-white mb-2 text-lg">What is a Phone Verified Account (PVA)?</h3>
-                <p>PVA stands for Phone Verified Account. These accounts are verified using a unique, real SIM card number. This makes them significantly more stable and resistant to security bans compared to email-only accounts on platforms like LinkedIn, Upwork, and PayPal.</p>
-            </div>
-            <div className="px-6">
-                <h3 className="font-bold text-gray-900 dark:text-white mb-2 text-lg">Why buy aged accounts?</h3>
-                <p>Aged accounts have a history of activity. Algorithms trust aged profiles more than new ones. Buying an aged LinkedIn or GitHub account from Credexus allows you to bypass the "sandbox" period and start networking or working immediately with higher trust scores.</p>
-            </div>
-          </article>
-        </div>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+              <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-8 text-center uppercase tracking-widest">PVA Insights</h2>
+              <article className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed text-gray-600 dark:text-slate-400 font-medium">
+                  <div>
+                      <h3 className="font-bold text-gray-900 dark:text-white mb-2 text-lg">What is a Phone Verified Account (PVA)?</h3>
+                      <p>PVA stands for Phone Verified Account. These accounts are verified using a unique, real SIM card number. This makes them significantly more stable and resistant to security bans compared to email-only accounts on platforms like LinkedIn, Upwork, and PayPal.</p>
+                  </div>
+                  <div>
+                      <h3 className="font-bold text-gray-900 dark:text-white mb-2 text-lg">Why buy aged accounts?</h3>
+                      <p>Aged accounts have a history of activity. Algorithms trust aged profiles more than new ones. Buying an aged LinkedIn or GitHub account from Credexus allows you to bypass the "sandbox" period and start networking or working immediately with higher trust scores.</p>
+                  </div>
+              </article>
+          </div>
       </section>
     </article>
   );

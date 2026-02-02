@@ -87,8 +87,8 @@ export const ProductsView = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <SEO 
-        title="Marketplace - Buy Verified Accounts (PVA) | Credexus"
-        description="Browse our catalog of verified LinkedIn, Upwork, PayPal, CashApp, and other PVA accounts. Secure transactions and instant delivery guaranteed."
+        title="Marketplace - Buy Phone Verified Accounts (PVA) | Credexus"
+        description="Browse our catalog of verified LinkedIn, Upwork, PayPal, CashApp, and other PVAs. Secure transactions and instant delivery guaranteed."
         keywords="buy social media accounts, buy payment accounts, buy freelance accounts, verified accounts marketplace, buy linkedin pva, buy upwork account"
         canonicalUrl="/products"
         schema={marketplaceSchema}
@@ -96,7 +96,7 @@ export const ProductsView = () => {
       
       <header className="text-center mb-8 sm:mb-12">
         <h1 className="text-3xl sm:text-4xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">
-          Phone Verified Account <span className="text-brand-600">Marketplace</span>
+          Phone Verified Accounts <span className="text-brand-600">Marketplace</span>
         </h1>
         <p className="text-sm sm:text-lg text-gray-500 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed px-4">
           Discover high-trust accounts optimized for stability. Instant delivery and 72-hour protection on every purchase.

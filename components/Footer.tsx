@@ -9,7 +9,10 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const { openChat } = useApp();
   const [logoError, setLogoError] = useState(false);
-  const logo = '/logo.png';
+  
+  // Correctly resolve logo path based on deployment base URL
+  const base = import.meta.env.BASE_URL || '/';
+  const logoPath = base.endsWith('/') ? `${base}logo.png` : `${base}/logo.png`;
   
   const handleNav = (e: React.MouseEvent, view: ViewState) => {
     e.preventDefault();
@@ -62,7 +65,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             >
               {!logoError ? (
                 <img 
-                  src={logo} 
+                  src={logoPath} 
                   alt="Credexus Market" 
                   className="h-10 w-auto object-contain"
                   onError={() => setLogoError(true)}

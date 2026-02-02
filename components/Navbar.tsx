@@ -13,7 +13,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
   const { user, cart, logout, theme, toggleTheme } = useApp();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [logoError, setLogoError] = useState(false);
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  // Correctly resolve logo path based on deployment base URL
+  const base = import.meta.env.BASE_URL || '/';
+  const logoPath = base.endsWith('/') ? `${base}logo.png` : `${base}/logo.png`;
 
   // Handle scroll shadow
   useEffect(() => {
@@ -54,9 +59,18 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && handleNav('home')}
           >
-            <div className="h-9 w-9 sm:h-10 sm:w-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30 transform hover:rotate-3 transition-transform">
-              <i className="fa-solid fa-shield-halved text-white text-lg sm:text-xl"></i>
-            </div>
+            {!logoError ? (
+              <img 
+                src={logoPath} 
+                alt="Credexus Market" 
+                className="h-9 sm:h-10 w-auto object-contain"
+                onError={() => setLogoError(true)}
+              />
+            ) : (
+              <div className="h-9 w-9 sm:h-10 sm:w-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30 transform hover:rotate-3 transition-transform">
+                <i className="fa-solid fa-shield-halved text-white text-lg sm:text-xl"></i>
+              </div>
+            )}
             <span className="text-xl font-black text-gray-900 dark:text-white tracking-tight sm:block hidden">
               Credexus<span className="text-brand-600">.</span>
             </span>
@@ -122,6 +136,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-sm font-bold max-w-[80px] truncate">{user.name.split(' ')[0]}</span>
+                </button>
+                <button
+                   onClick={handleLogout}
+                   className="w-10 h-10 flex items-center justify-center rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition"
+                   title="Sign Out"
+                   aria-label="Sign Out"
+                >
+                   <i className="fa-solid fa-arrow-right-from-bracket"></i>
                 </button>
               </div>
             ) : (
@@ -204,8 +226,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                 </div>
                 <button 
                     onClick={handleLogout}
-                    className="w-full py-3 rounded-xl border border-red-100 dark:border-red-900/30 text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-900/10 transition"
+                    className="w-full py-3 rounded-xl border border-red-100 dark:border-red-900/30 text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-900/10 transition flex items-center justify-center gap-2"
                 >
+                    <i className="fa-solid fa-arrow-right-from-bracket"></i>
                     Sign Out
                 </button>
               </div>
