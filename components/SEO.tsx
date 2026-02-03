@@ -25,7 +25,7 @@ export const SEO: React.FC<SEOProps> = ({
 
   // Correctly resolve logo path based on deployment base URL for favicon
   const base = import.meta.env.BASE_URL || '/';
-  const logoPath = base.endsWith('/') ? `${base}logo.png` : `${base}/logo.png`;
+  const logoPath = base.endsWith('/') ? `${base}favicon.ico` : `${base}/favicon.ico`;
 
   useEffect(() => {
     // 1. Title
@@ -44,7 +44,7 @@ export const SEO: React.FC<SEOProps> = ({
 
     // 2. Basic Meta
     updateMeta('description', description);
-    updateMeta('keywords', keywords || 'buy phone verified accounts, verified linkedin, aged upwork, paypal verified, buy verified accounts, credexus');
+    updateMeta('keywords', keywords || 'buy pva accounts, verified linkedin, aged upwork, paypal verified, buy verified accounts, credexus');
     updateMeta('author', 'Credexus Market');
     updateMeta('robots', 'index, follow, max-image-preview:large');
 
@@ -96,7 +96,7 @@ export const SEO: React.FC<SEOProps> = ({
       "@type": "Organization",
       "name": siteName,
       "url": domain,
-      "logo": `${domain}/logo.png`,
+      "logo": `${domain}/favicon.ico`,
       "sameAs": [
         "https://t.me/credexusmarket",
         "https://x.com/credexus"
