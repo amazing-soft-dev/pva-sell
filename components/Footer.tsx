@@ -70,6 +70,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   className="h-10 w-auto object-contain"
                   onError={() => setLogoError(true)}
                   loading="lazy"
+                  width="40"
+                  height="40"
                 />
               ) : (
                 <div className="flex items-center gap-2">
@@ -117,7 +119,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li><a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
               <li>
-                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-0 min-h-0 h-auto bg-transparent border-0">
+                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 p-0 min-h-0 h-auto bg-transparent border-0">
                   Admin
                 </button>
               </li>

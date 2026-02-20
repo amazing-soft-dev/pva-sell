@@ -117,7 +117,7 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
           <span className="text-2xl font-black text-gray-900 dark:text-white">
             <span className="sr-only">Price: </span>${product.price.toFixed(2)}
           </span>
-          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">One-time payment</span>
+          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">One-time payment</span>
         </div>
         
         <button 
