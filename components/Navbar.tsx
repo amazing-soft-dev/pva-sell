@@ -65,6 +65,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                 alt="Credexus Market" 
                 className="h-9 sm:h-10 w-auto object-contain"
                 onError={() => setLogoError(true)}
+                width="40"
+                height="40"
               />
             ) : (
               <div className="h-9 w-9 sm:h-10 sm:w-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30 transform hover:rotate-3 transition-transform">
@@ -185,8 +187,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
         <div className="flex flex-col h-full p-6">
           <div className="flex justify-between items-center mb-8">
             <span className="text-xl font-black text-gray-900 dark:text-white">Menu</span>
-            <button onClick={() => setIsMenuOpen(false)} className="text-gray-400 p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg">
-                <i className="fa-solid fa-xmark"></i>
+            <button onClick={() => setIsMenuOpen(false)} className="text-gray-400 p-2 hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg" aria-label="Close menu">
+                <i className="fa-solid fa-xmark" aria-hidden="true"></i>
             </button>
           </div>
 
