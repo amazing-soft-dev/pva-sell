@@ -23,15 +23,9 @@ export const SEO: React.FC<SEOProps> = ({
   const domain = 'https://amazing-soft-dev.github.io/pva-sell';
   const fullUrl = canonicalUrl ? `${domain}${canonicalUrl}` : window.location.href;
 
-  // Correctly resolve logo path based on deployment base URL for favicon
-  const base = import.meta.env.BASE_URL || '/';
-  const logoPath = base.endsWith('/') ? `${base}favicon.ico` : `${base}/favicon.ico`;
-
   useEffect(() => {
-    // 1. Title
     document.title = `${title} | ${siteName}`;
-    
-    // Helper to efficiently update or create meta tags
+
     const updateMeta = (name: string, content: string, attribute = 'name') => {
       let element = document.querySelector(`meta[${attribute}="${name}"]`);
       if (!element) {
@@ -71,16 +65,8 @@ export const SEO: React.FC<SEOProps> = ({
     }
     link.setAttribute('href', fullUrl);
 
-    // 6. Favicon (Dynamic update to support subpaths)
-    let iconLink = document.querySelector('link[rel="icon"]');
-    if (!iconLink) {
-      iconLink = document.createElement('link');
-      iconLink.setAttribute('rel', 'icon');
-      document.head.appendChild(iconLink);
-    }
-    iconLink.setAttribute('href', logoPath);
 
-    // 7. JSON-LD Structured Data
+    // 6. JSON-LD Structured Data
     const scriptId = 'structured-data-script';
     let script = document.getElementById(scriptId) as HTMLScriptElement;
     if (!script) {
@@ -136,7 +122,7 @@ export const SEO: React.FC<SEOProps> = ({
 
     script.textContent = JSON.stringify(jsonLdData);
 
-  }, [title, description, keywords, fullUrl, ogType, ogImage, schema, logoPath]);
+  }, [title, description, keywords, fullUrl, ogType, ogImage, schema]);
 
   return null;
 };
