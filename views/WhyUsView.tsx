@@ -18,7 +18,7 @@ export const WhyUsView = () => {
       <div className="relative bg-brand-900 py-24 sm:py-32">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 mix-blend-overlay"></div>
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-transparent to-black/30"></div>
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-linear-to-b from-transparent to-black/30"></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl mb-6 drop-shadow-lg">
@@ -70,7 +70,7 @@ export const WhyUsView = () => {
               </p>
               <ul className="space-y-6">
                 <li className="flex">
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <div className="flex items-center justify-center h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
                       <i className="fa-solid fa-lock"></i>
                     </div>
@@ -81,7 +81,7 @@ export const WhyUsView = () => {
                   </div>
                 </li>
                 <li className="flex">
-                  <div className="flex-shrink-0">
+                  <div className="shrink-0">
                     <div className="flex items-center justify-center h-10 w-10 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400">
                       <i className="fa-solid fa-user-secret"></i>
                     </div>

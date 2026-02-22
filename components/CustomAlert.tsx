@@ -21,7 +21,7 @@ export const CustomAlert: React.FC<CustomAlertProps> = ({ isOpen, type, message,
   }, [onClose]);
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center px-4 animate-fade-in">
+    <div className="fixed inset-0 z-100 flex items-center justify-center px-4 animate-fade-in">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" 

@@ -59,7 +59,7 @@ export const ChatBot = () => {
 
       {/* Chat Window */}
       {isChatOpen && (
-        <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] h-[600px] max-h-[calc(100vh-8rem)] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 flex flex-col z-50 overflow-hidden animate-fade-in">
+        <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] h-150 max-h-[calc(100vh-8rem)] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 flex flex-col z-50 overflow-hidden animate-fade-in">
           
           {/* Header */}
           <div className="bg-brand-600 p-4 flex justify-between items-center text-white">
