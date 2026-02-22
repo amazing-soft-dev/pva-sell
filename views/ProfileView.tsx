@@ -210,7 +210,7 @@ export const ProfileView = () => {
 
         {/* Orders Panel */}
         <div className="lg:col-span-2">
-          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden min-h-[500px] transition-colors duration-200">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-100 dark:border-slate-700 overflow-hidden min-h-125 transition-colors duration-200">
             <div className="px-6 py-4 border-b border-gray-100 dark:border-slate-700 flex justify-between items-center bg-gray-50/50 dark:bg-slate-900/50">
               <h3 className="font-bold text-gray-900 dark:text-white flex items-center">
                 <i className="fa-solid fa-clock-rotate-left mr-2 text-brand-500"></i>
