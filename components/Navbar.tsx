@@ -18,7 +18,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
 
   // Correctly resolve logo path based on deployment base URL
   const base = import.meta.env.BASE_URL || '/';
-  const logoPath = base.endsWith('/') ? `${base}logo.png` : `${base}/logo.png`;
+  const logoPath = base.endsWith('/') ? `${base}logo.svg` : `${base}/logo.svg`;
 
   // Handle scroll shadow
   useEffect(() => {
@@ -63,7 +63,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
               <img 
                 src={logoPath} 
                 alt="Credexus Market" 
-                className="h-9 sm:h-10 w-auto object-contain"
+                className="h-9 w-9 sm:h-10 sm:w-10 object-contain"
                 onError={() => setLogoError(true)}
                 width="40"
                 height="40"
@@ -137,7 +137,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                   <div className="w-7 h-7 bg-brand-600 rounded-full flex items-center justify-center text-white text-xs font-black shadow-inner">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-sm font-bold max-w-[80px] truncate">{user.name.split(' ')[0]}</span>
+                  <span className="text-sm font-bold max-w-20 truncate">{user.name.split(' ')[0]}</span>
                 </button>
                 <button
                    onClick={handleLogout}
@@ -172,7 +172,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
 
       {/* Mobile Sidebar Overlay */}
       <div 
-        className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[50] transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 transition-opacity duration-300 md:hidden ${
             isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
         onClick={() => setIsMenuOpen(false)}
@@ -180,7 +180,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
 
       {/* Mobile Sidebar Menu */}
       <aside 
-        className={`fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-slate-900 z-[60] shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
+        className={`fixed top-0 right-0 h-full w-70 bg-white dark:bg-slate-900 z-50 shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
             isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -223,7 +223,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                     </div>
                     <div>
                         <p className="font-bold text-gray-900 dark:text-white leading-none">{user.name}</p>
-                        <p className="text-xs text-gray-500 dark:text-slate-500 mt-1 truncate max-w-[150px]">{user.email}</p>
+                        <p className="text-xs text-gray-500 dark:text-slate-500 mt-1 truncate max-w-37.5">{user.email}</p>
                     </div>
                 </div>
                 <button 
