@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   
   // Correctly resolve logo path based on deployment base URL
   const base = import.meta.env.BASE_URL || '/';
-  const logoPath = base.endsWith('/') ? `${base}logo.png` : `${base}/logo.png`;
+  const logoPath = base.endsWith('/') ? `${base}logo.svg` : `${base}/logo.svg`;
   
   const handleNav = (e: React.MouseEvent, view: ViewState) => {
     e.preventDefault();
@@ -67,7 +67,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <img 
                   src={logoPath} 
                   alt="Credexus Market" 
-                  className="h-10 w-auto object-contain"
+                  className="h-10 w-10 object-contain"
                   onError={() => setLogoError(true)}
                   loading="lazy"
                   width="40"

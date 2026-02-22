@@ -48,10 +48,10 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
               
               {/* Trust Indicators for mobile */}
               <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200">
                       <i className="fa-solid fa-shield-check text-brand-500"></i> SSL SECURE
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400">
+                  <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-800 dark:text-gray-200">
                       <i className="fa-solid fa-bolt text-brand-500"></i> INSTANT DELIVERY
                   </div>
               </div>
@@ -65,28 +65,28 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
         <div className="w-full h-full flex items-center xl:justify-center lg:justify-end justify-center p-6 sm:p-10">
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 xl:w-full lg:w-3/5 w-full max-w-lg">
             {/* LinkedIn Card */}
-            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:translate-y-[-8px] transition duration-300 border border-gray-100 dark:border-slate-700">
+            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:translate-y-2 transition duration-300 border border-gray-100 dark:border-slate-700">
               <i className="fa-brands fa-linkedin text-4xl sm:text-5xl text-[#0077b5] mb-4"></i>
               <span className="font-bold text-gray-800 dark:text-white text-sm sm:text-base">LinkedIn</span>
               <span className="text-[10px] sm:text-xs text-green-500 font-bold bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full mt-1">ID Verified</span>
             </div>
             
             {/* Upwork Card - Removed scale, kept vertical lift */}
-            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform transition-all duration-500 sm:translate-y-8 border border-gray-100 dark:border-slate-700 hover:sm:translate-y-6 hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-[#14a800]/20">
+            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform transition-all duration-500 sm:translate-y-8 border border-gray-100 dark:border-slate-700 hover:sm:translate-y-6 hover:translate-y-2 hover:shadow-2xl hover:shadow-[#14a800]/20">
               <i className="fa-brands fa-upwork text-4xl sm:text-5xl text-[#14a800] mb-4"></i>
               <span className="font-bold text-gray-800 dark:text-white text-sm sm:text-base">Upwork</span>
               <span className="text-[10px] sm:text-xs text-brand-500 font-bold bg-brand-50 dark:bg-brand-900/20 px-2 py-0.5 rounded-full mt-1">Ready to apply</span>
             </div>
             
             {/* Discord Card */}
-            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:translate-y-[-8px] transition duration-300 border border-gray-100 dark:border-slate-700">
+            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:translate-y-2 transition duration-300 border border-gray-100 dark:border-slate-700">
               <i className="fa-brands fa-discord text-4xl sm:text-5xl text-[#5865F2] mb-4"></i>
               <span className="font-bold text-gray-800 dark:text-white text-sm sm:text-base">Discord</span>
               <span className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 font-bold bg-gray-50 dark:bg-slate-900/40 px-2 py-0.5 rounded-full mt-1">Aged 2015+</span>
             </div>
             
             {/* Payment Card - Removed scale, kept vertical lift */}
-            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform transition-all duration-500 sm:translate-y-8 border border-gray-100 dark:border-slate-700 hover:sm:translate-y-6 hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-brand-500/20">
+            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform transition-all duration-500 sm:translate-y-8 border border-gray-100 dark:border-slate-700 hover:sm:translate-y-6 hover:translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20">
               <i className="fa-solid fa-money-check-dollar text-4xl sm:text-5xl text-slate-700 dark:text-slate-300 mb-4"></i>
               <span className="font-bold text-gray-800 dark:text-white text-sm sm:text-base">Payment</span>
               <span className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 font-bold bg-gray-50 dark:bg-slate-900/40 px-2 py-0.5 rounded-full mt-1">Business Verified</span>
