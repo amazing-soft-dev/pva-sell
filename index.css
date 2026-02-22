@@ -1,14 +1,24 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark *));
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-brand-50: #f0f9ff;
   --color-brand-100: #e0f2fe;
+  --color-brand-200: #bae6fd;
+  --color-brand-300: #7dd3fc;
+  --color-brand-400: #38bdf8;
   --color-brand-500: #0ea5e9;
-  --color-brand-600: #0369a1;
-  --color-brand-700: #075985;
+  --color-brand-600: #0284c7;
+  --color-brand-700: #0369a1;
+  --color-brand-800: #075985;
   --color-brand-900: #0c4a6e;
+  --color-brand-950: #082f49;
+  
+  --color-accent-50: #fffbeb;
+  --color-accent-100: #fef3c7;
   --color-accent-500: #f59e0b;
   --color-accent-600: #d97706;
 
@@ -50,6 +60,7 @@
     background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
     background-size: 200% 100%;
 }
+
 body { 
   font-family: 'Inter', sans-serif; 
   -webkit-font-smoothing: antialiased;

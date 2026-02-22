@@ -46,7 +46,7 @@ export const AuthModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ 
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose}></div>
       
       {/* Modal */}
-      <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-2xl max-w-md w-full relative border border-gray-100 dark:border-slate-700 transition-colors duration-200 z-10 transform transition-transform max-h-[90vh] overflow-y-auto hide-scrollbar">
+      <div className="bg-white dark:bg-slate-800 p-8 rounded-xl shadow-2xl max-w-md w-full relative border border-gray-100 dark:border-slate-700 transition-colors duration-200 z-10 transform max-h-[90vh] overflow-y-auto hide-scrollbar">
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
             <i className="fa-solid fa-xmark text-xl"></i>
         </button>
