@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover" />
     
     <!-- Favicon: Explicitly point to the subdirectory for GitHub Pages -->
-    <link rel="icon" href="/pva-sell/favicon.ico" />
+    <link rel="icon" href="/favicon.ico" />
 
     <!-- Primary Meta Tags -->
     <title>Buy Phone Verified Accounts | LinkedIn, Upwork, PayPal | Credexus</title>
@@ -19,29 +19,91 @@
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://amazing-soft-dev.github.io/pva-sell/">
+    <meta property="og:url" content="https://credexus.org/">
     <meta property="og:title" content="Buy Phone Verified Accounts (PVA) | Credexus Market">
     <meta property="og:description" content="Secure marketplace for aged and verified accounts. LinkedIn, Upwork, Payment Gateways & more. Instant delivery.">
-    <meta property="og:image" content="https://amazing-soft-dev.github.io/pva-sell/og-image.png">
+    <meta property="og:image" content="https://credexus.org/og-image.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://amazing-soft-dev.github.io/pva-sell/">
+    <meta property="twitter:url" content="https://credexus.org/">
     <meta property="twitter:title" content="Buy Phone Verified Accounts (PVA) | Credexus Market">
     <meta property="twitter:description" content="Secure marketplace for aged and verified accounts. LinkedIn, Upwork, Payment Gateways & more. Instant delivery.">
-    <meta property="twitter:image" content="https://amazing-soft-dev.github.io/pva-sell/og-image.png">
+    <meta property="twitter:image" content="https://credexus.org/og-image.png">
     
     <!-- Performance Optimizations -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap"></noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
-    
+    <style>
+      :root {
+        --brand-blue: #0ea5e9;
+      }
+      body { 
+        font-family: 'Inter', sans-serif; 
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+      }
+      
+      /* Mobile optimization */
+      nav button { -webkit-tap-highlight-color: transparent; }
+      .hide-scrollbar::-webkit-scrollbar { display: none; }
+      .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+      /* Fluid Typography */
+      h1 { font-size: clamp(1.875rem, 5vw, 4rem); }
+      p { font-size: clamp(0.875rem, 2vw, 1.125rem); }
+
+      /* Touch Target Fixes */
+      button, a {
+        min-height: 44px;
+        min-width: 44px;
+      }
+
+      /* Transitions */
+      .transition-all { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+
+      /* Skeleton Effect */
+      @keyframes skeleton-loading {
+          0% { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+      }
+      .skeleton {
+          background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+          background-size: 200% 100%;
+          animation: skeleton-loading 1.5s infinite;
+      }
+      .dark .skeleton {
+          background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+          background-size: 200% 100%;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "vite": "https://esm.sh/vite@^7.3.1",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "jspdf-autotable": "https://esm.sh/jspdf-autotable@^5.0.7",
+    "uuid": "https://esm.sh/uuid@^13.0.0",
+    "jspdf": "https://esm.sh/jspdf@^4.0.0",
+    "express": "https://esm.sh/express@^5.2.1",
+    "mongoose": "https://esm.sh/mongoose@^9.1.5",
+    "cors": "https://esm.sh/cors@^2.8.6",
+    "dotenv": "https://esm.sh/dotenv@^17.2.3",
+    "jsonwebtoken": "https://esm.sh/jsonwebtoken@^9.0.3",
+    "bcryptjs": "https://esm.sh/bcryptjs@^3.0.3"
+  }
+}
+</script>
 </head>
   <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 antialiased overflow-x-hidden">
     <div id="root"></div>

@@ -90,19 +90,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h4 className="font-bold text-gray-900 dark:text-white mb-4">Marketplace</h4>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-slate-400">
-              <li><a href="/pva-sell/products?category=Social Media" onClick={(e) => handleCategoryNav(e, 'Social Media')} className="hover:text-brand-600 dark:hover:text-brand-400">Social Media</a></li>
-              <li><a href="/pva-sell/products?category=Payment" onClick={(e) => handleCategoryNav(e, 'Payment')} className="hover:text-brand-600 dark:hover:text-brand-400">Payment Accounts</a></li>
-              <li><a href="/pva-sell/products?category=Freelance" onClick={(e) => handleCategoryNav(e, 'Freelance')} className="hover:text-brand-600 dark:hover:text-brand-400">Freelance</a></li>
-              <li><a href="/pva-sell/products?category=VPN & Security" onClick={(e) => handleCategoryNav(e, 'VPN & Security')} className="hover:text-brand-600 dark:hover:text-brand-400">VPN & Security</a></li>
+              <li><a href="/products?category=Social Media" onClick={(e) => handleCategoryNav(e, 'Social Media')} className="hover:text-brand-600 dark:hover:text-brand-400">Social Media</a></li>
+              <li><a href="/products?category=Payment" onClick={(e) => handleCategoryNav(e, 'Payment')} className="hover:text-brand-600 dark:hover:text-brand-400">Payment Accounts</a></li>
+              <li><a href="/products?category=Freelance" onClick={(e) => handleCategoryNav(e, 'Freelance')} className="hover:text-brand-600 dark:hover:text-brand-400">Freelance</a></li>
+              <li><a href="/products?category=VPN & Security" onClick={(e) => handleCategoryNav(e, 'VPN & Security')} className="hover:text-brand-600 dark:hover:text-brand-400">VPN & Security</a></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-bold text-gray-900 dark:text-white mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-gray-600 dark:text-slate-400">
-              <li><a href="/pva-sell/whyus" onClick={(e) => handleNav(e, 'whyus')} className="hover:text-brand-600 dark:hover:text-brand-400">Why Choose Us</a></li>
-              <li><a href="/pva-sell/whyus#reviews" onClick={(e) => handleScrollNav(e, 'whyus', 'reviews')} className="hover:text-brand-600 dark:hover:text-brand-400">Reviews</a></li>
-              <li><a href="/pva-sell/whyus#faq" onClick={(e) => handleScrollNav(e, 'whyus', 'faq')} className="hover:text-brand-600 dark:hover:text-brand-400">FAQ</a></li>
+              <li><a href="/whyus" onClick={(e) => handleNav(e, 'whyus')} className="hover:text-brand-600 dark:hover:text-brand-400">Why Choose Us</a></li>
+              <li><a href="/whyus#reviews" onClick={(e) => handleScrollNav(e, 'whyus', 'reviews')} className="hover:text-brand-600 dark:hover:text-brand-400">Reviews</a></li>
+              <li><a href="/whyus#faq" onClick={(e) => handleScrollNav(e, 'whyus', 'faq')} className="hover:text-brand-600 dark:hover:text-brand-400">FAQ</a></li>
             </ul>
           </div>
           
