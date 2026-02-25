@@ -4,7 +4,7 @@ export type ViewState = 'home' | 'profile' | 'products' | 'whyus' | 'admin';
 
 export const useRouter = () => {
   // Get the base URL safely using the now properly typed import.meta.env
-  const baseUrl = import.meta.env?.BASE_URL || '/pva-sell/';
+  const baseUrl = import.meta.env?.BASE_URL || '/';
 
   const getRoute = (): ViewState => {
     let path = window.location.pathname;

@@ -52,7 +52,7 @@ export const ProductsView = () => {
     "@type": "CollectionPage",
     "name": "Credexus Accounts Marketplace",
     "description": "Browse our extensive catalog of verified accounts for social media, payments, and freelancing.",
-    "url": "https://amazing-soft-dev.github.io/pva-sell/products",
+    "url": "https://credexus.org/products",
     "mainEntity": {
       "@type": "ItemList",
       "itemListElement": products.slice(0, 15).map((p, idx) => ({
