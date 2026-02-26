@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import { AppProvider } from './contexts/AppContext';
@@ -11,12 +11,18 @@ import { AuthModal } from './components/AuthModal';
 import { CartDrawer } from './components/CartDrawer';
 import { ChatBot } from './components/ChatBot';
 
-// Views
-import { HomeView } from './views/HomeView';
-import { ProductsView } from './views/ProductsView';
-import { WhyUsView } from './views/WhyUsView';
-import { ProfileView } from './views/ProfileView';
-import { AdminView } from './views/AdminView';
+// Lazy load Views
+const HomeView = lazy(() => import('./views/HomeView').then(module => ({ default: module.HomeView })));
+const ProductsView = lazy(() => import('./views/ProductsView').then(module => ({ default: module.ProductsView })));
+const WhyUsView = lazy(() => import('./views/WhyUsView').then(module => ({ default: module.WhyUsView })));
+const ProfileView = lazy(() => import('./views/ProfileView').then(module => ({ default: module.ProfileView })));
+const AdminView = lazy(() => import('./views/AdminView').then(module => ({ default: module.AdminView })));
+
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-[50vh]">
+    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-600"></div>
+  </div>
+);
 
 const App = () => {
   const { route, navigate } = useRouter();
@@ -33,11 +39,13 @@ const App = () => {
           onOpenCart={() => setCartOpen(true)} 
         />
         <main className="grow">
-          {route === 'home' && <HomeView onNavigate={navigate} />}
-          {route === 'products' && <ProductsView />}
-          {route === 'whyus' && <WhyUsView />}
-          {route === 'profile' && <ProfileView />}
-          {route === 'admin' && <AdminView />}
+          <Suspense fallback={<LoadingFallback />}>
+            {route === 'home' && <HomeView onNavigate={navigate} />}
+            {route === 'products' && <ProductsView />}
+            {route === 'whyus' && <WhyUsView />}
+            {route === 'profile' && <ProfileView />}
+            {route === 'admin' && <AdminView />}
+          </Suspense>
         </main>
         <Footer onNavigate={navigate} />
       </div>
