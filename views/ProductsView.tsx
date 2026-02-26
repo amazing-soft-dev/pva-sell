@@ -142,7 +142,7 @@ export const ProductsView = () => {
                 role="tab"
                 aria-selected={selectedCategory === category}
                 onClick={() => handleCategoryClick(category)}
-                className={`flex-shrink-0 snap-start px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-widest transition-all duration-200 border ${
+                className={`shrink-0 snap-start px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-widest transition-all duration-200 border ${
                   selectedCategory === category
                       ? 'bg-brand-600 text-white border-brand-600 shadow-lg shadow-brand-500/25 scale-105'
                       : 'bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:text-brand-600 dark:hover:text-brand-400 border-gray-100 dark:border-slate-700'

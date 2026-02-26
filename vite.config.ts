@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   
   return {
     plugins: [react(), tailwindcss()],
-    base: '/pva-sell/',
+    base: '/',
     build: {
       minify: 'terser',
       terserOptions: {
