@@ -20,7 +20,7 @@ export const SEO: React.FC<SEOProps> = ({
   schema
 }) => {
   const siteName = 'Credexus Market';
-  const domain = 'https://credexus.org';
+  const domain = 'https://www.credexus.org';
   const fullUrl = canonicalUrl ? `${domain}${canonicalUrl}` : window.location.href;
 
   useEffect(() => {
