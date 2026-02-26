@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { jsPDF } from "jspdf";
-import autoTable from 'jspdf-autotable';
 import { useApp } from '../contexts/AppContext';
 import { api, Order } from '../services/api';
 import { SEO } from '../components/SEO';
@@ -9,6 +7,7 @@ export const ProfileView = () => {
   const { user, products } = useApp();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
+  const [generatingPdf, setGeneratingPdf] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -72,94 +71,105 @@ export const ProfileView = () => {
     }
   };
 
-  const handleDownloadInvoice = (order: Order) => {
+  const handleDownloadInvoice = async (order: Order) => {
     if (!user) return;
     
-    const doc = new jsPDF();
-    const status = getOrderStatus(order.id);
-    
-    // Header Branding
-    doc.setTextColor(14, 165, 233); // Brand color #0ea5e9
-    doc.setFontSize(22);
-    doc.setFont('helvetica', 'bold');
-    doc.text('Credexus Market', 14, 20);
-    
-    doc.setTextColor(100);
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text('Premium Verified Accounts', 14, 26);
-    doc.text('https://credexus.com', 14, 31);
-    
-    // Invoice Info Box
-    doc.setTextColor(0);
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text('INVOICE', 140, 20);
-    
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text(`Invoice #: ${order.id}`, 140, 28);
-    doc.text(`Date: ${new Date(order.date).toLocaleDateString()}`, 140, 33);
-    doc.text(`Status: ${status.toUpperCase()}`, 140, 38);
+    setGeneratingPdf(true);
+    try {
+      const { jsPDF } = await import("jspdf");
+      const autoTableModule = await import('jspdf-autotable');
+      const autoTable = autoTableModule.default;
 
-    // Bill To
-    doc.text('Bill To:', 14, 50);
-    doc.setFont('helvetica', 'bold');
-    doc.text(user.name, 14, 55);
-    doc.setFont('helvetica', 'normal');
-    doc.text(user.email, 14, 60);
-
-    // Table
-    const tableColumn = ["Item Description", "Qty", "Unit Price", "Amount"];
-    const tableRows = order.items.map(item => {
-      const product = products.find(p => p.id === item.productId);
-      return [
-        product?.title || "Unknown Product",
-        item.quantity,
-        `$${item.price.toFixed(2)}`,
-        `$${(item.price * item.quantity).toFixed(2)}`
-      ];
-    });
-
-    autoTable(doc, {
-      startY: 70,
-      head: [tableColumn],
-      body: tableRows,
-      theme: 'grid',
-      headStyles: { 
-        fillColor: [14, 165, 233], 
-        textColor: 255, 
-        fontStyle: 'bold',
-        halign: 'left'
-      },
-      columnStyles: {
-        0: { cellWidth: 'auto' },
-        1: { cellWidth: 20, halign: 'center' },
-        2: { cellWidth: 30, halign: 'right' },
-        3: { cellWidth: 30, halign: 'right' }
-      },
-      foot: [['', '', 'Total Amount:', `$${order.total.toFixed(2)}`]],
-      footStyles: { 
-        fillColor: [245, 245, 245], 
-        textColor: 0, 
-        fontStyle: 'bold',
-        halign: 'right'
-      }
-    });
-
-    // Footer
-    const finalY = (doc as any).lastAutoTable.finalY + 20;
-    
-    doc.setDrawColor(220);
-    doc.line(14, finalY, 196, finalY);
-    
-    doc.setFontSize(9);
-    doc.setTextColor(128);
-    doc.text('Thank you for your business!', 14, finalY + 10);
-    doc.text('If you have any questions about this invoice, please contact support@credexus.com', 14, finalY + 15);
-    doc.text('This is a computer-generated document. No signature is required.', 14, finalY + 20);
-
-    doc.save(`invoice-${order.id}.pdf`);
+      const doc = new jsPDF();
+      const status = getOrderStatus(order.id);
+      
+      // Header Branding
+      doc.setTextColor(14, 165, 233); // Brand color #0ea5e9
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Credexus Market', 14, 20);
+      
+      doc.setTextColor(100);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Premium Verified Accounts', 14, 26);
+      doc.text('https://credexus.com', 14, 31);
+      
+      // Invoice Info Box
+      doc.setTextColor(0);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('INVOICE', 140, 20);
+      
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Invoice #: ${order.id}`, 140, 28);
+      doc.text(`Date: ${new Date(order.date).toLocaleDateString()}`, 140, 33);
+      doc.text(`Status: ${status.toUpperCase()}`, 140, 38);
+  
+      // Bill To
+      doc.text('Bill To:', 14, 50);
+      doc.setFont('helvetica', 'bold');
+      doc.text(user.name, 14, 55);
+      doc.setFont('helvetica', 'normal');
+      doc.text(user.email, 14, 60);
+  
+      // Table
+      const tableColumn = ["Item Description", "Qty", "Unit Price", "Amount"];
+      const tableRows = order.items.map(item => {
+        const product = products.find(p => p.id === item.productId);
+        return [
+          product?.title || "Unknown Product",
+          item.quantity,
+          `$${item.price.toFixed(2)}`,
+          `$${(item.price * item.quantity).toFixed(2)}`
+        ];
+      });
+  
+      autoTable(doc, {
+        startY: 70,
+        head: [tableColumn],
+        body: tableRows,
+        theme: 'grid',
+        headStyles: { 
+          fillColor: [14, 165, 233], 
+          textColor: 255, 
+          fontStyle: 'bold',
+          halign: 'left'
+        },
+        columnStyles: {
+          0: { cellWidth: 'auto' },
+          1: { cellWidth: 20, halign: 'center' },
+          2: { cellWidth: 30, halign: 'right' },
+          3: { cellWidth: 30, halign: 'right' }
+        },
+        foot: [['', '', 'Total Amount:', `$${order.total.toFixed(2)}`]],
+        footStyles: { 
+          fillColor: [245, 245, 245], 
+          textColor: 0, 
+          fontStyle: 'bold',
+          halign: 'right'
+        }
+      });
+  
+      // Footer
+      const finalY = (doc as any).lastAutoTable.finalY + 20;
+      
+      doc.setDrawColor(220);
+      doc.line(14, finalY, 196, finalY);
+      
+      doc.setFontSize(9);
+      doc.setTextColor(128);
+      doc.text('Thank you for your business!', 14, finalY + 10);
+      doc.text('If you have any questions about this invoice, please contact support@credexus.com', 14, finalY + 15);
+      doc.text('This is a computer-generated document. No signature is required.', 14, finalY + 20);
+  
+      doc.save(`invoice-${order.id}.pdf`);
+    } catch (error) {
+      console.error("Failed to generate PDF", error);
+    } finally {
+      setGeneratingPdf(false);
+    }
   };
 
   if (!user) return <div className="p-12 text-center text-gray-500 dark:text-slate-400">Please log in to view your dashboard.</div>;
