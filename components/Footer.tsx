@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   
   // Correctly resolve logo path based on deployment base URL
   const base = import.meta.env.BASE_URL || '/';
-  const logoPath = base.endsWith('/') ? `${base}logo.svg` : `${base}/logo.svg`;
+  const logoPath = base.endsWith('/') ? `${base}logo.webp` : `${base}/logo.webp`;
   
   const handleNav = (e: React.MouseEvent, view: ViewState) => {
     e.preventDefault();
@@ -112,14 +112,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button 
                   onClick={openChat} 
-                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left p-0 min-h-0 h-auto bg-transparent border-0"
+                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left p-0 min-h-0! h-auto bg-transparent border-0"
                 >
                   Live Chat
                 </button>
               </li>
               <li><a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
               <li>
-                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 p-0 min-h-0 h-auto bg-transparent border-0">
+                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 p-0 min-h-0! h-auto bg-transparent border-0">
                   Admin
                 </button>
               </li>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useApp } from '../contexts/AppContext';
 import { ViewState } from '../utils/router';
 
@@ -18,7 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
 
   // Correctly resolve logo path based on deployment base URL
   const base = import.meta.env.BASE_URL || '/';
-  const logoPath = base.endsWith('/') ? `${base}logo.svg` : `${base}/logo.svg`;
+  const logoPath = base.endsWith('/') ? `${base}logo.webp` : `${base}/logo.webp`;
 
   // Handle scroll shadow
   useEffect(() => {
@@ -39,8 +40,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
   };
 
   return (
-    <nav 
-      className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+    <>
+      <nav 
+        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
         isScrolled 
           ? 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-md shadow-md py-1' 
           : 'bg-white dark:bg-slate-900 py-3'
@@ -164,26 +166,29 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
               aria-expanded={isMenuOpen}
             >
-              <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'} text-xl`}></i>
+              <i className={`fa-solid ${isMenuOpen ? 'fa-xmark' : 'fa-bars'} text-xl`} aria-hidden="true"></i>
             </button>
           </div>
         </div>
       </div>
+    </nav>
 
-      {/* Mobile Sidebar Overlay */}
-      <div 
-        className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 transition-opacity duration-300 md:hidden ${
-            isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setIsMenuOpen(false)}
-      ></div>
+      {createPortal(
+        <>
+          {/* Mobile Sidebar Overlay */}
+          <div 
+            className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 transition-opacity duration-300 md:hidden ${
+                isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+            }`}
+            onClick={() => setIsMenuOpen(false)}
+          ></div>
 
-      {/* Mobile Sidebar Menu */}
-      <aside 
-        className={`fixed top-0 right-0 h-full w-70 bg-white dark:bg-slate-900 z-50 shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
-            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
-      >
+          {/* Mobile Sidebar Menu */}
+          <aside 
+            className={`fixed top-0 right-0 h-full w-70 bg-white dark:bg-slate-900 z-60 shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
+                isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
+          >
         <div className="flex flex-col h-full p-6">
           <div className="flex justify-between items-center mb-8">
             <span className="text-xl font-black text-gray-900 dark:text-white">Menu</span>
@@ -230,7 +235,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                     onClick={handleLogout}
                     className="w-full py-3 rounded-xl border border-red-100 dark:border-red-900/30 text-red-500 font-bold hover:bg-red-50 dark:hover:bg-red-900/10 transition flex items-center justify-center gap-2"
                 >
-                    <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                    <i className="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
                     Sign Out
                 </button>
               </div>
@@ -245,6 +250,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
           </div>
         </div>
       </aside>
-    </nav>
+        </>,
+        document.body
+      )}
+    </>
   );
 };
