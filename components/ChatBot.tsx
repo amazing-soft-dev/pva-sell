@@ -51,7 +51,7 @@ export const ChatBot = () => {
       {/* Floating Toggle Button */}
       <button
         onClick={toggleChat}
-        className="fixed bottom-6 right-6 h-14 w-14 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg shadow-brand-500/30 flex items-center justify-center z-50 transition-transform hover:scale-105"
+        className="fixed bottom-6 right-4 sm:right-6 h-14 w-14 bg-brand-600 hover:bg-brand-700 text-white rounded-full shadow-lg shadow-brand-500/30 flex items-center justify-center z-50 transition-transform hover:scale-105"
         aria-label="Open Support Chat"
       >
         {isChatOpen ? <i className="fa-solid fa-xmark text-2xl"></i> : <i className="fa-solid fa-message text-2xl"></i>}
@@ -59,7 +59,7 @@ export const ChatBot = () => {
 
       {/* Chat Window */}
       {isChatOpen && (
-        <div className="fixed bottom-24 right-6 w-96 max-w-[calc(100vw-3rem)] h-150 max-h-[calc(100vh-8rem)] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 flex flex-col z-50 overflow-hidden animate-fade-in">
+        <div className="fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 sm:w-96 h-150 max-h-[calc(100vh-8rem)] bg-white dark:bg-slate-800 rounded-2xl shadow-2xl border border-gray-100 dark:border-slate-700 flex flex-col z-50 overflow-hidden animate-fade-in">
           
           {/* Header */}
           <div className="bg-brand-600 p-4 flex justify-between items-center text-white">
