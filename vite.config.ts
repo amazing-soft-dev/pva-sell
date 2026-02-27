@@ -11,19 +11,11 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), tailwindcss()],
     base: '/',
     build: {
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true,
-        },
-      },
       rollupOptions: {
         output: {
           manualChunks: {
             'vendor-react': ['react', 'react-dom'],
-            'vendor-utils': ['uuid', 'jspdf', 'jspdf-autotable'],
-            'vendor-ai': ['@google/genai'],
+            'vendor-utils': ['@google/genai', 'uuid', 'jspdf', 'jspdf-autotable'],
           },
         },
       },

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pva-sell.onrender.com/sitemap.xml
