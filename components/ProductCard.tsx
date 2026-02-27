@@ -85,7 +85,7 @@ export const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
               className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${
                 product.stock > 10 
                   ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' 
-                  : 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400'
+                  : 'bg-amber-100 text-amber-900 dark:bg-amber-900/30 dark:text-amber-400'
               }`}
               aria-label={`Availability: ${product.stock > 0 ? product.stock + ' in stock' : 'Out of stock'}`}
             >
