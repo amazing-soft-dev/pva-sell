@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.credexus.org/sitemap.xml
+Sitemap: https://pva-sell.onrender.com/sitemap.xml
