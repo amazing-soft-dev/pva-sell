@@ -8,8 +8,20 @@ import { SEO } from '../components/SEO';
 
 export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void }) => {
   const { products } = useApp();
-  // Featured: First 3
-  const featuredProducts = products.slice(0, 3);
+  
+  // Pinned Featured Products: LinkedIn, Upwork, Payoneer
+  const featuredTitles = [
+    'Buy Aged LinkedIn Account (10+ Years, ID Verified)',
+    'Buy Verified Upwork Account (Ready to Work)',
+    'Buy Payoneer Account (Ready Made)'
+  ];
+
+  const featuredProducts = featuredTitles
+    .map(title => products.find(p => p.title === title))
+    .filter((p): p is NonNullable<typeof p> => !!p);
+
+  // Fallback to first 3 if for some reason titles don't match (e.g. data changed)
+  const finalFeatured = featuredProducts.length === 3 ? featuredProducts : products.slice(0, 3);
 
   return (
     <article className="animate-fade-in">
@@ -43,7 +55,7 @@ export const HomeView = ({ onNavigate }: { onNavigate: (view: ViewState) => void
           </header>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {featuredProducts.map(product => (
+            {finalFeatured.map(product => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>

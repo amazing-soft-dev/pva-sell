@@ -87,7 +87,7 @@ export const INITIAL_PRODUCTS = [
   { title: 'Verified Noones Account', category: 'Payment', price: 50, stock: 25, icon: 'fa-solid fa-credit-card', description: 'Noones P2P marketplace account verified.', features: ['Phone + ID', 'Trade Ready'] },
 
   // Discord
-  { title: 'Buy Aged Discord Account (2015)', category: 'Social Media', price: 54.99, stock: 5, icon: 'fa-brands fa-discord', description: 'Ultra rare 2015 creation date Discord account. Does not include badge unless stated.', features: ['Aged 2015', 'High Trust', 'Rare'] },
+  { title: 'Buy Aged Discord Account (2015)', category: 'Social Media', price: 24.99, stock: 5, icon: 'fa-brands fa-discord', description: 'Ultra rare 2015 creation date Discord account. Does not include badge unless stated.', features: ['Aged 2015', 'High Trust', 'Rare'] },
   { title: 'Buy Aged Discord Account (2016)', category: 'Social Media', price: 17.99, stock: 10, icon: 'fa-brands fa-discord', description: 'Aged 2016 Discord account. Perfect for looking legitimate.', features: ['Aged 2016', 'Email Verified'] },
   { title: 'Aged Discord Account (2017)', category: 'Social Media', price: 14.99, stock: 15, icon: 'fa-brands fa-discord', description: '2017 Creation date Discord account.', features: ['Aged 2017', 'Stable'] },
   { title: 'Aged Discord Account (2018)', category: 'Social Media', price: 10.99, stock: 20, icon: 'fa-brands fa-discord', description: '2018 Creation date Discord account.', features: ['Aged 2018', 'Phone Verified'] },

@@ -61,20 +61,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && handleNav('home')}
           >
-            {!logoError ? (
-              <img 
-                src={logoPath} 
-                alt="Credexus Market" 
-                className="h-9 w-9 sm:h-10 sm:w-10 object-contain"
-                onError={() => setLogoError(true)}
-                width="40"
-                height="40"
-              />
-            ) : (
-              <div className="h-9 w-9 sm:h-10 sm:w-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30 transform hover:rotate-3 transition-transform">
-                <i className="fa-solid fa-shield-halved text-white text-lg sm:text-xl"></i>
-              </div>
-            )}
+            <div className="w-10 h-10 flex items-center justify-center shrink-0">
+              {!logoError ? (
+                <img 
+                  src={logoPath} 
+                  alt="Credexus Market" 
+                  className="h-10 w-10 object-contain"
+                  onError={() => setLogoError(true)}
+                  width="40"
+                  height="40"
+                  loading="eager"
+                  fetchPriority="high"
+                />
+              ) : (
+                <div className="h-10 w-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30 transform hover:rotate-3 transition-transform">
+                  <i className="fa-solid fa-shield-halved text-white text-xl"></i>
+                </div>
+              )}
+            </div>
             <span className="text-xl font-black text-gray-900 dark:text-white tracking-tight sm:block hidden">
               Credexus<span className="text-brand-600">.</span>
             </span>
@@ -105,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
               className="w-10 h-10 flex items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition"
               aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             >
-              <i className={`fa-solid ${theme === 'light' ? 'fa-moon' : 'fa-sun'} text-lg`}></i>
+              <i className={`fa-solid ${theme === 'light' ? 'fa-moon' : 'fa-sun'} text-lg`} aria-hidden="true"></i>
             </button>
 
             {/* Cart Button */}
@@ -114,7 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
               className="relative w-10 h-10 flex items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 dark:hover:bg-slate-800 transition" 
               aria-label={`Open shopping cart with ${cartCount} items`}
             >
-              <i className="fa-solid fa-cart-shopping text-lg"></i>
+              <i className="fa-solid fa-cart-shopping text-lg" aria-hidden="true"></i>
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-accent-500 text-white text-[10px] font-black rounded-full h-5 w-5 flex items-center justify-center ring-2 ring-white dark:ring-slate-900">
                   {cartCount}
@@ -139,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                   <div className="w-7 h-7 bg-brand-600 rounded-full flex items-center justify-center text-white text-xs font-black shadow-inner">
                     {user.name.charAt(0).toUpperCase()}
                   </div>
-                  <span className="text-sm font-bold max-w-20 truncate">{user.name.split(' ')[0]}</span>
+                  <span className="text-sm font-bold max-w-[80px] truncate">{user.name.split(' ')[0]}</span>
                 </button>
                 <button
                    onClick={handleLogout}
@@ -147,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                    title="Sign Out"
                    aria-label="Sign Out"
                 >
-                   <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                   <i className="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>
                 </button>
               </div>
             ) : (
@@ -177,7 +181,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
         <>
           {/* Mobile Sidebar Overlay */}
           <div 
-            className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-50 transition-opacity duration-300 md:hidden ${
+            className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[50] transition-opacity duration-300 md:hidden ${
                 isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
             }`}
             onClick={() => setIsMenuOpen(false)}
@@ -185,7 +189,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
 
           {/* Mobile Sidebar Menu */}
           <aside 
-            className={`fixed top-0 right-0 h-full w-70 bg-white dark:bg-slate-900 z-60 shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
+            className={`fixed top-0 right-0 h-full w-[280px] bg-white dark:bg-slate-900 z-[60] shadow-2xl transition-transform duration-300 ease-in-out md:hidden ${
                 isMenuOpen ? 'translate-x-0' : 'translate-x-full'
             }`}
           >
@@ -228,7 +232,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                     </div>
                     <div>
                         <p className="font-bold text-gray-900 dark:text-white leading-none">{user.name}</p>
-                        <p className="text-xs text-gray-500 dark:text-slate-500 mt-1 truncate max-w-37.5">{user.email}</p>
+                        <p className="text-xs text-gray-500 dark:text-slate-500 mt-1 truncate max-w-[150px]">{user.email}</p>
                     </div>
                 </div>
                 <button 

@@ -1,7 +1,7 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import { AppProvider } from './contexts/AppContext';
+import { AppProvider, useApp } from './contexts/AppContext';
 import { useRouter, ViewState } from './utils/router';
 
 // Components
@@ -24,34 +24,41 @@ const LoadingFallback = () => (
   </div>
 );
 
-const App = () => {
+const MainLayout = () => {
   const { route, navigate } = useRouter();
+  const { theme } = useApp();
   const [authOpen, setAuthOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
   return (
-    <AppProvider>
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col transition-colors duration-200">
-        <Navbar 
-          currentView={route} 
-          onNavigate={navigate} 
-          onOpenAuth={() => setAuthOpen(true)} 
-          onOpenCart={() => setCartOpen(true)} 
-        />
-        <main className="grow">
-          <Suspense fallback={<LoadingFallback />}>
-            {route === 'home' && <HomeView onNavigate={navigate} />}
-            {route === 'products' && <ProductsView />}
-            {route === 'whyus' && <WhyUsView />}
-            {route === 'profile' && <ProfileView />}
-            {route === 'admin' && <AdminView />}
-          </Suspense>
-        </main>
-        <Footer onNavigate={navigate} />
-      </div>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col transition-colors duration-200">
+      <Navbar 
+        currentView={route} 
+        onNavigate={navigate} 
+        onOpenAuth={() => setAuthOpen(true)} 
+        onOpenCart={() => setCartOpen(true)} 
+      />
+      <main className="flex-grow">
+        <Suspense fallback={<LoadingFallback />}>
+          {route === 'home' && <HomeView onNavigate={navigate} />}
+          {route === 'products' && <ProductsView />}
+          {route === 'whyus' && <WhyUsView />}
+          {route === 'profile' && <ProfileView />}
+          {route === 'admin' && <AdminView />}
+        </Suspense>
+      </main>
+      <Footer onNavigate={navigate} />
       <ChatBot />
       <AuthModal isOpen={authOpen} onClose={() => setAuthOpen(false)} />
       <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <AppProvider>
+      <MainLayout />
     </AppProvider>
   );
 };

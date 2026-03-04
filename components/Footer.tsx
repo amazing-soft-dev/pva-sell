@@ -55,12 +55,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 pt-16 pb-8 transition-colors duration-200">
+    <footer className="bg-gray-50 dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800 pt-16 pb-8 transition-colors duration-200 min-h-[400px]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div className="col-span-1 md:col-span-1">
             <div 
-              className="mb-6 cursor-pointer"
+              className="mb-6 cursor-pointer w-10 h-10 flex items-center justify-center"
               onClick={(e) => handleNav(e, 'home')}
             >
               {!logoError ? (
@@ -75,7 +75,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 />
               ) : (
                 <div className="flex items-center gap-2">
-                  <div className="h-10 w-10 bg-brand-600 rounded-lg flex items-center justify-center shadow-lg shadow-brand-500/20">
+                  <div className="h-10 w-10 bg-brand-600 rounded-lg flex items-center justify-center shadow-lg shadow-brand-500/20 shrink-0">
                     <i className="fa-solid fa-shield-halved text-white text-xl"></i>
                   </div>
                   <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight">Credexus</span>
@@ -112,14 +112,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button 
                   onClick={openChat} 
-                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left p-0 min-h-0! h-auto bg-transparent border-0"
+                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left p-0 min-h-0 h-auto bg-transparent border-0"
                 >
                   Live Chat
                 </button>
               </li>
               <li><a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
               <li>
-                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 p-0 min-h-0! h-auto bg-transparent border-0">
+                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 p-0 min-h-0 h-auto bg-transparent border-0">
                   Admin
                 </button>
               </li>

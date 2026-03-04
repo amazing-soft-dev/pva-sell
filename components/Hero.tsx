@@ -18,7 +18,7 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
           </svg>
 
           <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-            <div className="text-center lg:text-left">
+            <div className="text-center lg:text-left min-h-[300px] sm:min-h-[350px]">
               <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
                 <span className="block xl:inline">Phone Verified</span>{' '}
                 <span className="block text-brand-600 dark:text-brand-400 xl:inline">Accounts Market</span>
@@ -27,32 +27,28 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
                 The industry's most trusted marketplace for verified accounts. Instant access to high-quality, phone-verified accounts for LinkedIn, Upwork, PayPal and more. 
                 <span className="hidden sm:inline"> Secure, anonymous, and backed by our 72-hour replacement guarantee.</span>
               </p>
-              <div className="mt-8 sm:mt-10 sm:flex sm:justify-center lg:justify-start gap-4">
-                <div className="rounded-md shadow">
-                  <button
-                    onClick={() => onNavigate('products')}
-                    className="w-full flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-brand-600 hover:bg-brand-700 md:text-lg transition-all transform active:scale-95 shadow-lg shadow-brand-500/25"
-                  >
-                    Browse Marketplace
-                  </button>
-                </div>
-                <div className="mt-3 sm:mt-0">
-                  <button
-                    onClick={() => onNavigate('whyus')}
-                    className="w-full flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-900/40 hover:bg-brand-100 dark:hover:bg-brand-900/60 md:text-lg transition-all"
-                  >
-                    Why Choose Us?
-                  </button>
-                </div>
+              <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row sm:justify-center lg:justify-start gap-4">
+                <button
+                  onClick={() => onNavigate('products')}
+                  className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-white bg-brand-600 hover:bg-brand-700 md:text-lg transition-all transform active:scale-95 shadow-lg shadow-brand-500/25"
+                >
+                  Browse Marketplace
+                </button>
+                <button
+                  onClick={() => onNavigate('whyus')}
+                  className="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-xl text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-900/40 hover:bg-brand-100 dark:hover:bg-brand-900/60 md:text-lg transition-all"
+                >
+                  Why Choose Us?
+                </button>
               </div>
               
               {/* Trust Indicators for mobile */}
-              <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+              <div className="mt-10 flex flex-wrap justify-center lg:justify-start gap-x-8 gap-y-4 opacity-70 transition-all duration-500">
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-900 dark:text-gray-100">
-                      <i className="fa-solid fa-shield-check text-brand-500"></i> SSL SECURE
+                      <i className="fa-solid fa-shield-check text-brand-500 text-sm"></i> SSL SECURE
                   </div>
                   <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-900 dark:text-gray-100">
-                      <i className="fa-solid fa-bolt text-brand-500"></i> INSTANT DELIVERY
+                      <i className="fa-solid fa-bolt text-brand-500 text-sm"></i> INSTANT DELIVERY
                   </div>
               </div>
             </div>
@@ -65,29 +61,29 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
         <div className="w-full h-full flex items-center xl:justify-center lg:justify-end justify-center p-6 sm:p-10">
           <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 xl:w-full lg:w-3/5 w-full max-w-lg">
             {/* LinkedIn Card */}
-            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:-translate-y-2 transition duration-300 border border-gray-100 dark:border-slate-700">
-              <i className="fa-brands fa-linkedin text-4xl sm:text-5xl text-[#0077b5] mb-4"></i>
+            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:translate-y-[-8px] transition duration-300 border border-gray-100 dark:border-slate-700 h-[140px] sm:h-[180px]">
+              <i className="fa-brands fa-linkedin text-4xl sm:text-5xl text-[#0077b5] mb-4 h-10 sm:h-12 flex items-center"></i>
               <span className="font-bold text-gray-800 dark:text-white text-sm sm:text-base">LinkedIn</span>
               <span className="text-[10px] sm:text-xs text-green-700 font-bold bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded-full mt-1">ID Verified</span>
             </div>
             
             {/* Upwork Card - Removed scale, kept vertical lift */}
-            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform transition-all duration-500 sm:translate-y-8 border border-gray-100 dark:border-slate-700 hover:sm:translate-y-6 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#14a800]/20">
-              <i className="fa-brands fa-upwork text-4xl sm:text-5xl text-[#14a800] mb-4"></i>
+            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform transition-all duration-500 sm:translate-y-8 border border-gray-100 dark:border-slate-700 hover:sm:translate-y-6 hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-[#14a800]/20 h-[140px] sm:h-[180px]">
+              <i className="fa-brands fa-upwork text-4xl sm:text-5xl text-[#14a800] mb-4 h-10 sm:h-12 flex items-center"></i>
               <span className="font-bold text-gray-800 dark:text-white text-sm sm:text-base">Upwork</span>
               <span className="text-[10px] sm:text-xs text-brand-700 font-bold bg-brand-50 dark:bg-brand-900/20 px-2 py-0.5 rounded-full mt-1">Ready to apply</span>
             </div>
             
             {/* Discord Card */}
-            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:-translate-y-2 transition duration-300 border border-gray-100 dark:border-slate-700">
-              <i className="fa-brands fa-discord text-4xl sm:text-5xl text-[#5865F2] mb-4"></i>
+            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:translate-y-[-8px] transition duration-300 border border-gray-100 dark:border-slate-700 h-[140px] sm:h-[180px]">
+              <i className="fa-brands fa-discord text-4xl sm:text-5xl text-[#5865F2] mb-4 h-10 sm:h-12 flex items-center"></i>
               <span className="font-bold text-gray-800 dark:text-white text-sm sm:text-base">Discord</span>
               <span className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 font-bold bg-gray-50 dark:bg-slate-900/40 px-2 py-0.5 rounded-full mt-1">Aged 2015+</span>
             </div>
             
             {/* Payment Card - Removed scale, kept vertical lift */}
-            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform transition-all duration-500 sm:translate-y-8 border border-gray-100 dark:border-slate-700 hover:sm:translate-y-6 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-500/20">
-              <i className="fa-solid fa-money-check-dollar text-4xl sm:text-5xl text-slate-700 dark:text-slate-300 mb-4"></i>
+            <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform transition-all duration-500 sm:translate-y-8 border border-gray-100 dark:border-slate-700 hover:sm:translate-y-6 hover:translate-y-[-8px] hover:shadow-2xl hover:shadow-brand-500/20 h-[140px] sm:h-[180px]">
+              <i className="fa-solid fa-money-check-dollar text-4xl sm:text-5xl text-slate-700 dark:text-slate-300 mb-4 h-10 sm:h-12 flex items-center"></i>
               <span className="font-bold text-gray-800 dark:text-white text-sm sm:text-base">Payment</span>
               <span className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 font-bold bg-gray-50 dark:bg-slate-900/40 px-2 py-0.5 rounded-full mt-1">Business Verified</span>
             </div>
