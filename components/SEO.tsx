@@ -84,7 +84,7 @@ export const SEO: React.FC<SEOProps> = ({
       "url": domain,
       "logo": `${domain}/favicon.ico`,
       "sameAs": [
-        "https://t.me/credexusmarket",
+        "https://t.me/+qoyvzpfiIDE0ZjYx",
         "https://x.com/credexus"
       ],
       "contactPoint": {

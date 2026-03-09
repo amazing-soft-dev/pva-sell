@@ -131,8 +131,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
             {/* Auth/Profile */}
             {user ? (
               <div className="hidden sm:flex items-center gap-2">
-                <button 
-                  onClick={() => handleNav('profile')}
+                <a 
+                  href="/profile"
+                  onClick={(e) => { e.preventDefault(); handleNav('profile'); }}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border transition ${
                     currentView === 'profile' 
                       ? 'border-brand-500 bg-brand-50 dark:bg-brand-900/20 text-brand-600' 
@@ -144,7 +145,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                     {user.name.charAt(0).toUpperCase()}
                   </div>
                   <span className="text-sm font-bold max-w-[80px] truncate">{user.name.split(' ')[0]}</span>
-                </button>
+                </a>
                 <button
                    onClick={handleLogout}
                    className="w-10 h-10 flex items-center justify-center rounded-xl text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition"
@@ -203,14 +204,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
 
           <nav className="flex-1 space-y-2">
             {[
-                { id: 'home', icon: 'fa-house', label: 'Home' },
-                { id: 'products', icon: 'fa-bag-shopping', label: 'Marketplace' },
-                { id: 'whyus', icon: 'fa-shield-heart', label: 'Why Us?' },
-                { id: 'profile', icon: 'fa-user-circle', label: 'My Dashboard' }
+                { id: 'home', icon: 'fa-house', label: 'Home', path: '/' },
+                { id: 'products', icon: 'fa-bag-shopping', label: 'Marketplace', path: '/products' },
+                { id: 'whyus', icon: 'fa-shield-heart', label: 'Why Us?', path: '/whyus' },
+                { id: 'profile', icon: 'fa-user-circle', label: 'My Dashboard', path: '/profile' }
             ].map((item) => (
-                <button 
+                <a 
                     key={item.id}
-                    onClick={() => handleNav(item.id as ViewState)} 
+                    href={item.path}
+                    onClick={(e) => { e.preventDefault(); handleNav(item.id as ViewState); }} 
                     className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl font-bold transition-all ${
                         currentView === item.id 
                             ? 'bg-brand-600 text-white shadow-lg shadow-brand-500/25' 
@@ -219,7 +221,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAuth, onOpenCart, onNaviga
                 >
                     <i className={`fa-solid ${item.icon} w-5 text-center`}></i>
                     {item.label}
-                </button>
+                </a>
             ))}
           </nav>
 

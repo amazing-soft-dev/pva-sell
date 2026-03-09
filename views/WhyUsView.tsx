@@ -167,7 +167,7 @@ export const WhyUsView = () => {
                         <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
                         <span>Email Ticket System</span>
                      </div>
-                     <a href="https://t.me/credexusmarket" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-brand-200 transition">
+                     <a href="https://t.me/+qoyvzpfiIDE0ZjYx" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-brand-200 transition">
                         <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
                         <span className="underline decoration-dotted underline-offset-4">Active Telegram Channel</span>
                      </a>
@@ -182,7 +182,7 @@ export const WhyUsView = () => {
                       <i className="fa-solid fa-headset"></i>
                    </div>
                    <h3 className="text-2xl font-bold text-white mb-2">Need Help?</h3>
-                   <p className="text-brand-200 mb-6">Contact us anytime.</p>
+                   <p className="text-brand-200 mb-6 dark:text-white">Contact us anytime.</p>
                    <button 
                      onClick={openChat}
                      className="bg-white text-brand-700 px-8 py-3 rounded-full font-bold hover:bg-brand-50 transition shadow-lg transform hover:scale-105"

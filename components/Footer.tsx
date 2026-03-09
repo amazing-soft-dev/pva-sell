@@ -119,9 +119,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
               <li><a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="hover:text-brand-600 dark:hover:text-brand-400">Contact Us</a></li>
               <li>
-                <button onClick={(e) => handleNav(e, 'admin')} className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 p-0 min-h-0 h-auto bg-transparent border-0">
-                  Admin
-                </button>
+                <a 
+                  href="/admin" 
+                  onClick={(e) => handleNav(e, 'admin')} 
+                  className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition"
+                >
+                  Admin Portal
+                </a>
               </li>
             </ul>
             <div className="mt-4 flex space-x-4">
