@@ -4,12 +4,21 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import compression from 'compression';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { INITIAL_PRODUCTS } from './seedData.js';
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Middleware: Compression for better performance
+app.use(compression());
 
 // Middleware: Log all requests to console for debugging
 app.use((req, res, next) => {
@@ -25,6 +34,10 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+// Serve static files from the React app
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
 
 // --- In-Memory Fallback Store ---
 let memoryUsers = [];
@@ -376,6 +389,12 @@ app.post('/api/chat', async (req, res) => {
 // Handle 404 for API routes so we return JSON instead of HTML
 app.use('/api/*', (req, res) => {
   res.status(404).json({ message: 'API Endpoint Not Found' });
+});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {

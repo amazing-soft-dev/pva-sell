@@ -130,7 +130,7 @@ export const AdminView = () => {
             <div className="w-20 h-20 bg-brand-100 dark:bg-brand-900/30 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-inner rotate-3">
               <i className="fa-solid fa-user-shield text-brand-600 dark:text-brand-400 text-3xl"></i>
             </div>
-            <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Admin Portal</h2>
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Admin Portal</h1>
             <p className="text-gray-500 dark:text-slate-400 mt-2 font-medium">Verify credentials to continue</p>
           </div>
 
