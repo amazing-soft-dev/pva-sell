@@ -167,7 +167,7 @@ export const WhyUsView = () => {
                         <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
                         <span>Email Ticket System</span>
                      </div>
-                     <a href="https://t.me/+qoyvzpfiIDE0ZjYx" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-brand-200 transition">
+                     <a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="flex items-center text-white hover:text-brand-200 transition">
                         <i className="fa-solid fa-check-circle text-brand-300 mr-3 text-xl"></i>
                         <span className="underline decoration-dotted underline-offset-4">Active Telegram Channel</span>
                      </a>
