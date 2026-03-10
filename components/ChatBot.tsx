@@ -87,7 +87,7 @@ export const ChatBot = () => {
             <div className="px-4 space-y-2 text-sm">
               <p className="text-xs text-gray-500 dark:text-slate-400 mb-2 text-center">Direct Support Channels</p>
               
-              <a href="https://t.me/+qoyvzpfiIDE0ZjYx" target="_blank" rel="noopener noreferrer" className="flex items-center p-2 bg-[#229ED9] text-white rounded-lg hover:opacity-90 transition">
+              <a href="https://t.me/credexus" target="_blank" rel="noopener noreferrer" className="flex items-center p-2 bg-[#229ED9] text-white rounded-lg hover:opacity-90 transition">
                 <i className="fa-brands fa-telegram w-6 text-center text-lg"></i> 
                 <span className="ml-2 font-medium">Telegram</span>
               </a>
