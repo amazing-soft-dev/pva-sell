@@ -112,7 +112,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button 
                   onClick={openChat} 
-                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left p-0 min-h-0 h-auto bg-transparent border-0"
+                  className="hover:text-brand-600 dark:hover:text-brand-400 text-left p-0 min-h-0! h-auto bg-transparent border-0"
                 >
                   Live Chat
                 </button>

@@ -5,7 +5,7 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
   return (
     <section className="relative bg-white dark:bg-slate-900 overflow-hidden transition-colors duration-200 border-b border-gray-100 dark:border-slate-800">
       <div className="max-w-7xl mx-auto">
-        <div className="relative z-10 pb-8 bg-white dark:bg-slate-900 sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32 transition-colors duration-200">
+        <div className="relative z-10 pb-8 bg-white dark:bg-slate-900 sm:pb-16 md:pb-20 lg:max-w-[50%] lg:w-full lg:pb-28 xl:pb-32 transition-colors duration-200">
           {/* Decorative SVG - Hidden on mobile, visible on LG+ */}
           <svg
             className="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white dark:text-slate-900 transform translate-x-1/2 transition-colors duration-200"
@@ -14,7 +14,7 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
             preserveAspectRatio="none"
             aria-hidden="true"
           >
-            <polygon points="50,0 100,0 50,100 0,100" />
+            <polygon points="50,0 100,0 50,100 50,100" />
           </svg>
 
           <main className="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
@@ -23,7 +23,7 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
                 <span className="block xl:inline">Phone Verified</span>{' '}
                 <span className="block text-brand-600 dark:text-brand-400 xl:inline">Accounts Market</span>
               </h1>
-              <p className="mt-3 text-base text-gray-500 dark:text-slate-400 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+              <p className="mt-3 text-base text-gray-500 dark:text-slate-400 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 lg:max-w-[calc(50vw-100px)]">
                 The industry's most trusted marketplace for verified accounts. Instant access to high-quality, phone-verified accounts for LinkedIn, Upwork, PayPal and more. 
                 <span className="hidden sm:inline"> Secure, anonymous, and backed by our 72-hour replacement guarantee.</span>
               </p>
@@ -57,9 +57,9 @@ export const Hero: React.FC<{ onNavigate: (view: ViewState) => void }> = ({ onNa
       </div>
 
       {/* Right Side Visual - Responsive adjustments */}
-      <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-gray-50 dark:bg-slate-950 transition-colors duration-200 py-12 lg:py-0">
-        <div className="w-full h-full flex items-center xl:justify-center lg:justify-end justify-center p-6 sm:p-10">
-          <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 xl:w-full lg:w-3/5 w-full max-w-lg">
+      <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2 bg-gray-50 dark:bg-slate-950 transition-colors duration-200 lg:pl-15 py-12 lg:py-0">
+        <div className="w-full h-full flex items-center justify-center px-4 sm:p-10">
+          <div className="grid sm:grid-cols-2 grid-cols-1 gap-4 w-full max-w-lg">
             {/* LinkedIn Card */}
             <div className="bg-white dark:bg-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center text-center transform hover:translate-y-[-8px] transition duration-300 border border-gray-100 dark:border-slate-700 h-[140px] sm:h-[180px]">
               <i className="fa-brands fa-linkedin text-4xl sm:text-5xl text-[#0077b5] mb-4 h-10 sm:h-12 flex items-center"></i>
